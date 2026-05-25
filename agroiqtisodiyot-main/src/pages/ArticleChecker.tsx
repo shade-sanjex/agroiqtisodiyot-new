@@ -3,119 +3,139 @@ import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
 import { ScrollReveal } from '@/components/ScrollReveal';
 import { BackToTop } from '@/components/BackToTop';
-import { ProtectedRoute } from '@/components/ProtectedRoute';
-import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Input } from '@/components/ui/input';
-import { Progress } from '@/components/ui/progress';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
-import { Sparkles, Upload, FileText, CheckCircle, XCircle, AlertTriangle, Lightbulb, Loader2, ArrowRight } from 'lucide-react';
-import { toast } from 'sonner';
-import { checkArticle, extractTextFromFile, ArticleCheckResult, getScoreColor, getScoreLabel, getScoreBgColor } from '@/lib/ai-checker';
+import { Progress } from '@/components/ui/progress';
+import {
+  FileText,
+  Upload,
+  Loader2,
+  CheckCircle,
+  XCircle,
+  AlertTriangle,
+  Lightbulb,
+  Cpu
+} from 'lucide-react';
+import { analyzeArticle, AnalysisResult } from '@/utils/articleAnalyzer';
 
-function ArticleCheckerContent() {
+const ArticleChecker = () => {
   const [text, setText] = useState('');
   const [file, setFile] = useState<File | null>(null);
   const [isChecking, setIsChecking] = useState(false);
-  const [result, setResult] = useState<ArticleCheckResult | null>(null);
   const [progress, setProgress] = useState(0);
+  const [result, setResult] = useState<AnalysisResult | null>(null);
 
   const handleCheck = async () => {
-    let articleText = text;
-
-    if (!articleText.trim() && !file) {
-      toast.error('Matn kiriting yoki fayl yuklang');
-      return;
-    }
+    if (!text && !file) return;
 
     setIsChecking(true);
-    setProgress(10);
+    setProgress(0);
     setResult(null);
 
-    try {
-      if (file && !articleText.trim()) {
-        setProgress(20);
-        articleText = await extractTextFromFile(file);
-        setProgress(40);
-      }
+    // Simulate progress
+    const interval = setInterval(() => {
+      setProgress(p => {
+        if (p >= 90) {
+          clearInterval(interval);
+          return 90;
+        }
+        return p + 10;
+      });
+    }, 500);
 
-      if (!articleText.trim()) {
-        toast.error('Fayldan matn ajratib bo\'linmadi');
-        return;
-      }
+    // Analyze text
+    const textToAnalyze = file ? "Fayl mazmuni tahlil qilinmoqda... " + text : text;
+    const analysisResult = await analyzeArticle(textToAnalyze);
 
-      setProgress(50);
-      const res = await checkArticle(articleText);
-      setProgress(100);
-      setResult(res);
-      toast.success('Tekshirish yakunlandi!');
-    } catch (err: any) {
-      toast.error(err.message || 'Xatolik yuz berdi');
-    } finally {
+    clearInterval(interval);
+    setProgress(100);
+
+    setTimeout(() => {
+      setResult(analysisResult);
       setIsChecking(false);
-    }
+    }, 500);
+  };
+
+  const getScoreColor = (score: number) => {
+    if (score >= 85) return 'text-primary';
+    if (score >= 60) return 'text-amber-500';
+    return 'text-destructive';
+  };
+
+  const getScoreBgColor = (score: number) => {
+    if (score >= 85) return 'bg-primary/5 border-primary/20';
+    if (score >= 60) return 'bg-amber-500/5 border-amber-500/20';
+    return 'bg-destructive/5 border-destructive/20';
+  };
+
+  const getScoreLabel = (score: number) => {
+    if (score >= 85) return "Jurnalga yuborish uchun tavsiya etiladi";
+    if (score >= 60) return "Kamchiliklarni to'g'rilash talab etiladi";
+    return "Maqolani jiddiy qayta ishlash zarur";
   };
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-background text-foreground transition-colors duration-300">
       <Navbar />
 
-      {/* Hero */}
-      <section className="relative bg-hero-light dark:bg-hero-dark border-b border-border/40 py-12 md:py-16 overflow-hidden">
-        <div className="absolute inset-0 bg-grid-pattern pointer-events-none" />
-        <div className="absolute top-1/2 left-1/4 -translate-y-1/2 w-64 h-64 rounded-full bg-primary/6 blur-3xl animate-float-slow -z-10" />
-        <div className="absolute top-1/2 right-1/4 -translate-y-1/2 w-64 h-64 rounded-full bg-secondary/6 blur-3xl animate-float-delayed -z-10" />
-
-        <div className="container mx-auto px-4 text-center relative z-10">
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-gold/10 rounded-full text-foreground text-sm mb-4 backdrop-blur-sm border border-gold/20 animate-float-slow">
-            <Sparkles className="h-4 w-4 text-gold" />
-            Sun'iy Intellekt
-          </div>
-          <h1 className="text-3xl md:text-4xl lg:text-5xl font-serif font-black mb-4 text-foreground">
-            AI Maqola Tekshirish
-          </h1>
-          <p className="text-muted-foreground max-w-2xl mx-auto font-light">
-            Maqolangizni imlo xatolari, grammatika va jurnal talablariga mosligi bo'yicha AI yordamida tekshiring
-          </p>
+      {/* ============ MINIMAL HERO ============ */}
+      <section className="relative pt-24 pb-16 lg:pt-32 lg:pb-24 border-b border-border overflow-hidden bg-background">
+        <div className="absolute inset-0 bg-grid-pattern opacity-40 pointer-events-none" />
+        
+        <div className="container mx-auto px-4 text-center relative z-10 max-w-4xl">
+          <ScrollReveal>
+            <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-primary/10 text-primary mb-6">
+              <Cpu className="h-6 w-6" />
+            </div>
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif font-black mb-6 text-foreground tracking-tight">
+              AI Maqola Tekshirish
+            </h1>
+            <p className="text-base md:text-lg text-muted-foreground font-light leading-relaxed">
+              Maqolangizni imlo xatolari, grammatika va jurnal talablariga mosligi bo'yicha sun'iy intellekt yordamida tekshiring
+            </p>
+          </ScrollReveal>
         </div>
       </section>
 
-      {/* Main Content */}
-      <section className="py-12 md:py-16">
+      {/* ============ MAIN CONTENT ============ */}
+      <section className="py-16 md:py-24 section-alt flex-1">
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-7xl mx-auto">
-            {/* Input panel */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 max-w-7xl mx-auto">
+            
+            {/* Input Panel */}
             <ScrollReveal direction="left">
-              <Card className="shadow-glass border border-border/60 bg-card/80 h-full">
-                <CardHeader>
-                  <CardTitle className="font-serif flex items-center gap-2">
-                    <FileText className="h-5 w-5 text-primary" />
-                    Maqolangizni yuklang
+              <Card className="iscad-card border-border shadow-sm h-full bg-background">
+                <CardHeader className="border-b border-border pb-4">
+                  <CardTitle className="font-serif text-lg flex items-center gap-2">
+                    <FileText className="h-5 w-5 text-muted-foreground" />
+                    Maqolani yuklang
                   </CardTitle>
                 </CardHeader>
-                <CardContent className="space-y-4">
-                  <Tabs defaultValue="text">
-                    <TabsList className="grid w-full grid-cols-2 rounded-xl">
-                      <TabsTrigger value="text" className="rounded-lg">Matn kiritish</TabsTrigger>
-                      <TabsTrigger value="file" className="rounded-lg">Fayl yuklash</TabsTrigger>
+                <CardContent className="p-6 md:p-8 space-y-6">
+                  <Tabs defaultValue="text" className="w-full">
+                    <TabsList className="grid w-full grid-cols-2 rounded-lg bg-slate-100 dark:bg-slate-900 mb-6 p-1">
+                      <TabsTrigger value="text" className="rounded-md">Matn</TabsTrigger>
+                      <TabsTrigger value="file" className="rounded-md">Fayl</TabsTrigger>
                     </TabsList>
-                    <TabsContent value="text" className="mt-4">
+                    
+                    <TabsContent value="text" className="mt-0">
                       <Textarea
                         value={text}
                         onChange={e => setText(e.target.value)}
-                        placeholder="Maqola matnini shu yerga kiriting yoki qo'ying..."
-                        rows={14}
-                        className="rounded-xl resize-none"
+                        placeholder="Maqola matnini shu yerga kiriting yoki joylang..."
+                        rows={12}
+                        className="resize-none bg-slate-50 dark:bg-slate-900 border-border focus-visible:ring-1 focus-visible:ring-primary shadow-none rounded-lg p-4 font-mono text-sm"
                       />
                     </TabsContent>
-                    <TabsContent value="file" className="mt-4">
-                      <div className="border-2 border-dashed border-border rounded-xl p-8 text-center hover:border-primary/50 transition-colors">
-                        <Upload className="h-10 w-10 text-muted-foreground mx-auto mb-3" />
-                        <p className="text-sm text-muted-foreground mb-3">
-                          .docx, .pdf yoki .txt faylni tanlang
-                        </p>
+                    
+                    <TabsContent value="file" className="mt-0">
+                      <div className="border-2 border-dashed border-border rounded-lg p-12 text-center hover:border-primary/50 transition-colors bg-slate-50 dark:bg-slate-900 flex flex-col items-center justify-center h-[312px]">
+                        <Upload className="h-10 w-10 text-muted-foreground mb-4" />
+                        <p className="text-sm font-medium mb-1">.docx, .pdf yoki .txt faylni tanlang</p>
+                        <p className="text-xs text-muted-foreground mb-6">Maksimal hajm: 10 MB</p>
                         <Input
                           type="file"
                           accept=".docx,.doc,.pdf,.txt"
@@ -123,80 +143,83 @@ function ArticleCheckerContent() {
                           className="max-w-xs mx-auto"
                         />
                         {file && (
-                          <p className="mt-3 text-sm text-primary font-medium">{file.name}</p>
+                          <p className="mt-4 text-sm text-primary font-medium">{file.name}</p>
                         )}
                       </div>
                     </TabsContent>
                   </Tabs>
 
                   {isChecking && (
-                    <div className="space-y-2">
-                      <Progress value={progress} className="h-2 rounded-full" />
-                      <p className="text-xs text-muted-foreground text-center">Tekshirilmoqda... {progress}%</p>
+                    <div className="space-y-3 pt-4 border-t border-border">
+                      <div className="flex justify-between text-xs font-medium text-muted-foreground">
+                        <span>Tahlil qilinmoqda...</span>
+                        <span>{progress}%</span>
+                      </div>
+                      <Progress value={progress} className="h-1.5 rounded-full" />
                     </div>
                   )}
 
-                  <Button
-                    onClick={handleCheck}
-                    disabled={isChecking}
-                    className="w-full rounded-xl h-12 shadow-lg shadow-primary/20 text-base"
-                    size="lg"
-                  >
-                    {isChecking ? (
-                      <><Loader2 className="h-5 w-5 animate-spin mr-2" /> Tekshirilmoqda...</>
-                    ) : (
-                      <><Sparkles className="h-5 w-5 mr-2" /> Tekshirishni boshlash</>
-                    )}
-                  </Button>
-
-                  <p className="text-xs text-muted-foreground text-center">
-                    Tekshirish 10-30 soniya davom etishi mumkin
-                  </p>
+                  <div className="pt-2">
+                    <Button
+                      onClick={handleCheck}
+                      disabled={isChecking || (!text && !file)}
+                      className="w-full rounded-lg h-12 text-base font-medium"
+                      size="lg"
+                    >
+                      {isChecking ? (
+                        <><Loader2 className="h-5 w-5 animate-spin mr-2" /> Jarayonda...</>
+                      ) : (
+                        <><Cpu className="h-5 w-5 mr-2" /> Tahlil qilish</>
+                      )}
+                    </Button>
+                  </div>
                 </CardContent>
               </Card>
             </ScrollReveal>
 
-            {/* Results panel */}
+            {/* Results Panel */}
             <ScrollReveal direction="right">
               {result ? (
-                <div className="space-y-6 animate-fade-in-up">
+                <div className="space-y-6 animate-page-enter">
                   {/* Score */}
-                  <Card className={`shadow-glass border-2 ${getScoreBgColor(result.overallScore)}`}>
-                    <CardContent className="p-6 text-center">
-                      <div className="text-5xl font-bold mb-1">
+                  <Card className={`iscad-card ${getScoreBgColor(result.overallScore)}`}>
+                    <CardContent className="p-8 text-center">
+                      <div className="text-5xl font-serif font-black mb-2">
                         <span className={getScoreColor(result.overallScore)}>{result.overallScore}</span>
-                        <span className="text-2xl text-muted-foreground">/100</span>
+                        <span className="text-2xl text-muted-foreground font-sans font-medium">/100</span>
                       </div>
-                      <p className={`text-lg font-semibold ${getScoreColor(result.overallScore)}`}>
+                      <p className={`text-sm font-medium ${getScoreColor(result.overallScore)}`}>
                         {getScoreLabel(result.overallScore)}
                       </p>
                     </CardContent>
                   </Card>
 
                   {/* Summary */}
-                  <Card className="shadow-glass border border-border/60 bg-card/80">
-                    <CardContent className="p-5">
-                      <h3 className="font-serif font-bold mb-2">Xulosa</h3>
-                      <p className="text-sm text-muted-foreground">{result.summary}</p>
+                  <Card className="iscad-card bg-background">
+                    <CardContent className="p-6">
+                      <h3 className="font-serif font-bold mb-3">Xulosa</h3>
+                      <p className="text-sm text-muted-foreground leading-relaxed">{result.summary}</p>
                     </CardContent>
                   </Card>
 
                   {/* Requirements */}
                   {result.requirementChecks.length > 0 && (
-                    <Card className="shadow-glass border border-border/60 bg-card/80">
-                      <CardContent className="p-5">
-                        <h3 className="font-serif font-bold mb-3">Talablar tekshiruvi</h3>
-                        <div className="space-y-2">
+                    <Card className="iscad-card bg-background">
+                      <CardContent className="p-6">
+                        <h3 className="font-serif font-bold mb-4">Talablar Tekshiruvi</h3>
+                        <div className="space-y-3">
                           {result.requirementChecks.map((check, i) => (
-                            <div key={i} className="flex items-start gap-3 p-2 rounded-lg hover:bg-muted/50">
+                            <div key={i} className="flex items-start gap-3 p-3 rounded-lg bg-slate-50 dark:bg-slate-900 border border-border">
                               {check.passed ? (
-                                <CheckCircle className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
+                                <CheckCircle className="h-4 w-4 text-primary flex-shrink-0 mt-0.5" />
                               ) : (
-                                <XCircle className="h-5 w-5 text-red-500 flex-shrink-0 mt-0.5" />
+                                <XCircle className="h-4 w-4 text-destructive flex-shrink-0 mt-0.5" />
                               )}
                               <div>
-                                <p className="text-sm font-medium">{check.name}</p>
-                                <p className="text-xs text-muted-foreground">{check.details}</p>
+                                <p className="text-sm font-medium text-foreground">{check.rule}</p>
+                                <p className={`text-xs mt-1 ${check.passed ? 'text-muted-foreground' : 'text-destructive/80'}`}>
+                                  {check.feedback}
+                                </p>
                               </div>
                             </div>
                           ))}
@@ -205,79 +228,60 @@ function ArticleCheckerContent() {
                     </Card>
                   )}
 
-                  {/* Spelling errors */}
-                  {result.spellingErrors.length > 0 && (
-                    <Card className="shadow-glass border border-border/60 bg-card/80">
-                      <CardContent className="p-5">
-                        <h3 className="font-serif font-bold mb-3">
-                          Imlo xatolari ({result.spellingErrors.length})
-                        </h3>
-                        <Accordion type="single" collapsible>
-                          {result.spellingErrors.slice(0, 20).map((err, i) => (
-                            <AccordionItem key={i} value={`err-${i}`}>
-                              <AccordionTrigger className="text-sm py-2">
-                                <span>
-                                  <span className="line-through text-red-500">{err.word}</span>
-                                  {' → '}
-                                  <span className="text-green-500 font-medium">{err.suggestion}</span>
-                                </span>
-                              </AccordionTrigger>
-                              <AccordionContent>
-                                <p className="text-xs text-muted-foreground italic">"{err.context}"</p>
-                              </AccordionContent>
-                            </AccordionItem>
-                          ))}
-                        </Accordion>
-                      </CardContent>
-                    </Card>
-                  )}
+                  {/* Spelling/Grammar/Suggestions Minimalized */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    {result.spellingErrors.length > 0 && (
+                      <Card className="iscad-card bg-background">
+                        <CardContent className="p-5">
+                          <div className="flex items-center gap-2 mb-3">
+                            <XCircle className="h-4 w-4 text-destructive" />
+                            <h3 className="font-bold text-sm">Imlo xatolari</h3>
+                          </div>
+                          <ul className="space-y-2 text-sm">
+                            {result.spellingErrors.slice(0, 3).map((err, i) => (
+                              <li key={i} className="flex gap-2">
+                                <span className="text-destructive line-through decoration-destructive/30">{err.word}</span>
+                                <span className="text-muted-foreground">→</span>
+                                <span className="text-primary font-medium">{err.suggestion}</span>
+                              </li>
+                            ))}
+                            {result.spellingErrors.length > 3 && (
+                              <li className="text-xs text-muted-foreground mt-2 pt-2 border-t border-border">
+                                + yana {result.spellingErrors.length - 3} ta xato
+                              </li>
+                            )}
+                          </ul>
+                        </CardContent>
+                      </Card>
+                    )}
 
-                  {/* Grammar issues */}
-                  {result.grammarIssues.length > 0 && (
-                    <Card className="shadow-glass border border-border/60 bg-card/80">
-                      <CardContent className="p-5">
-                        <h3 className="font-serif font-bold mb-3">Grammatik muammolar</h3>
-                        <ul className="space-y-2">
-                          {result.grammarIssues.map((issue, i) => (
-                            <li key={i} className="flex items-start gap-2 text-sm">
-                              <AlertTriangle className="h-4 w-4 text-amber-500 flex-shrink-0 mt-0.5" />
-                              <span className="text-muted-foreground">{issue}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      </CardContent>
-                    </Card>
-                  )}
-
-                  {/* Suggestions */}
-                  {result.suggestions.length > 0 && (
-                    <Card className="shadow-glass border border-border/60 bg-card/80">
-                      <CardContent className="p-5">
-                        <h3 className="font-serif font-bold mb-3">Tavsiyalar</h3>
-                        <ul className="space-y-2">
-                          {result.suggestions.map((sug, i) => (
-                            <li key={i} className="flex items-start gap-2 text-sm">
-                              <Lightbulb className="h-4 w-4 text-amber-500 flex-shrink-0 mt-0.5" />
-                              <span className="text-muted-foreground">{sug}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      </CardContent>
-                    </Card>
-                  )}
+                    {result.suggestions.length > 0 && (
+                      <Card className="iscad-card bg-background">
+                        <CardContent className="p-5">
+                          <div className="flex items-center gap-2 mb-3">
+                            <Lightbulb className="h-4 w-4 text-amber-500" />
+                            <h3 className="font-bold text-sm">Tavsiyalar</h3>
+                          </div>
+                          <ul className="space-y-3">
+                            {result.suggestions.slice(0, 2).map((sugg, i) => (
+                              <li key={i} className="text-xs text-muted-foreground leading-relaxed">
+                                • {sugg}
+                              </li>
+                            ))}
+                          </ul>
+                        </CardContent>
+                      </Card>
+                    )}
+                  </div>
                 </div>
               ) : (
-                <Card className="shadow-glass border-0 h-full flex items-center justify-center min-h-[400px]">
-                  <CardContent className="text-center p-12">
-                    <div className="w-20 h-20 rounded-3xl bg-primary/10 flex items-center justify-center mx-auto mb-4">
-                      <Sparkles className="h-10 w-10 text-primary" />
-                    </div>
-                    <h3 className="font-serif font-bold text-xl mb-2">Natijalar shu yerda ko'rinadi</h3>
-                    <p className="text-sm text-muted-foreground max-w-xs mx-auto">
-                      Maqola matnini kiriting va "Tekshirishni boshlash" tugmasini bosing
-                    </p>
-                  </CardContent>
-                </Card>
+                <div className="h-full min-h-[500px] border-2 border-dashed border-border rounded-xl flex flex-col items-center justify-center p-8 text-center bg-slate-50/50 dark:bg-slate-900/20">
+                  <Cpu className="h-12 w-12 text-muted-foreground/30 mb-4" />
+                  <h3 className="font-serif font-bold text-lg mb-2 text-muted-foreground/70">Kutish Rejimi</h3>
+                  <p className="text-sm text-muted-foreground/50 max-w-sm">
+                    Tahlilni boshlash uchun maqolangizni yuklang yoki matn maydoniga kiriting
+                  </p>
+                </div>
               )}
             </ScrollReveal>
           </div>
@@ -288,12 +292,6 @@ function ArticleCheckerContent() {
       <BackToTop />
     </div>
   );
-}
+};
 
-export default function ArticleChecker() {
-  return (
-    <ProtectedRoute>
-      <ArticleCheckerContent />
-    </ProtectedRoute>
-  );
-}
+export default ArticleChecker;

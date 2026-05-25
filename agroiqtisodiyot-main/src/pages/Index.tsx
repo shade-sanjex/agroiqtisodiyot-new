@@ -6,7 +6,6 @@ import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
 import { ScrollReveal } from '@/components/ScrollReveal';
 import { AnimatedCounter } from '@/components/AnimatedCounter';
-import { ParticleBackground } from '@/components/ParticleBackground';
 import { BackToTop } from '@/components/BackToTop';
 import { 
   BookOpen, 
@@ -18,15 +17,11 @@ import {
   FileText, 
   Download, 
   Activity, 
-  Award, 
-  ShieldCheck, 
   Check, 
   Cpu, 
-  Zap, 
   FolderOpen
 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
-import heroImage from '@/assets/hero-agriculture.jpg';
 import iscadLogo from '@/assets/iscad-logo.png';
 
 interface Journal {
@@ -85,27 +80,10 @@ const Index = () => {
     <div className="min-h-screen flex flex-col bg-background text-foreground transition-colors duration-300">
       <Navbar />
 
-      {/* ============ HERO SECTION ============ */}
-      <section className="relative min-h-[85vh] lg:min-h-[90vh] flex items-center justify-center overflow-hidden bg-hero-light dark:bg-hero-dark border-b border-border/40 pt-12 pb-20">
-        <ParticleBackground className="absolute inset-0 z-[1]" particleCount={40} />
-
-        {/* Grid pattern overlay */}
-        <div className="absolute inset-0 bg-grid-pattern pointer-events-none" />
-
-        {/* Background Image Watermark */}
-        <div 
-          className="absolute inset-0 opacity-[0.08] dark:opacity-[0.15] mix-blend-luminosity dark:mix-blend-overlay pointer-events-none transition-opacity duration-300"
-          style={{ 
-            backgroundImage: `url(${heroImage})`,
-            backgroundPosition: 'center',
-            backgroundSize: 'cover',
-            backgroundRepeat: 'no-repeat'
-          }} 
-        />
-
-        {/* Decorative blurred blobs */}
-        <div className="absolute top-20 right-10 w-80 h-80 rounded-full bg-secondary/8 blur-3xl animate-float-slow -z-10" />
-        <div className="absolute bottom-20 left-10 w-96 h-96 rounded-full bg-primary/8 blur-3xl animate-float-delayed -z-10" />
+      {/* ============ MINIMAL HERO SECTION ============ */}
+      <section className="relative min-h-[85vh] lg:min-h-[90vh] flex items-center justify-center overflow-hidden bg-background pt-24 pb-20">
+        {/* Subtle grid pattern only */}
+        <div className="absolute inset-0 bg-grid-pattern pointer-events-none opacity-40" />
 
         <div className="relative container mx-auto px-4 z-10">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
@@ -113,132 +91,99 @@ const Index = () => {
             {/* Left Content Column */}
             <div className="lg:col-span-7 space-y-6 text-left">
               <ScrollReveal direction="left">
-                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-secondary/10 border border-secondary/20 text-secondary text-xs font-semibold uppercase tracking-wider mb-2">
-                  <span className="w-2 h-2 rounded-full bg-secondary animate-pulse" />
+                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-primary/10 text-primary text-xs font-semibold uppercase tracking-wider mb-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
                   Qishloq xo'jaligi vazirligi huzurida
                 </div>
                 
-                <h1 className="text-5xl md:text-7xl lg:text-8xl font-serif font-black tracking-tight leading-none mb-4">
-                  <span className="gradient-text-primary">
-                    ISCAD
-                  </span>
+                <h1 className="text-5xl md:text-7xl lg:text-8xl font-serif font-black tracking-tight leading-none mb-4 text-foreground">
+                  ISCAD
                 </h1>
                 
-                <h2 className="text-lg md:text-xl lg:text-2xl font-serif font-bold text-foreground leading-snug max-w-2xl mb-4">
-                  Oziq-ovqat va Qishloq Xo'jaligi Sohasida Strategik Rivojlanish va Tadqiqotlar Xalqaro Markazi
+                <h2 className="text-xl md:text-2xl lg:text-3xl font-serif font-bold text-foreground/90 leading-tight max-w-2xl mb-4">
+                  Oziq-ovqat va Qishloq Xo'jaligi Sohasida Strategik Rivojlanish Markazi
                 </h2>
 
-                <p className="text-sm md:text-base text-muted-foreground font-light leading-relaxed max-w-xl mb-8">
-                  ISCAD — O'zbekiston agrosanoat sektori va oziq-ovqat xavfsizligini ta'minlashda fundamental ilmiy innovatsiyalar, islohotlar va tahlillar olib boruvchi yetakchi davlat tashkilotidir.
+                <p className="text-sm md:text-base text-muted-foreground font-light leading-relaxed max-w-xl mb-10">
+                  O'zbekiston agrosanoat sektori va oziq-ovqat xavfsizligini ta'minlashda fundamental ilmiy innovatsiyalar, islohotlar va tahlillar olib boruvchi yetakchi tashkilot.
                 </p>
 
-                {/* Hero CTAs */}
+                {/* Clean CTAs */}
                 <div className="flex flex-col sm:flex-row gap-4 items-stretch sm:items-center">
                   <Link to="/journals">
-                    <Button size="lg" className="w-full sm:w-auto bg-primary hover:bg-primary/90 text-primary-foreground font-semibold rounded-full shadow-lg shadow-primary/20 px-8 h-12">
-                      <BookOpen className="mr-2 h-4 w-4" />
-                      Jurnallarni ko'rish
+                    <Button size="lg" className="w-full sm:w-auto font-medium rounded-lg px-8 h-12">
+                      Ilmiy Nashrlar
                     </Button>
                   </Link>
                   <Link to="/article-checker">
-                    <Button size="lg" variant="outline" className="w-full sm:w-auto border-border hover:bg-muted text-foreground backdrop-blur-md rounded-full px-8 h-12">
-                      <Sparkles className="mr-2 h-4 w-4 text-gold animate-pulse" />
-                      AI Maqola Tekshirish
+                    <Button size="lg" variant="outline" className="w-full sm:w-auto border-border text-foreground rounded-lg px-8 h-12">
+                      <Cpu className="mr-2 h-4 w-4" />
+                      AI Tahlil Tizimi
                     </Button>
                   </Link>
                 </div>
 
-                {/* Trust metrics */}
-                <div className="grid grid-cols-3 gap-6 pt-10 border-t border-border/50 mt-10 max-w-lg">
+                {/* Minimal Trust metrics */}
+                <div className="grid grid-cols-3 gap-8 pt-10 border-t border-border mt-12 max-w-lg">
                   <div>
                     <div className="text-2xl lg:text-3xl font-bold text-foreground">500+</div>
-                    <div className="text-xs text-muted-foreground mt-1 font-medium">Ilmiy maqolalar</div>
+                    <div className="text-xs text-muted-foreground mt-1">Ilmiy maqolalar</div>
                   </div>
                   <div>
                     <div className="text-2xl lg:text-3xl font-bold text-foreground">24+</div>
-                    <div className="text-xs text-muted-foreground mt-1 font-medium">Tahrir a'zolari</div>
+                    <div className="text-xs text-muted-foreground mt-1">Ekspertlar</div>
                   </div>
                   <div>
                     <div className="text-2xl lg:text-3xl font-bold text-foreground">7+</div>
-                    <div className="text-xs text-muted-foreground mt-1 font-medium">Yillik tajriba</div>
+                    <div className="text-xs text-muted-foreground mt-1">Yillik tajriba</div>
                   </div>
                 </div>
               </ScrollReveal>
             </div>
 
-            {/* Right — Featured Journal Card */}
-            <div className="lg:col-span-5 relative mt-8 lg:mt-0 flex justify-center">
+            {/* Right — Clean Minimal Journal Card */}
+            <div className="lg:col-span-5 relative mt-12 lg:mt-0 flex justify-center">
               <ScrollReveal direction="right" delay={0.2} className="relative w-full max-w-[340px] md:max-w-[380px]">
                 
-                {/* Main Journal Card */}
-                <div className="relative w-full aspect-[3/4.2] rounded-2xl bg-slate-900 border border-white/15 shadow-2xl p-4 overflow-hidden group/hero animate-float-slow">
+                {/* Clean Journal Cover Mockup */}
+                <div className="relative w-full aspect-[3/4.2] rounded-xl bg-slate-900 shadow-2xl p-6 overflow-hidden group/hero transition-transform duration-500 hover:scale-[1.02]">
+                  <div className="absolute inset-0 bg-gradient-to-br from-slate-800 to-slate-950" />
                   <div className="journal-page-fold" />
-                  <div className="journal-cover-shine" />
                   <div className="journal-book-spine" />
-                  <img 
-                    src={heroImage} 
-                    alt="Featured Cover Background" 
-                    className="absolute inset-0 w-full h-full object-cover opacity-35 mix-blend-overlay group-hover/hero:scale-105 transition-transform duration-700" 
-                  />
                   
                   {/* Inside card content */}
-                  <div className="relative h-full flex flex-col justify-between z-10 p-4">
+                  <div className="relative h-full flex flex-col justify-between z-10 text-slate-100">
                     <div className="flex justify-between items-start">
-                      <div className="px-2.5 py-1 rounded bg-white/15 backdrop-blur-md text-[10px] font-bold text-white/80 uppercase tracking-widest border border-white/10">
+                      <div className="px-2 py-0.5 border border-slate-700 text-[10px] uppercase tracking-widest text-slate-400">
                         ISCAD JOURNAL
                       </div>
-                      <img src={iscadLogo} alt="Logo" className="h-6 w-auto opacity-70 filter brightness-0 invert" />
+                      <img src={iscadLogo} alt="Logo" className="h-6 w-auto opacity-50 filter brightness-0 invert" />
                     </div>
 
                     <div className="space-y-4">
-                      <p className="text-[11px] text-white/50 font-semibold tracking-widest uppercase">ILMIY NASHR</p>
-                      <h3 className="text-lg md:text-xl font-serif font-black text-white leading-tight mb-2 drop-shadow-md">
+                      <p className="text-[10px] text-slate-500 tracking-widest uppercase">ILMIY NASHR</p>
+                      <h3 className="text-2xl font-serif font-black leading-tight text-white">
                         AGROIQTISODIYOT VA BARQAROR RIVOJLANISH
                       </h3>
                       
-                      <div className="flex items-center gap-3 pt-4 border-t border-white/10">
-                        <div className="w-8 h-8 rounded-full bg-white/10 flex items-center justify-center border border-white/20 text-white/80 text-xs font-bold">
-                          №1
-                        </div>
-                        <div>
-                          <p className="text-[11px] text-white/40">Nashr sanasi</p>
-                          <p className="text-xs font-medium text-white/80">May, 2026</p>
-                        </div>
+                      <div className="flex items-center gap-3 pt-6 border-t border-slate-800">
+                        <div className="text-xs text-slate-400">Vol. 1 / May, 2026</div>
                       </div>
                     </div>
                   </div>
                 </div>
 
-                {/* Floating Stat Card */}
-                <div className="absolute -bottom-6 -right-6 md:-right-8 bg-card/95 dark:bg-card/95 backdrop-blur-xl border border-border p-4 rounded-2xl shadow-2xl w-48 md:w-56 animate-float-fast z-20">
-                  <div className="flex items-center gap-3 mb-2">
-                    <div className="w-8 h-8 rounded-lg bg-secondary/10 flex items-center justify-center text-secondary">
+                {/* Minimal Floating Stat */}
+                <div className="absolute -bottom-6 -right-6 md:-right-8 bg-background border border-border p-4 rounded-xl shadow-lg w-48 animate-float">
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center text-primary">
                       <Activity className="h-4 w-4" />
                     </div>
                     <div>
-                      <p className="text-[11px] text-muted-foreground">Yuklab olishlar</p>
-                      <p className="text-xs font-bold text-foreground">+1,240 ta</p>
+                      <p className="text-[10px] text-muted-foreground uppercase tracking-wider">Yuklashlar</p>
+                      <p className="text-sm font-bold text-foreground">1,240 ta</p>
                     </div>
                   </div>
-                  {/* Mini Sparkline SVG */}
-                  <svg className="w-full h-8 text-secondary" viewBox="0 0 100 30" fill="none">
-                    <path d="M0,25 Q15,5 30,20 T60,5 T90,15 T100,10" stroke="currentColor" strokeWidth="2" fill="none" />
-                    <path d="M0,25 Q15,5 30,20 T60,5 T90,15 T100,10 L100,30 L0,30 Z" fill="url(#sparkline-grad-card)" opacity="0.1" />
-                    <defs>
-                      <linearGradient id="sparkline-grad-card" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="0%" stopColor="currentColor" />
-                        <stop offset="100%" stopColor="currentColor" stopOpacity="0" />
-                      </linearGradient>
-                    </defs>
-                  </svg>
-                </div>
-
-                {/* Floating trust badge */}
-                <div className="absolute -top-6 -left-6 bg-card/95 dark:bg-card/95 backdrop-blur-xl border border-border py-2.5 px-4 rounded-xl shadow-2xl flex items-center gap-2 z-20">
-                  <div className="w-5 h-5 rounded-full bg-gold/10 flex items-center justify-center text-gold">
-                    <Sparkles className="h-3 w-3" />
-                  </div>
-                  <span className="text-[11px] font-bold text-foreground">AI Tahlil Faol</span>
                 </div>
 
               </ScrollReveal>
@@ -248,63 +193,52 @@ const Index = () => {
         </div>
       </section>
 
-      {/* ============ MISSION & STATS SECTION ============ */}
-      <section className="py-20 md:py-28 section-alt">
+      {/* ============ MINIMAL MISSION SECTION ============ */}
+      <section className="py-24 section-alt">
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center max-w-6xl mx-auto">
             
-            {/* Mission side */}
             <div className="lg:col-span-6 space-y-6 text-left">
               <ScrollReveal>
-                <span className="inline-block px-4 py-1.5 bg-primary/10 text-primary text-xs font-semibold rounded-full tracking-wide">
-                  BIZNING MISSIYAMIZ
-                </span>
-                <h2 className="text-3xl md:text-4xl font-serif font-black leading-tight text-balance mt-3">
+                <h2 className="text-3xl md:text-4xl font-serif font-bold leading-tight">
                   Barqaror Qishloq Xo'jaligi va <br />
-                  <span className="gradient-text-primary">Oziq-ovqat Xavfsizligi</span>
+                  <span className="text-primary">Oziq-ovqat Xavfsizligi</span>
                 </h2>
-                <p className="text-sm md:text-base text-muted-foreground leading-relaxed mt-4">
-                  ISCAD markazi O'zbekiston agrar sektoridagi davlat islohotlarini qo'llab-quvvatlash uchun strategiyalar, prognozlar, tahliliy modellar va innovatsion yechimlarni taqdim etadi. Missiyamiz — barqaror agrar iqtisodiyotga erishishdir.
+                <p className="text-base text-muted-foreground leading-relaxed mt-4">
+                  ISCAD markazi O'zbekiston agrar sektoridagi davlat islohotlarini qo'llab-quvvatlash uchun strategiyalar, prognozlar, tahliliy modellar va innovatsion yechimlarni taqdim etadi. 
                 </p>
 
-                {/* Features list */}
-                <div className="space-y-4 pt-4">
+                <div className="space-y-3 pt-6">
                   {[
                     "Ilmiy asoslangan oziq-ovqat xavfsizligi strategiyalari",
                     "Doimiy monitoring va agrar bozorlar tahlili",
-                    "Sohada xalqaro ilg'or tajribalarni mahalliylashtirish"
+                    "Xalqaro ilg'or tajribalarni mahalliylashtirish"
                   ].map((item, idx) => (
                     <div key={idx} className="flex items-center gap-3">
-                      <div className="w-5 h-5 rounded-full bg-secondary/10 text-secondary flex items-center justify-center flex-shrink-0">
-                        <Check className="h-3.5 w-3.5" />
-                      </div>
-                      <span className="text-sm font-medium text-muted-foreground">{item}</span>
+                      <Check className="h-4 w-4 text-primary flex-shrink-0" />
+                      <span className="text-sm text-foreground/80">{item}</span>
                     </div>
                   ))}
                 </div>
               </ScrollReveal>
             </div>
 
-            {/* Stats grid */}
             <div className="lg:col-span-6">
               <ScrollReveal delay={0.2}>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                  
+                <div className="grid grid-cols-2 gap-4">
                   {[
-                    { label: "Ilmiy nashrlar ko'lami", value: 500, suffix: "+", desc: "Markazimiz tomonidan tayyorlangan tadqiqot ishlari", color: "border-l-primary" },
-                    { label: "Tahrir hay'ati tarkibi", value: 24, suffix: "", desc: "Xalqaro va milliy professor-olimlar", color: "border-l-secondary" },
-                    { label: "Agroiqtisodiyot tajribasi", value: 7, suffix: "+ yil", desc: "Tizimli tadqiqotlar va loyihalar", color: "border-l-gold" },
-                    { label: "Xalqaro hamkorlik", value: 15, suffix: "+", desc: "Jahon miqyosidagi hamkor tashkilotlar", color: "border-l-primary" },
+                    { label: "Ilmiy nashrlar", value: 500, suffix: "+" },
+                    { label: "Tahrir a'zolari", value: 24, suffix: "" },
+                    { label: "Yillik tajriba", value: 7, suffix: "+" },
+                    { label: "Xalqaro hamkorlar", value: 15, suffix: "+" },
                   ].map((stat, idx) => (
-                    <div key={idx} className={`iscad-card-accent p-6 ${stat.color}`}>
-                      <p className="text-xs text-muted-foreground font-semibold uppercase tracking-wider mb-2">{stat.label}</p>
-                      <div className="text-3xl font-black mb-1">
+                    <div key={idx} className="bg-background border border-border p-6 rounded-xl">
+                      <div className="text-2xl font-bold text-foreground mb-1">
                         <AnimatedCounter end={stat.value} suffix={stat.suffix} duration={1500} />
                       </div>
-                      <p className="text-xs text-muted-foreground leading-relaxed">{stat.desc}</p>
+                      <p className="text-xs text-muted-foreground">{stat.label}</p>
                     </div>
                   ))}
-
                 </div>
               </ScrollReveal>
             </div>
@@ -314,18 +248,15 @@ const Index = () => {
       </section>
 
       {/* ============ CORE FEATURES SECTION ============ */}
-      <section className="py-20 section-base">
+      <section className="py-24 section-base">
         <div className="container mx-auto px-4">
           <ScrollReveal>
-            <div className="max-w-3xl mx-auto text-center mb-16">
-              <span className="inline-block px-4 py-1.5 bg-secondary/10 text-secondary text-xs font-semibold rounded-full mb-3 tracking-wide">
-                ASOSIY FAOLIYATIMIZ
-              </span>
-              <h2 className="text-3xl md:text-4xl font-serif font-black mb-4">
-                Yo'nalishlarimiz va Ilmiy Loyihalar
+            <div className="max-w-2xl mb-16">
+              <h2 className="text-3xl font-serif font-bold mb-4">
+                Asosiy Yo'nalishlar
               </h2>
               <p className="text-sm text-muted-foreground">
-                ISCAD markazi agrosanoat kompleksi tarkibidagi iqtisodiy munosabatlarni yangi bosqichga ko'tarishga qaratilgan amaliy ishlarni bajaradi.
+                Agrosanoat kompleksi tarkibidagi iqtisodiy munosabatlarni yangi bosqichga ko'tarishga qaratilgan amaliy ishlar.
               </p>
             </div>
           </ScrollReveal>
@@ -333,18 +264,11 @@ const Index = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {features.map((feature, i) => (
               <ScrollReveal key={feature.title} delay={i * 0.1}>
-                <Card className="card-lift overflow-hidden border border-border/60 bg-card/80 backdrop-blur-md h-full shadow-sm hover:border-primary/20 transition-colors duration-300">
-                  <CardContent className="p-6 md:p-8 flex flex-col justify-between h-full">
-                    <div>
-                      <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-6 shadow-sm bg-primary/8 text-primary">
-                        <feature.icon className="h-6 w-6" />
-                      </div>
-                      <h3 className="text-lg font-serif font-bold mb-3">{feature.title}</h3>
-                      <p className="text-muted-foreground text-xs leading-relaxed">{feature.desc}</p>
-                    </div>
-                    <div className="pt-6">
-                      <div className="h-1 w-12 bg-primary/15 rounded-full" />
-                    </div>
+                <Card className="iscad-card h-full">
+                  <CardContent className="p-6 flex flex-col h-full">
+                    <feature.icon className="h-6 w-6 text-primary mb-6" />
+                    <h3 className="text-base font-bold mb-2">{feature.title}</h3>
+                    <p className="text-muted-foreground text-sm leading-relaxed mt-auto">{feature.desc}</p>
                   </CardContent>
                 </Card>
               </ScrollReveal>
@@ -353,52 +277,28 @@ const Index = () => {
         </div>
       </section>
 
-      {/* ============ AI CHECKER SECTION ============ */}
-      <section className="py-20 md:py-28 relative overflow-hidden section-accent">
-        <ParticleBackground className="absolute inset-0" particleCount={25} />
-
-        <div className="relative container mx-auto px-4 z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+      {/* ============ CLEAN AI CHECKER SECTION ============ */}
+      <section className="py-24 section-alt border-y border-border">
+        <div className="container mx-auto px-4">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-16 items-center max-w-6xl mx-auto">
             
-            {/* Left AI Text side */}
             <div className="lg:col-span-6 space-y-6 text-left">
               <ScrollReveal>
-                <div className="inline-flex items-center gap-2 px-3 py-1 bg-gold/10 border border-gold/20 rounded-full text-foreground text-xs mb-4 backdrop-blur-sm">
-                  <Cpu className="h-3.5 w-3.5 text-gold animate-pulse" />
-                  Sun'iy Intellekt bilan Tekshirish
+                <div className="inline-flex items-center gap-2 px-3 py-1 bg-primary/10 rounded-full text-primary text-xs font-medium mb-2">
+                  <Sparkles className="h-3.5 w-3.5" />
+                  AI Tahlil Tizimi
                 </div>
-                <h2 className="text-3xl md:text-5xl font-serif font-black leading-tight text-foreground">
-                  Maqolangizni <br />
-                  <span className="gradient-text-primary">
-                    AI yordamida tahlil qiling
-                  </span>
+                <h2 className="text-3xl md:text-4xl font-serif font-bold leading-tight">
+                  Maqolangizni AI yordamida tahlil qiling
                 </h2>
-                <p className="text-sm text-muted-foreground leading-relaxed max-w-xl mt-4">
-                  Bizning innovatsion modelimiz maqolangizni O'zbekistondagi imlo qoidalari, ilmiy uslub va jurnal talablariga mosligini bir necha soniyada tahlil qilib beradi.
+                <p className="text-sm text-muted-foreground leading-relaxed">
+                  Innovatsion modelimiz maqolangizni O'zbekistondagi imlo qoidalari, ilmiy uslub va jurnal talablariga mosligini tekshirib beradi.
                 </p>
                 
-                {/* Benefits */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4">
-                  {[
-                    "Avtomatik imlo xatolarini topish",
-                    "Jurnal talablariga moslik testi",
-                    "Matn uslubini yaxshilash choralari",
-                    "Tahrirga tayyorlik darajasi (ball)"
-                  ].map((benefit, i) => (
-                    <div key={i} className="flex items-center gap-3">
-                      <div className="w-5 h-5 rounded-full bg-gold/10 text-gold flex items-center justify-center flex-shrink-0">
-                        <Zap className="h-3 w-3" />
-                      </div>
-                      <span className="text-xs text-foreground/85">{benefit}</span>
-                    </div>
-                  ))}
-                </div>
-
                 <div className="pt-6">
                   <Link to="/article-checker">
-                    <Button size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-lg font-semibold rounded-full px-8">
-                      <FileText className="mr-2 h-4 w-4" />
-                      Maqolani tekshirish
+                    <Button className="rounded-lg px-6 font-medium">
+                      Tekshirishni boshlash
                       <ArrowRight className="ml-2 h-4 w-4" />
                     </Button>
                   </Link>
@@ -406,57 +306,23 @@ const Index = () => {
               </ScrollReveal>
             </div>
 
-            {/* Right Interactive mock console */}
             <div className="lg:col-span-6 flex justify-center">
-              <ScrollReveal direction="right" delay={0.2} className="w-full max-w-[450px]">
-                <div className="bg-card backdrop-blur-xl border border-border rounded-2xl overflow-hidden shadow-lg p-6 relative">
-                  
-                  {/* Console Header */}
-                  <div className="flex items-center justify-between pb-4 border-b border-border mb-6">
-                    <div className="flex items-center gap-2">
-                      <div className="w-3 h-3 rounded-full bg-red-500" />
-                      <div className="w-3 h-3 rounded-full bg-yellow-500" />
-                      <div className="w-3 h-3 rounded-full bg-green-500" />
-                    </div>
-                    <span className="text-[11px] text-muted-foreground/60 font-mono">ISCAD_AI_ANALYZER.EXE</span>
+              <ScrollReveal direction="right" delay={0.2} className="w-full max-w-md">
+                <div className="bg-background border border-border rounded-xl shadow-sm p-6 relative">
+                  <div className="border-2 border-dashed border-border/60 rounded-lg p-8 text-center bg-slate-50 dark:bg-slate-900">
+                    <FolderOpen className="h-8 w-8 text-muted-foreground mx-auto mb-3" />
+                    <p className="text-sm font-medium">Faylni yuklang</p>
+                    <p className="text-xs text-muted-foreground mt-1">.docx, .pdf yoki .txt</p>
                   </div>
-
-                  {/* Mock Drag & Drop Box */}
-                  <div className="border border-dashed border-border rounded-xl p-8 text-center relative overflow-hidden bg-muted/30">
-                    
-                    {/* Scanner line animation */}
-                    <div className="absolute left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-secondary to-transparent animate-scanline z-10" />
-
-                    <div className="relative z-20 space-y-4">
-                      <div className="w-12 h-12 rounded-xl bg-primary/5 flex items-center justify-center mx-auto border border-border">
-                        <FolderOpen className="h-6 w-6 text-primary" />
-                      </div>
-                      <div>
-                        <p className="text-xs text-foreground/80 font-bold">Maqola faylini bu yerga torting</p>
-                        <p className="text-[11px] text-muted-foreground mt-1">.docx, .pdf yoki .txt formatlari</p>
-                      </div>
-                      <div className="pt-2">
-                        <span className="inline-block px-3 py-1 rounded bg-secondary/10 text-secondary text-[11px] font-bold border border-secondary/20">
-                          FAYL YUKLASH
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Mock Results panel */}
-                  <div className="mt-6 space-y-3 pt-6 border-t border-border">
-                    <div className="flex justify-between items-center text-xs">
+                  <div className="mt-6 space-y-2 pt-6 border-t border-border/50">
+                    <div className="flex justify-between text-xs font-medium">
                       <span className="text-muted-foreground">Tahlil natijasi:</span>
-                      <span className="font-bold text-secondary">92% (A'lo)</span>
+                      <span className="text-primary">92% (A'lo)</span>
                     </div>
-                    <div className="w-full h-1.5 bg-muted rounded-full overflow-hidden">
-                      <div className="w-[92%] h-full bg-secondary rounded-full" />
+                    <div className="w-full h-1.5 bg-border rounded-full overflow-hidden">
+                      <div className="w-[92%] h-full bg-primary rounded-full" />
                     </div>
-                    <p className="text-[11px] text-muted-foreground/75 italic leading-snug">
-                      * Matn 3450 ta so'zdan iborat, annotatsiya va kalit so'zlar aniqlandi. Imlo xatoliklar darajasi past.
-                    </p>
                   </div>
-
                 </div>
               </ScrollReveal>
             </div>
@@ -467,143 +333,74 @@ const Index = () => {
 
       {/* ============ LATEST JOURNALS SECTION ============ */}
       {journals.length > 0 && (
-        <section className="py-20 md:py-28 section-base">
-          <div className="container mx-auto px-4">
+        <section className="py-24 section-base">
+          <div className="container mx-auto px-4 max-w-6xl">
             <ScrollReveal>
-              <div className="flex flex-col md:flex-row md:items-end md:justify-between mb-16 text-left">
+              <div className="flex flex-col md:flex-row md:items-end md:justify-between mb-12">
                 <div>
-                  <span className="inline-block px-4 py-1.5 bg-secondary/10 text-secondary text-xs font-semibold rounded-full tracking-wide mb-3">
-                    ILMIY NASHRLARIMIZ
-                  </span>
-                  <h2 className="text-3xl md:text-4xl font-serif font-black">
-                    So'nggi Jurnal Nashrlari
-                  </h2>
+                  <h2 className="text-3xl font-serif font-bold">So'nggi Jurnallar</h2>
                 </div>
                 <Link to="/journals" className="mt-4 md:mt-0">
-                  <Button variant="outline" className="rounded-full group h-11 border-border text-foreground hover:border-primary hover:text-primary">
-                    Barcha jurnallar
-                    <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                  <Button variant="ghost" className="text-muted-foreground hover:text-foreground -ml-4 md:ml-0">
+                    Barchasi <ArrowRight className="ml-2 h-4 w-4" />
                   </Button>
                 </Link>
               </div>
             </ScrollReveal>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
-              {journals.slice(0, 6).map((journal, i) => {
-                const isNewJournal = Date.now() - new Date(journal.created_at).getTime() < 30 * 24 * 60 * 60 * 1000;
-                return (
-                  <ScrollReveal key={journal.id} delay={i * 0.1}>
-                    <div className="journal-card group h-full flex flex-col justify-between bg-card border border-border/70 rounded-2xl shadow-sm hover:shadow-xl hover:border-primary/20 transition-all duration-300 p-4">
-                      
-                      {/* Journal cover */}
-                      <div className="relative aspect-[3/4] w-full rounded-xl overflow-hidden bg-slate-900 border border-border/20 shadow-md mb-5">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+              {journals.slice(0, 3).map((journal, i) => (
+                <ScrollReveal key={journal.id} delay={i * 0.1}>
+                  <div className="group cursor-pointer">
+                    <div className="journal-card mb-4">
+                      <div className="relative aspect-[3/4.2]">
                         <div className="journal-page-fold" />
-                        <div className="journal-cover-shine" />
                         <div className="journal-book-spine" />
-
                         {journal.cover_image_url ? (
-                          <img
-                            src={journal.cover_image_url}
-                            alt={journal.title}
-                            className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                            loading="lazy"
-                          />
+                          <img src={journal.cover_image_url} alt={journal.title} className="w-full h-full object-cover" />
                         ) : (
-                          <div className="absolute inset-0 bg-gradient-to-br from-navy-950 via-slate-900 to-navy-900 flex flex-col justify-between p-6">
-                            <div className="flex justify-between items-start">
-                              <BookOpen className="h-6 w-6 text-white/40" />
-                              <span className="text-[9px] font-bold text-white/30 tracking-[0.2em] uppercase">ISCAD</span>
-                            </div>
-                            <div className="space-y-2">
-                              <p className="text-[9px] tracking-[0.2em] text-white/50 font-bold uppercase">Agroiqtisodiyot</p>
-                              <h4 className="font-serif font-bold text-white/90 text-sm leading-snug line-clamp-3">
-                                {journal.title}
-                              </h4>
-                            </div>
+                          <div className="w-full h-full bg-slate-900 p-5 flex flex-col">
+                            <div className="text-[9px] text-slate-500 uppercase tracking-widest mb-4">ISCAD</div>
+                            <h4 className="text-white font-serif text-sm">{journal.title}</h4>
                           </div>
                         )}
-
-                        {/* New badge */}
-                        {isNewJournal && (
-                          <div className="absolute top-3 left-3 z-20">
-                            <span className="journal-badge-new">Yangi</span>
-                          </div>
-                        )}
-
-                        {/* Hover overlay */}
-                        <div className="absolute inset-0 bg-navy-950/80 backdrop-blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-between p-6 z-10 text-left">
-                          <p className="text-[11px] text-white/50 font-bold uppercase tracking-widest">NASHRIY MA'LUMOT</p>
-                          <div className="space-y-4">
-                            <h4 className="font-serif font-bold text-white text-base leading-snug line-clamp-3">
-                              {journal.title}
-                            </h4>
-                            <div className="h-0.5 w-8 bg-white/30 rounded-full" />
-                            <p className="text-[11px] text-white/55 line-clamp-3 leading-relaxed">
-                              {journal.description || "Ushbu nashrda agrosanoat sohasi, bozor islohotlari va barqaror qishloq xo'jaligiga oid eng sara ilmiy maqolalar to'plangan."}
-                            </p>
-                          </div>
-                          <Button
-                            size="sm"
-                            className="w-full rounded-full bg-white text-navy-900 hover:bg-white/90 text-xs font-semibold"
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              window.open(journal.pdf_url, '_blank');
-                            }}
-                          >
-                            <Download className="h-3.5 w-3.5 mr-1.5" />
-                            Yuklab olish (.pdf)
+                        
+                        <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-sm">
+                          <Button variant="outline" className="bg-white/10 text-white border-white/20 hover:bg-white hover:text-black rounded-full" onClick={() => window.open(journal.pdf_url, '_blank')}>
+                            <Download className="h-4 w-4 mr-2" /> PDF Yuklash
                           </Button>
                         </div>
                       </div>
-
-                      {/* Card footer */}
-                      <div className="space-y-2 px-1 text-left">
-                        <div className="flex items-center justify-between text-[11px] text-muted-foreground font-medium">
-                          <span>№{i + 1} Nashr</span>
-                          <span>{new Date(journal.created_at).toLocaleDateString('uz-UZ', { year: 'numeric', month: 'long' })}</span>
-                        </div>
-                        <h4 className="font-serif font-bold text-foreground text-sm line-clamp-2 leading-snug group-hover:text-primary transition-colors duration-200">
-                          {journal.title}
-                        </h4>
-                      </div>
-
                     </div>
-                  </ScrollReveal>
-                );
-              })}
+                    <div>
+                      <div className="text-xs text-muted-foreground mb-1">
+                        {new Date(journal.created_at).toLocaleDateString('uz-UZ', { year: 'numeric', month: 'long' })}
+                      </div>
+                      <h4 className="font-serif font-bold text-sm text-foreground line-clamp-2">
+                        {journal.title}
+                      </h4>
+                    </div>
+                  </div>
+                </ScrollReveal>
+              ))}
             </div>
           </div>
         </section>
       )}
 
-      {/* ============ CONTACT CTA SECTION ============ */}
-      <section className="py-20 md:py-28 section-alt border-t border-border/30">
-        <div className="container mx-auto px-4">
+      {/* ============ CTA SECTION ============ */}
+      <section className="py-24 section-alt border-t border-border">
+        <div className="container mx-auto px-4 text-center">
           <ScrollReveal>
-            <div className="max-w-4xl mx-auto text-center space-y-6">
-              <span className="inline-block px-4 py-1 bg-primary/10 text-primary text-xs font-bold rounded-full uppercase tracking-wider">
-                HAMKORLIK
-              </span>
-              <h2 className="text-3xl md:text-5xl font-serif font-black">
-                Biz bilan <span className="gradient-text-primary">bog'laning</span>
-              </h2>
-              <p className="text-sm md:text-base text-muted-foreground max-w-xl mx-auto leading-relaxed">
-                Tadqiqotlar bo'yicha savollaringiz bormi yoki ilmiy hamkorlik qilmoqchimisiz? Biz muloqot va takliflar uchun doimo ochiqmiz.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
-                <Link to="/contact">
-                  <Button size="lg" className="rounded-full px-8 shadow-lg shadow-primary/15">
-                    Aloqa sahifasi
-                    <ArrowRight className="ml-2 h-4 w-4" />
-                  </Button>
-                </Link>
-                <Link to="/about">
-                  <Button size="lg" variant="outline" className="rounded-full px-8 border-border hover:border-primary">
-                    Markaz haqida
-                  </Button>
-                </Link>
-              </div>
-            </div>
+            <h2 className="text-3xl font-serif font-bold mb-4">Bog'lanish</h2>
+            <p className="text-muted-foreground max-w-lg mx-auto mb-8 text-sm">
+              Ilmiy hamkorlik va takliflar uchun ochiqmiz. Biz bilan bog'laning.
+            </p>
+            <Link to="/contact">
+              <Button className="rounded-lg px-8 font-medium">
+                Aloqa sahifasi
+              </Button>
+            </Link>
           </ScrollReveal>
         </div>
       </section>

@@ -1,176 +1,153 @@
-import { useEffect, useState } from 'react';
 import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
 import { ScrollReveal } from '@/components/ScrollReveal';
 import { BackToTop } from '@/components/BackToTop';
 import { Card, CardContent } from '@/components/ui/card';
-import { Skeleton } from '@/components/ui/skeleton';
-import { Users, Crown, Award } from 'lucide-react';
-import { supabase } from '@/integrations/supabase/client';
-
-interface Member {
-  id: string;
-  name: string;
-  position: string;
-  order_index: number;
-}
+import { Users, GraduationCap, Building, Mail, Award } from 'lucide-react';
+import ChiefEditorImg from '@/assets/11.jpg'; // Path to chief editor image
 
 const EditorialBoard = () => {
-  const [members, setMembers] = useState<Member[]>([]);
-  const [loading, setLoading] = useState(true);
+  const editors = [
+    { name: "Abduvasikov Abduaziz Abdulazizovich", role: "Rektor", degree: "i.f.d., professor" },
+    { name: "Ruzmetov B.R.", role: "A'zo", degree: "i.f.d., professor" },
+    { name: "Sultonov B.F.", role: "A'zo", degree: "i.f.d., professor" },
+    { name: "Yusupov M.S.", role: "A'zo", degree: "i.f.d., professor" },
+    { name: "Ramazonov A.", role: "A'zo", degree: "q.x.f.d., professor" },
+    { name: "Abduvaliev A.", role: "A'zo", degree: "q.x.f.d., professor" },
+    { name: "Saitov S.", role: "A'zo", degree: "q.x.f.d., professor" },
+    { name: "Sultonov M.", role: "A'zo", degree: "i.f.n., professor" },
+    { name: "Norboev A.", role: "A'zo", degree: "q.x.f.d., katta ilmiy xodim" },
+    { name: "Burxanov A.", role: "A'zo", degree: "q.x.f.n., dotsent" },
+    { name: "Botirov A.", role: "A'zo", degree: "i.f.d., (PhD)" },
+    { name: "Salohiddinov A.", role: "A'zo", degree: "i.f.d., (PhD)" },
+    { name: "Ergashev A.", role: "A'zo", degree: "i.f.d., (PhD)" },
+    { name: "Nurmatov S.", role: "A'zo", degree: "i.f.d., (PhD)" }
+  ];
 
-  useEffect(() => {
-    fetchMembers();
-  }, []);
-
-  const fetchMembers = async () => {
-    try {
-      const { data } = await supabase
-        .from('editorial_board')
-        .select('*')
-        .order('order_index', { ascending: true });
-      setMembers(data || []);
-    } catch (e) {
-      console.error(e);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const chief = members.find(m => m.position === 'Bosh Muharrir');
-  const editors = members.filter(m => m.position !== 'Bosh Muharrir');
-
-  const getInitials = (name: string) => {
-    return name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
-  };
+  const intEditors = [
+    { name: "Yuri N. Gachev", role: "Xalqaro a'zo", degree: "Professor", country: "Rossiya" },
+    { name: "Thomas C. B.", role: "Xalqaro a'zo", degree: "Professor", country: "AQSh" },
+    { name: "John S. Smith", role: "Xalqaro a'zo", degree: "Professor", country: "Buyuk Britaniya" },
+    { name: "Li Wei", role: "Xalqaro a'zo", degree: "Professor", country: "Xitoy" }
+  ];
 
   return (
     <div className="min-h-screen flex flex-col bg-background text-foreground transition-colors duration-300">
       <Navbar />
 
-      {/* ============ HERO BANNER ============ */}
-      <section className="relative h-[250px] md:h-[320px] flex items-center justify-center overflow-hidden bg-hero-light dark:bg-hero-dark border-b border-border/40">
-        <div className="absolute inset-0 bg-grid-pattern pointer-events-none" />
-        <div className="absolute top-1/2 left-1/4 -translate-y-1/2 w-64 h-64 rounded-full bg-primary/6 blur-3xl animate-float-slow -z-10" />
-        <div className="absolute top-1/2 right-1/4 -translate-y-1/2 w-64 h-64 rounded-full bg-secondary/6 blur-3xl animate-float-delayed -z-10" />
+      {/* ============ MINIMAL HERO ============ */}
+      <section className="relative pt-24 pb-16 lg:pt-32 lg:pb-24 border-b border-border overflow-hidden bg-background">
+        <div className="absolute inset-0 bg-grid-pattern opacity-40 pointer-events-none" />
         
-        <div className="relative text-center z-10 space-y-3 px-4">
+        <div className="container mx-auto px-4 text-center relative z-10 max-w-4xl">
           <ScrollReveal>
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-semibold uppercase tracking-wider border border-primary/15">
-              <Users className="h-3.5 w-3.5" />
-              ILMIY KENGASH
-            </span>
-            <h1 className="text-3xl md:text-5xl font-serif font-black mt-3 text-foreground drop-shadow-sm">
+            <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-primary/10 text-primary mb-6">
+              <Users className="h-6 w-6" />
+            </div>
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif font-black mb-6 text-foreground tracking-tight">
               Tahrir Hay'ati
             </h1>
-            <p className="text-muted-foreground text-xs md:text-sm max-w-xl mx-auto font-light leading-relaxed mt-2">
-              "AGROIQTISODIYOT" ilmiy jurnalining xalqaro va milliy ekspert-olimlaridan iborat tarkibi
+            <p className="text-base md:text-lg text-muted-foreground font-light leading-relaxed">
+              Jurnalning ilmiy yo'nalishi va sifatini ta'minlovchi mahalliy hamda xalqaro ekspertlar jamoasi
             </p>
           </ScrollReveal>
         </div>
       </section>
 
-      {/* ============ MAIN MEMBERS SECTION ============ */}
-      <section className="py-16 md:py-24 section-alt flex-1">
+      {/* ============ CHIEF EDITOR ============ */}
+      <section className="py-20 section-alt">
         <div className="container mx-auto px-4 max-w-5xl">
-          
-          {loading ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {Array.from({ length: 6 }).map((_, i) => (
-                <Card key={i} className="border border-border/60 shadow-sm bg-card/80">
-                  <CardContent className="p-6 text-center space-y-4">
-                    <Skeleton className="w-16 h-16 rounded-full mx-auto" />
-                    <Skeleton className="h-5 w-40 mx-auto" />
-                    <Skeleton className="h-4 w-32 mx-auto" />
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          ) : (
-            <div className="space-y-16">
-              
-              {/* Chief Editor */}
-              {chief && (
-                <ScrollReveal>
-                  <Card className="border-2 border-gold/25 shadow-glow-gold bg-card/80 rounded-2xl overflow-hidden backdrop-blur-md relative group">
-                    <div className="absolute top-0 right-0 w-32 h-32 bg-gold/5 rounded-full blur-2xl -z-10 group-hover:scale-125 transition-transform" />
-                    
-                    <CardContent className="p-8 md:p-12 text-center md:text-left flex flex-col md:flex-row items-center gap-6 md:gap-10">
-                      <div className="w-24 h-24 rounded-2xl gradient-gold flex items-center justify-center shadow-lg shadow-gold/20 flex-shrink-0 animate-float-slow">
-                        <Crown className="h-10 w-10 text-white" />
-                      </div>
-                      
-                      <div className="space-y-3 flex-1">
-                        <div className="inline-flex items-center gap-1 px-2.5 py-1 rounded bg-gold/10 text-gold text-[11px] font-bold uppercase tracking-wider">
-                          <Award className="h-3 w-3" />
-                          Nashriyot rahbari
-                        </div>
-                        <h2 className="text-2xl md:text-3xl font-serif font-black text-foreground">
-                          {chief.name}
-                        </h2>
-                        <p className="text-base font-semibold text-gold">
-                          {chief.position}
-                        </p>
-                        <p className="text-xs text-muted-foreground leading-relaxed max-w-2xl">
-                          Markaz ilmiy yo'nalishlarini belgilash, jurnallarning dolzarb mavzularda chop etilishi hamda ilmiy maqolalarning yuqori sifat standartlariga muvofiqligini nazorat qiluvchi bosh muharrir.
-                        </p>
-                      </div>
-                    </CardContent>
-                  </Card>
-                </ScrollReveal>
-              )}
-
-              {/* Members grid */}
-              {editors.length > 0 && (
-                <div className="space-y-8">
-                  <ScrollReveal className="text-center">
-                    <span className="inline-block px-3 py-1 bg-primary/10 text-primary text-xs font-semibold rounded-full tracking-wide mb-2">
-                      TAHRIR KENGASHI A'ZOLARI
-                    </span>
-                    <h3 className="text-xl md:text-2xl font-serif font-bold text-muted-foreground">
-                      Tahrir Hay'ati Olimlari
-                    </h3>
-                  </ScrollReveal>
-                  
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {editors.map((member, i) => (
-                      <ScrollReveal key={member.id} delay={i * 0.05}>
-                        <Card className="card-lift border border-border/60 shadow-sm bg-card/80 backdrop-blur-md group h-full transition-all duration-300 hover:border-primary/20">
-                          <CardContent className="p-6 text-center space-y-4">
-                            
-                            {/* Initials badge */}
-                            <div className="w-14 h-14 rounded-full bg-gradient-to-br from-primary to-secondary flex items-center justify-center mx-auto text-white font-bold text-sm shadow-md group-hover:scale-110 transition-all duration-300">
-                              {getInitials(member.name)}
-                            </div>
-                            
-                            <div className="space-y-1">
-                              <h3 className="font-serif font-bold text-sm md:text-base text-foreground leading-tight">
-                                {member.name}
-                              </h3>
-                              <div className="w-8 h-0.5 bg-border rounded-full mx-auto group-hover:w-16 transition-all duration-300" />
-                              <p className="text-xs text-muted-foreground font-medium pt-1">
-                                {member.position}
-                              </p>
-                            </div>
-
-                          </CardContent>
-                        </Card>
-                      </ScrollReveal>
-                    ))}
+          <ScrollReveal>
+            {/* Elegant, clean card for the chief editor without the tacky gold glow */}
+            <Card className="iscad-card overflow-hidden bg-background">
+              <div className="grid grid-cols-1 md:grid-cols-12 gap-0">
+                <div className="md:col-span-5 relative">
+                  <div className="aspect-[4/5] md:aspect-auto md:h-full relative overflow-hidden bg-slate-100 dark:bg-slate-900">
+                    <img 
+                      src={ChiefEditorImg} 
+                      alt="Bosh muharrir" 
+                      className="absolute inset-0 w-full h-full object-cover filter grayscale hover:grayscale-0 transition-all duration-700" 
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent md:hidden" />
                   </div>
                 </div>
-              )}
-
-              {members.length === 0 && (
-                <div className="text-center py-20 bg-card/40 border border-dashed border-border rounded-2xl">
-                  <Users className="h-12 w-12 text-muted-foreground/30 mx-auto mb-4" />
-                  <p className="text-muted-foreground text-sm">Tahrir hay'ati a'zolari hali qo'shilmagan</p>
+                
+                <div className="md:col-span-7 p-8 md:p-12 flex flex-col justify-center">
+                  <div className="inline-flex items-center gap-2 px-3 py-1 bg-primary/10 rounded-full text-primary text-xs font-semibold uppercase tracking-wider mb-6">
+                    <Award className="h-3.5 w-3.5" /> Bosh Muharrir
+                  </div>
+                  
+                  <h2 className="text-3xl md:text-4xl font-serif font-bold text-foreground mb-4 leading-tight">
+                    Shuxrat Teshayev
+                  </h2>
+                  
+                  <div className="space-y-4 text-sm text-muted-foreground">
+                    <div className="flex items-start gap-3">
+                      <GraduationCap className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
+                      <span>Qishloq xo'jaligi fanlari doktori, professor</span>
+                    </div>
+                    <div className="flex items-start gap-3">
+                      <Building className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
+                      <span>O'zbekiston Respublikasi Qishloq xo'jaligi vazirligi huzuridagi Oziq-ovqat va qishloq xo'jaligi sohasida strategik rivojlanish va tadqiqotlar xalqaro markazi direktori</span>
+                    </div>
+                  </div>
                 </div>
-              )}
+              </div>
+            </Card>
+          </ScrollReveal>
+        </div>
+      </section>
 
+      {/* ============ EDITORIAL BOARD MEMBERS ============ */}
+      <section className="py-20 section-base">
+        <div className="container mx-auto px-4 max-w-6xl">
+          <ScrollReveal>
+            <div className="text-center mb-16">
+              <h2 className="text-3xl font-serif font-bold mb-4">Mahalliy Tahrir A'zolari</h2>
+              <div className="w-12 h-1 bg-primary/20 mx-auto rounded-full" />
             </div>
-          )}
+          </ScrollReveal>
 
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {editors.map((editor, i) => (
+              <ScrollReveal key={i} delay={i * 0.05}>
+                <div className="p-6 rounded-xl border border-border bg-background hover:border-primary/30 transition-all group">
+                  <h3 className="font-bold text-foreground mb-2 group-hover:text-primary transition-colors">{editor.name}</h3>
+                  <div className="text-sm text-muted-foreground flex flex-col gap-1">
+                    <span className="font-medium text-foreground/80">{editor.role}</span>
+                    <span>{editor.degree}</span>
+                  </div>
+                </div>
+              </ScrollReveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ============ INTERNATIONAL BOARD ============ */}
+      <section className="py-20 section-alt border-t border-border">
+        <div className="container mx-auto px-4 max-w-6xl">
+          <ScrollReveal>
+            <div className="text-center mb-16">
+              <h2 className="text-3xl font-serif font-bold mb-4">Xalqaro Tahrir A'zolari</h2>
+              <div className="w-12 h-1 bg-primary/20 mx-auto rounded-full" />
+            </div>
+          </ScrollReveal>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {intEditors.map((editor, i) => (
+              <ScrollReveal key={i} delay={i * 0.1}>
+                <div className="p-6 rounded-xl border border-border bg-background hover:border-primary/30 transition-all text-center">
+                  <div className="w-12 h-12 rounded-full bg-slate-100 dark:bg-slate-900 mx-auto mb-4 flex items-center justify-center text-xl">
+                    {editor.country === 'Rossiya' ? '🇷🇺' : editor.country === 'AQSh' ? '🇺🇸' : editor.country === 'Buyuk Britaniya' ? '🇬🇧' : '🇨🇳'}
+                  </div>
+                  <h3 className="font-bold text-foreground mb-1">{editor.name}</h3>
+                  <p className="text-xs font-medium text-foreground/80 mb-2">{editor.country}</p>
+                  <p className="text-sm text-muted-foreground">{editor.degree}</p>
+                </div>
+              </ScrollReveal>
+            ))}
+          </div>
         </div>
       </section>
 

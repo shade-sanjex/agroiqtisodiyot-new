@@ -3,206 +3,209 @@ import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
 import { ScrollReveal } from '@/components/ScrollReveal';
 import { BackToTop } from '@/components/BackToTop';
-import { Card, CardContent } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '@/components/ui/accordion';
 import { Button } from '@/components/ui/button';
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
-import { 
-  FileText, 
-  PenTool, 
-  Search, 
-  CheckCircle, 
-  Send, 
-  Sparkles, 
-  ArrowRight, 
-  AlertTriangle
+import {
+  FileText,
+  Type,
+  Layout,
+  BookOpen,
+  Link as LinkIcon,
+  CheckCircle2,
+  AlertCircle,
+  Cpu,
+  ArrowRight,
+  ListChecks,
 } from 'lucide-react';
 
 const Requirements = () => {
-  const steps = [
-    { num: 1, icon: PenTool, title: 'Maqolani tayyorlang', desc: 'Quyidagi talablarga muvofiq maqolangizni tayyorlang. Format, hajm va til bo\'yicha barcha ko\'rsatmalarga amal qiling.' },
-    { num: 2, icon: Search, title: 'AI bilan tekshiring', desc: 'Maqolangizni AI tekshirish xizmatimiz orqali imlo, grammatik xatolar va talablarga mosligini tekshiring.' },
-    { num: 3, icon: Send, title: 'Tahrir hay\'atiga yuboring', desc: 'Tekshirilgan maqolani tahrir hay\'ati e-pochtasiga (ooqxssrtxm@agro.uz) yuboring.' },
-    { num: 4, icon: CheckCircle, title: 'Ko\'rib chiqish va nashr', desc: 'Tahrir hay\'ati maqolani ko\'rib chiqadi, kerak bo\'lsa tuzatishlarni tavsiya etadi va nashr etadi.' },
+  const generalRules = [
+    "Maqolalar faqat elektron shaklda, MS Word (.doc, .docx) formatida qabul qilinadi.",
+    "Maqola tili: O'zbek, Rus yoki Ingliz tillarida.",
+    "Maqola hajmi: 5 dan 15 betgacha (A4 formati).",
+    "Originallik: Maqola oldin boshqa joyda chop etilmagan va antiplagiat tizimida kamida 75% o'ziga xoslikka ega bo'lishi shart."
+  ];
+
+  const formattingRules = [
+    { icon: Type, title: "Shrift", desc: "Times New Roman, 12 pt o'lchamda." },
+    { icon: Layout, title: "Qator orasi", desc: "1.15 interval, matn har ikki tomondan tekislangan (Justify)." },
+    { icon: BookOpen, title: "Hoshiyalar", desc: "Barcha tomonlardan 2 sm (Yuqori, Past, Chap, O'ng)." },
+    { icon: LinkIcon, title: "Havolalar", desc: "Iqtiboslar kvadrat qavs ichida [1, p. 15] ko'rinishida beriladi." },
   ];
 
   return (
     <div className="min-h-screen flex flex-col bg-background text-foreground transition-colors duration-300">
       <Navbar />
 
-      {/* ============ HERO BANNER ============ */}
-      <section className="relative h-[250px] md:h-[320px] flex items-center justify-center overflow-hidden bg-hero-light dark:bg-hero-dark border-b border-border/40">
-        <div className="absolute inset-0 bg-grid-pattern pointer-events-none" />
-        <div className="absolute top-1/2 left-1/4 -translate-y-1/2 w-64 h-64 rounded-full bg-primary/6 blur-3xl animate-float-slow -z-10" />
-        <div className="absolute top-1/2 right-1/4 -translate-y-1/2 w-64 h-64 rounded-full bg-secondary/6 blur-3xl animate-float-delayed -z-10" />
+      {/* ============ MINIMAL HERO ============ */}
+      <section className="relative pt-24 pb-16 lg:pt-32 lg:pb-24 border-b border-border overflow-hidden bg-background">
+        <div className="absolute inset-0 bg-grid-pattern opacity-40 pointer-events-none" />
         
-        <div className="relative text-center z-10 space-y-3 px-4">
+        <div className="container mx-auto px-4 text-center relative z-10 max-w-4xl">
           <ScrollReveal>
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-semibold uppercase tracking-wider border border-primary/15">
-              <FileText className="h-3.5 w-3.5" />
-              TARTIB VA QOIDALAR
-            </span>
-            <h1 className="text-3xl md:text-5xl font-serif font-black mt-3 text-foreground drop-shadow-sm">
-              Jurnal Talablari
+            <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-primary/10 text-primary mb-6">
+              <ListChecks className="h-6 w-6" />
+            </div>
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif font-black mb-6 text-foreground tracking-tight">
+              Nashr Talablari
             </h1>
-            <p className="text-muted-foreground text-xs md:text-sm max-w-xl mx-auto font-light leading-relaxed mt-2">
-              "AGROIQTISODIYOT" ilmiy jurnalida maqola chop etish uchun belgilangan barcha rasmiy talablar
+            <p className="text-base md:text-lg text-muted-foreground font-light leading-relaxed">
+              "Agroiqtisodiyot" jurnalida maqola chop etish uchun mualliflarga qo'yiladigan asosiy talablar va qoidalar
             </p>
           </ScrollReveal>
         </div>
       </section>
 
-      {/* ============ MAIN PROCESS SECTION ============ */}
-      <section className="py-16 md:py-24 section-alt">
-        <div className="container mx-auto px-4 max-w-4xl">
-          
-          {/* Steps section */}
-          <ScrollReveal className="text-center mb-12">
-            <span className="inline-block px-3 py-1 bg-primary/10 text-primary text-xs font-semibold rounded-full tracking-wide mb-2">
-              BOSQICHMA-BOSQICH
-            </span>
-            <h2 className="text-2xl md:text-3xl font-serif font-bold text-foreground">
-              Maqola Yuborish Jarayoni
-            </h2>
-          </ScrollReveal>
-
-          <div className="relative mb-20">
-            {/* Connecting line */}
-            <div className="absolute left-6 top-6 bottom-6 w-0.5 bg-border hidden md:block" />
-
-            <div className="space-y-6">
-              {steps.map((step, i) => (
-                <ScrollReveal key={step.num} delay={i * 0.08}>
-                  <div className="flex gap-4 md:gap-6 items-start relative">
-                    <div className="w-12 h-12 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold text-sm flex-shrink-0 shadow-md z-10">
-                      {step.num}
+      {/* ============ GENERAL RULES & FORMATTING ============ */}
+      <section className="py-20 section-base">
+        <div className="container mx-auto px-4 max-w-5xl">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+            
+            {/* General Rules */}
+            <ScrollReveal direction="left">
+              <div className="space-y-6">
+                <h2 className="text-2xl font-serif font-bold text-foreground">
+                  Umumiy Qoidalar
+                </h2>
+                <div className="space-y-4">
+                  {generalRules.map((rule, i) => (
+                    <div key={i} className="flex gap-4 p-4 rounded-xl border border-border bg-background items-start">
+                      <CheckCircle2 className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
+                      <p className="text-sm text-foreground/90 leading-relaxed">{rule}</p>
                     </div>
-                    <Card className="flex-1 border border-border/60 bg-card/80 backdrop-blur-md shadow-sm card-lift border-l-4 border-l-primary">
-                      <CardContent className="p-6">
-                        <div className="flex items-center gap-2 mb-2">
-                          <step.icon className="h-4 w-4 text-primary" />
-                          <h3 className="font-serif font-bold text-sm md:text-base">{step.title}</h3>
-                        </div>
-                        <p className="text-xs md:text-sm text-muted-foreground leading-relaxed">{step.desc}</p>
-                      </CardContent>
-                    </Card>
-                  </div>
-                </ScrollReveal>
-              ))}
+                  ))}
+                </div>
+              </div>
+            </ScrollReveal>
+
+            {/* Formatting */}
+            <ScrollReveal direction="right" delay={0.2}>
+              <div className="space-y-6">
+                <h2 className="text-2xl font-serif font-bold text-foreground">
+                  Matnni Rasmiylashtirish
+                </h2>
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  {formattingRules.map((rule, i) => (
+                    <div key={i} className="p-5 rounded-xl border border-border bg-background flex flex-col gap-3">
+                      <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center text-primary">
+                        <rule.icon className="h-4 w-4" />
+                      </div>
+                      <div>
+                        <h4 className="font-bold text-foreground text-sm mb-1">{rule.title}</h4>
+                        <p className="text-xs text-muted-foreground leading-relaxed">{rule.desc}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </ScrollReveal>
+
+          </div>
+        </div>
+      </section>
+
+      {/* ============ STRUCTURE ACCORDION ============ */}
+      <section className="py-20 section-alt border-y border-border">
+        <div className="container mx-auto px-4 max-w-4xl">
+          <ScrollReveal>
+            <div className="text-center mb-12">
+              <h2 className="text-3xl font-serif font-bold mb-4">Maqola Tuzilishi (IMRAD)</h2>
+              <p className="text-muted-foreground text-sm">Jahon standartlari asosida maqolalar quyidagi tartibda yozilishi talab etiladi</p>
             </div>
-          </div>
+            
+            <Accordion type="single" collapsible className="w-full space-y-4">
+              <AccordionItem value="item-1" className="border border-border bg-background rounded-xl px-2">
+                <AccordionTrigger className="text-base font-bold px-4 py-4 hover:no-underline">
+                  1. Title, Abstract va Keywords
+                </AccordionTrigger>
+                <AccordionContent className="px-4 pb-4 text-muted-foreground leading-relaxed text-sm">
+                  <ul className="list-disc pl-5 space-y-2">
+                    <li><strong className="text-foreground">Sarlavha (Title):</strong> Qisqa, aniq va maqola mazmunini to'liq ochib beruvchi (ko'pi bilan 12 so'z).</li>
+                    <li><strong className="text-foreground">Annotatsiya (Abstract):</strong> Tadqiqot maqsadi, metodi, natijalari va xulosasini o'z ichiga olgan 150-250 so'zlik qisqa matn.</li>
+                    <li><strong className="text-foreground">Kalit so'zlar (Keywords):</strong> Maqola mazmunini yorituvchi 5-7 ta so'z.</li>
+                  </ul>
+                </AccordionContent>
+              </AccordionItem>
 
-          {/* ============ DETAILED REQUIREMENTS ============ */}
-          <div className="space-y-6">
-            <ScrollReveal className="text-center mb-4">
-              <span className="inline-block px-3 py-1 bg-secondary/10 text-secondary text-xs font-semibold rounded-full tracking-wide mb-2">
-                TEXNIK PARAMETRLAR
-              </span>
-              <h2 className="text-2xl md:text-3xl font-serif font-bold text-foreground">
-                Umumiy Texnik Talablar
-              </h2>
-            </ScrollReveal>
+              <AccordionItem value="item-2" className="border border-border bg-background rounded-xl px-2">
+                <AccordionTrigger className="text-base font-bold px-4 py-4 hover:no-underline">
+                  2. Introduction (Kirish)
+                </AccordionTrigger>
+                <AccordionContent className="px-4 pb-4 text-muted-foreground leading-relaxed text-sm">
+                  Tadqiqotning dolzarbligi, o'rganilayotgan muammoning qisqacha tavsifi, ilgari qilingan ishlarning qisqacha tahlili (adabiyotlar sharhi) va ushbu tadqiqotning maqsadi aniq yoritilishi kerak.
+                </AccordionContent>
+              </AccordionItem>
 
-            <ScrollReveal>
-              <Accordion type="single" collapsible className="space-y-3">
-                
-                <AccordionItem value="format" className="border border-border/60 rounded-xl px-5 bg-card/80 backdrop-blur-md shadow-sm">
-                  <AccordionTrigger className="text-xs md:text-sm font-bold py-4 hover:text-primary transition-colors">
-                    📄 Format Talablari
-                  </AccordionTrigger>
-                  <AccordionContent className="text-xs md:text-sm text-muted-foreground space-y-2 pb-4 pt-1 leading-relaxed border-t border-border/40 text-left">
-                    <p>• <strong>Qog'oz o'lchami:</strong> A4 formatda, chetlari barcha tomondan 2 sm.</p>
-                    <p>• <strong>Shrift va o'lcham:</strong> Times New Roman, 14pt (ilmiy matn uchun standart).</p>
-                    <p>• <strong>Satrlar oralig'i:</strong> 1.5 intervalda joylashtirilishi lozim.</p>
-                    <p>• <strong>Fayl shakli:</strong> Maqola faqat Microsoft Word formatida (.docx) qabul qilinadi.</p>
-                  </AccordionContent>
-                </AccordionItem>
+              <AccordionItem value="item-3" className="border border-border bg-background rounded-xl px-2">
+                <AccordionTrigger className="text-base font-bold px-4 py-4 hover:no-underline">
+                  3. Methods (Metodologiya)
+                </AccordionTrigger>
+                <AccordionContent className="px-4 pb-4 text-muted-foreground leading-relaxed text-sm">
+                  Tadqiqot qanday usullar yordamida o'tkazilganligi tushuntiriladi. Ma'lumotlar qayerdan olinganligi, qanday statistik yoki iqtisodiy modellar qo'llanilgani batafsil yozilishi kerak.
+                </AccordionContent>
+              </AccordionItem>
 
-                <AccordionItem value="volume" className="border border-border/60 rounded-xl px-5 bg-card/80 backdrop-blur-md shadow-sm">
-                  <AccordionTrigger className="text-xs md:text-sm font-bold py-4 hover:text-primary transition-colors">
-                    📏 Hajm Talablari
-                  </AccordionTrigger>
-                  <AccordionContent className="text-xs md:text-sm text-muted-foreground space-y-2 pb-4 pt-1 leading-relaxed border-t border-border/40 text-left">
-                    <p>• <strong>Maqola hajmi:</strong> Kamida 8 betdan iborat bo'lishi talab etiladi.</p>
-                    <p>• <strong>Annotatsiya (Abstract):</strong> O'zbek, rus va ingliz tillarida 150-250 so'zdan iborat qisqacha kirish.</p>
-                    <p>• <strong>Kalit so'zlar:</strong> Uch tilda 5 tadan 8 tagacha asosiy iboralar.</p>
-                    <p>• <strong>Adabiyotlar:</strong> Maqolada kamida 10 ta ilmiy manbaga havolalar bo'lishi kerak.</p>
-                  </AccordionContent>
-                </AccordionItem>
+              <AccordionItem value="item-4" className="border border-border bg-background rounded-xl px-2">
+                <AccordionTrigger className="text-base font-bold px-4 py-4 hover:no-underline">
+                  4. Results and Discussion (Natijalar va Muhokama)
+                </AccordionTrigger>
+                <AccordionContent className="px-4 pb-4 text-muted-foreground leading-relaxed text-sm">
+                  Olingan asosiy natijalar aniq, jadvallar va grafiklar bilan taqdim etiladi. Shu bilan birga, bu natijalarning amaliy va nazariy ahamiyati, boshqa tadqiqotchilar natijalari bilan taqqoslanishi (Discussion) keltiriladi.
+                </AccordionContent>
+              </AccordionItem>
 
-                <AccordionItem value="language" className="border border-border/60 rounded-xl px-5 bg-card/80 backdrop-blur-md shadow-sm">
-                  <AccordionTrigger className="text-xs md:text-sm font-bold py-4 hover:text-primary transition-colors">
-                    🌐 Til Talablari
-                  </AccordionTrigger>
-                  <AccordionContent className="text-xs md:text-sm text-muted-foreground space-y-2 pb-4 pt-1 leading-relaxed border-t border-border/40 text-left">
-                    <p>• <strong>Asosiy til:</strong> Maqolalar o'zbek, rus yoki ingliz tillarida taqdim etilishi mumkin.</p>
-                    <p>• <strong>Annotatsiya va kalit so'zlar:</strong> Har bir maqola uchun uchta tilda (O'zbek, Rus, Ingliz) kiritilishi shart.</p>
-                    <p>• <strong>Ilmiy terminologiya:</strong> Matnda tushunarli, aniq va professional ilmiy uslub qo'llanilishi kerak.</p>
-                  </AccordionContent>
-                </AccordionItem>
+              <AccordionItem value="item-5" className="border border-border bg-background rounded-xl px-2">
+                <AccordionTrigger className="text-base font-bold px-4 py-4 hover:no-underline">
+                  5. Conclusion (Xulosa)
+                </AccordionTrigger>
+                <AccordionContent className="px-4 pb-4 text-muted-foreground leading-relaxed text-sm">
+                  Tadqiqot natijalari asosida qilingan qisqa, aniq xulosalar. Muammoni hal qilish bo'yicha amaliy taklif va tavsiyalar berilishi zarur.
+                </AccordionContent>
+              </AccordionItem>
 
-                <AccordionItem value="author" className="border border-border/60 rounded-xl px-5 bg-card/80 backdrop-blur-md shadow-sm">
-                  <AccordionTrigger className="text-xs md:text-sm font-bold py-4 hover:text-primary transition-colors">
-                    👤 Mualliflar Haqida
-                  </AccordionTrigger>
-                  <AccordionContent className="text-xs md:text-sm text-muted-foreground space-y-2 pb-4 pt-1 leading-relaxed border-t border-border/40 text-left">
-                    <p>• Muallif(lar)ning to'liq F.I.Sh., ilmiy daraja va unvonlari.</p>
-                    <p>• Ish joyi (tashkilot nomi), lavozimi hamda aloqa ma'lumotlari (pochta, telefon).</p>
-                    <p>• Muallifning ORCID identifikator raqami ilova qilinishi tavsiya etiladi.</p>
-                  </AccordionContent>
-                </AccordionItem>
-
-                <AccordionItem value="refs" className="border border-border/60 rounded-xl px-5 bg-card/80 backdrop-blur-md shadow-sm">
-                  <AccordionTrigger className="text-xs md:text-sm font-bold py-4 hover:text-primary transition-colors">
-                    📚 Adabiyotlar Ro'yxati
-                  </AccordionTrigger>
-                  <AccordionContent className="text-xs md:text-sm text-muted-foreground space-y-2 pb-4 pt-1 leading-relaxed border-t border-border/40 text-left">
-                    <p>• <strong>Havola formati:</strong> Foydalanilgan manbalar ro'yxati APA 7-nashri talablariga mos tuzilishi kerak.</p>
-                    <p>• <strong>Manbalar sifati:</strong> Adabiyotlar ro'yxatida nufuzli ilmiy jurnallar va xalqaro tadqiqotlar bo'lishi maqsadga muvofiq.</p>
-                    <p>• <strong>Matn ichidagi havolalar:</strong> Gap yakunida qavs ichida, masalan (Familiya, yil) ko'rinishida yoziladi.</p>
-                  </AccordionContent>
-                </AccordionItem>
-                
-              </Accordion>
-            </ScrollReveal>
-          </div>
-
-          {/* Warning */}
-          <ScrollReveal>
-            <Card className="mt-10 border border-gold/25 bg-gold/5 backdrop-blur-md">
-              <CardContent className="p-6 flex items-start gap-4 text-left">
-                <AlertTriangle className="h-5 w-5 text-gold flex-shrink-0 mt-0.5" />
-                <div>
-                  <h4 className="font-bold text-xs md:text-sm text-foreground mb-1">Muhim Eslatma (Plagiat & Originallik)</h4>
-                  <p className="text-xs md:text-sm text-muted-foreground leading-relaxed">
-                    Barcha maqolalar plagiat (antiplagiat) tizimida tekshiriladi. Maqolaning originallik darajasi **kamida 75%** bo'lishi kerak. Avval boshqa joyda chop etilgan yoki bir vaqtda boshqa nashriyotga yuborilgan ishlar rad etiladi.
-                  </p>
-                </div>
-              </CardContent>
-            </Card>
+              <AccordionItem value="item-6" className="border border-border bg-background rounded-xl px-2">
+                <AccordionTrigger className="text-base font-bold px-4 py-4 hover:no-underline">
+                  6. References (Foydalanilgan adabiyotlar)
+                </AccordionTrigger>
+                <AccordionContent className="px-4 pb-4 text-muted-foreground leading-relaxed text-sm">
+                  Manbalar ro'yxati APA (American Psychological Association) uslubida shakllantirilishi lozim. Eng kamida 10-15 ta manba bo'lishi va ularning 50% dan ortig'i so'nggi 5 yilda nashr etilgan bo'lishi tavsiya qilinadi.
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
           </ScrollReveal>
+        </div>
+      </section>
 
-          {/* AI checker promo banner */}
+      {/* ============ CLEAN AI CHECKER PROMO ============ */}
+      <section className="py-20 section-base">
+        <div className="container mx-auto px-4 max-w-4xl">
           <ScrollReveal>
-            <Card className="mt-10 bg-card/80 border border-secondary/20 shadow-md rounded-2xl overflow-hidden backdrop-blur-md">
-              <CardContent className="p-8 text-center space-y-4">
-                <Sparkles className="h-8 w-8 text-secondary mx-auto animate-pulse" />
-                <h3 className="font-serif font-black text-lg text-foreground">Maqolangizni AI bilan bepul tekshiring</h3>
-                <p className="text-xs md:text-sm text-muted-foreground max-w-md mx-auto leading-relaxed">
-                  Tahririyatga yuborishdan oldin, maqolani imlo, grammatika va jurnalimiz format talablariga mosligini AI yordamida tekshirib oling.
+            <Card className="iscad-card border-primary/20 bg-primary/5">
+              <CardContent className="p-8 md:p-12 text-center">
+                <div className="w-16 h-16 rounded-2xl bg-background border border-border flex items-center justify-center mx-auto mb-6 shadow-sm">
+                  <Cpu className="h-8 w-8 text-primary" />
+                </div>
+                <h3 className="text-2xl font-serif font-bold mb-4">
+                  Maqolangiz talablarga mosligini tekshiring
+                </h3>
+                <p className="text-muted-foreground mb-8 max-w-xl mx-auto text-sm leading-relaxed">
+                  Bizning Sun'iy Intellekt tizimimiz maqolangizni qabul qilishdan oldin avtomatik ravishda barcha tahririyat talablariga mosligini, imlo xatolarini va plagiat elementlarini tekshirib beradi.
                 </p>
-                <div className="pt-2">
-                  <Link to="/article-checker">
-                    <Button className="rounded-full px-8 shadow-md">
-                      <Sparkles className="h-4 w-4 mr-2" />
-                      AI Tekshirishga o'tish
-                      <ArrowRight className="h-4 w-4 ml-2" />
-                    </Button>
-                  </Link>
-                </div>
+                <Link to="/article-checker">
+                  <Button size="lg" className="rounded-lg px-8 font-medium">
+                    AI Tekshiruvdan O'tkazish
+                    <ArrowRight className="ml-2 h-4 w-4" />
+                  </Button>
+                </Link>
               </CardContent>
             </Card>
           </ScrollReveal>
-
         </div>
       </section>
 

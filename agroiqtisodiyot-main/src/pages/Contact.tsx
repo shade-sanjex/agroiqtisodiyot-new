@@ -7,7 +7,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { MapPin, Phone, Mail, Clock, Send, Loader2, MessageCircle, SendHorizontal } from 'lucide-react';
+import { MapPin, Phone, Mail, Clock, SendHorizontal, Loader2, MessageCircle } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { z } from 'zod';
@@ -55,84 +55,70 @@ const Contact = () => {
     <div className="min-h-screen flex flex-col bg-background text-foreground transition-colors duration-300">
       <Navbar />
 
-      {/* ============ HERO BANNER ============ */}
-      <section className="relative h-[250px] md:h-[320px] flex items-center justify-center overflow-hidden bg-hero-light dark:bg-hero-dark border-b border-border/40">
-        <div className="absolute inset-0 bg-grid-pattern pointer-events-none" />
-        <div className="absolute top-1/2 left-1/4 -translate-y-1/2 w-64 h-64 rounded-full bg-primary/6 blur-3xl animate-float-slow -z-10" />
-        <div className="absolute top-1/2 right-1/4 -translate-y-1/2 w-64 h-64 rounded-full bg-secondary/6 blur-3xl animate-float-delayed -z-10" />
+      {/* ============ MINIMAL HERO ============ */}
+      <section className="relative pt-24 pb-16 lg:pt-32 lg:pb-24 border-b border-border overflow-hidden bg-background">
+        <div className="absolute inset-0 bg-grid-pattern opacity-40 pointer-events-none" />
         
-        <div className="relative text-center z-10 space-y-3 px-4">
+        <div className="container mx-auto px-4 text-center relative z-10 max-w-4xl">
           <ScrollReveal>
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-semibold uppercase tracking-wider border border-primary/15">
-              <MessageCircle className="h-3.5 w-3.5" />
-              BOG'LANISH
-            </span>
-            <h1 className="text-3xl md:text-5xl font-serif font-black mt-3 text-foreground drop-shadow-sm">
-              Biz bilan bog'laning
+            <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-primary/10 text-primary mb-6">
+              <MessageCircle className="h-6 w-6" />
+            </div>
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif font-black mb-6 text-foreground tracking-tight">
+              Biz Bilan Bog'laning
             </h1>
-            <p className="text-muted-foreground text-xs md:text-sm max-w-xl mx-auto font-light leading-relaxed mt-2">
-              Loyiha haqida savollaringiz, takliflaringiz yoki ilmiy hamkorlik g'oyalaringiz bormi?
+            <p className="text-base md:text-lg text-muted-foreground font-light leading-relaxed">
+              Loyiha haqida savollaringiz, takliflaringiz yoki ilmiy hamkorlik g'oyalaringiz bo'lsa, quyidagi vositalar orqali murojaat qiling.
             </p>
           </ScrollReveal>
         </div>
       </section>
 
-      {/* ============ MAIN CONTACT DASHBOARD ============ */}
-      <section className="py-16 md:py-24 section-alt">
+      {/* ============ CONTACT CONTENT ============ */}
+      <section className="py-20 section-base">
         <div className="container mx-auto px-4 max-w-6xl">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
             
             {/* Left Contact Info */}
             <div className="lg:col-span-5 space-y-6 text-left">
               <ScrollReveal>
-                <span className="inline-block px-3 py-1 bg-primary/10 text-primary text-xs font-semibold rounded-full tracking-wide mb-3">
-                  MA'LUMOTLAR
-                </span>
-                <h2 className="text-2xl md:text-3xl font-serif font-bold text-foreground">
-                  Aloqa Yo'llari
+                <h2 className="text-2xl font-serif font-bold text-foreground mb-8">
+                  Aloqa Ma'lumotlari
                 </h2>
-                <p className="text-xs md:text-sm text-muted-foreground leading-relaxed mt-2 mb-8">
-                  Quyidagi manzil, telefon va elektron pochta manzili orqali biz bilan bevosita aloqaga chiqishingiz mumkin:
-                </p>
               </ScrollReveal>
 
               <div className="space-y-4">
                 {contactInfo.map((item, i) => (
                   <ScrollReveal key={i} delay={i * 0.05}>
-                    <Card className="border border-border/60 bg-card/80 backdrop-blur-md shadow-sm card-lift border-l-4 border-l-primary">
-                      <CardContent className="p-5 flex items-start gap-4">
-                        <div className="w-10 h-10 rounded-xl bg-primary/8 flex items-center justify-center flex-shrink-0 text-primary">
-                          <item.icon className="h-5 w-5" />
-                        </div>
-                        <div>
-                          <p className="font-semibold text-xs text-muted-foreground uppercase tracking-wider mb-1">{item.label}</p>
-                          {item.href ? (
-                            <a href={item.href} className="text-xs md:text-sm font-bold text-foreground hover:text-primary transition-colors">{item.value}</a>
-                          ) : (
-                            <p className="text-xs md:text-sm font-medium text-foreground">{item.value}</p>
-                          )}
-                        </div>
-                      </CardContent>
-                    </Card>
+                    <div className="group p-5 rounded-xl border border-border bg-background hover:border-primary/30 transition-all duration-300 flex items-start gap-5">
+                      <div className="w-10 h-10 rounded-lg bg-slate-50 dark:bg-slate-900 flex items-center justify-center flex-shrink-0 group-hover:bg-primary/10 transition-colors">
+                        <item.icon className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors" />
+                      </div>
+                      <div>
+                        <p className="font-semibold text-[10px] text-muted-foreground uppercase tracking-widest mb-1">{item.label}</p>
+                        {item.href ? (
+                          <a href={item.href} className="text-sm font-medium text-foreground hover:text-primary transition-colors">{item.value}</a>
+                        ) : (
+                          <p className="text-sm font-medium text-foreground">{item.value}</p>
+                        )}
+                      </div>
+                    </div>
                   </ScrollReveal>
                 ))}
 
-                {/* Telegram Bot Card */}
+                {/* Minimal Telegram Card */}
                 <ScrollReveal delay={0.2}>
-                  <Card className="border border-primary/15 bg-primary/5 backdrop-blur-md shadow-sm relative overflow-hidden group">
-                    <div className="absolute top-0 right-0 w-24 h-24 bg-primary/5 rounded-full blur-xl -z-10 group-hover:scale-125 transition-transform" />
-                    <CardContent className="p-5 flex items-center gap-4">
-                      <div className="w-10 h-10 rounded-xl bg-primary/8 flex items-center justify-center flex-shrink-0 text-primary">
-                        <svg className="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
-                          <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
-                        </svg>
-                      </div>
-                      <div className="flex-1 text-left">
-                        <p className="font-bold text-xs text-foreground">Telegram botimiz faol</p>
-                        <p className="text-[11px] text-muted-foreground">Nashrlarni Telegram orqali yuklash va yangiliklarni olish</p>
-                      </div>
-                    </CardContent>
-                  </Card>
+                  <div className="mt-8 p-6 rounded-xl border border-border bg-slate-50 dark:bg-slate-900/50 flex items-center gap-5">
+                    <div className="w-10 h-10 rounded-full bg-blue-500/10 flex items-center justify-center flex-shrink-0 text-blue-500">
+                      <svg className="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
+                      </svg>
+                    </div>
+                    <div>
+                      <p className="font-bold text-sm text-foreground">Telegram bot</p>
+                      <p className="text-xs text-muted-foreground mt-0.5">Nashrlarni yuklash va yangiliklar</p>
+                    </div>
+                  </div>
                 </ScrollReveal>
               </div>
             </div>
@@ -140,64 +126,60 @@ const Contact = () => {
             {/* Right Contact Form */}
             <div className="lg:col-span-7">
               <ScrollReveal direction="right">
-                <Card className="border border-border/60 shadow-md bg-card/80 backdrop-blur-md rounded-2xl overflow-hidden">
-                  <CardContent className="p-6 md:p-10 text-left">
-                    <div className="mb-8 space-y-2">
-                      <span className="inline-block px-3 py-1 bg-secondary/10 text-secondary text-xs font-semibold rounded-full tracking-wide">
-                        ALOQA SHAKLI
-                      </span>
-                      <h2 className="text-xl md:text-2xl font-serif font-black text-foreground">Xabar Yuboring</h2>
-                      <p className="text-xs text-muted-foreground">Takliflaringiz yoki ilmiy masalalardagi savollaringizni shu yerdan yuborishingiz mumkin:</p>
-                    </div>
+                <Card className="iscad-card border-border shadow-sm p-2 md:p-4 bg-background">
+                  <CardContent className="p-6 md:p-8">
+                    <h2 className="text-2xl font-serif font-bold text-foreground mb-8">
+                      Xabar Yuborish
+                    </h2>
 
-                    <form onSubmit={handleSubmit} className="space-y-5">
-                      <div>
-                        <label className="block text-xs font-semibold mb-2 text-muted-foreground uppercase tracking-wider">Ismingiz</label>
-                        <Input
-                          required
-                          value={formData.name}
-                          onChange={e => setFormData({ ...formData, name: e.target.value })}
-                          placeholder="To'liq ismingiz"
-                          maxLength={100}
-                          className="rounded-xl h-11 bg-background/50 border-border/70 focus:border-primary/50 text-xs md:text-sm"
-                        />
+                    <form onSubmit={handleSubmit} className="space-y-6">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="space-y-2">
+                          <label className="text-xs font-semibold text-foreground uppercase tracking-widest">Ismingiz</label>
+                          <Input
+                            required
+                            value={formData.name}
+                            onChange={e => setFormData({ ...formData, name: e.target.value })}
+                            placeholder="To'liq ism"
+                            maxLength={100}
+                            className="h-12 bg-slate-50 dark:bg-slate-900 border-border focus-visible:ring-1 focus-visible:ring-primary shadow-none rounded-lg"
+                          />
+                        </div>
+                        
+                        <div className="space-y-2">
+                          <label className="text-xs font-semibold text-foreground uppercase tracking-widest">Email</label>
+                          <Input
+                            type="email"
+                            required
+                            value={formData.email}
+                            onChange={e => setFormData({ ...formData, email: e.target.value })}
+                            placeholder="email@example.com"
+                            className="h-12 bg-slate-50 dark:bg-slate-900 border-border focus-visible:ring-1 focus-visible:ring-primary shadow-none rounded-lg"
+                          />
+                        </div>
                       </div>
                       
-                      <div>
-                        <label className="block text-xs font-semibold mb-2 text-muted-foreground uppercase tracking-wider">Email Manzil</label>
-                        <Input
-                          type="email"
-                          required
-                          value={formData.email}
-                          onChange={e => setFormData({ ...formData, email: e.target.value })}
-                          placeholder="email@example.com"
-                          className="rounded-xl h-11 bg-background/50 border-border/70 focus:border-primary/50 text-xs md:text-sm"
-                        />
-                      </div>
-                      
-                      <div>
-                        <label className="block text-xs font-semibold mb-2 text-muted-foreground uppercase tracking-wider">Xabar Matni</label>
+                      <div className="space-y-2">
+                        <label className="text-xs font-semibold text-foreground uppercase tracking-widest">Xabar Matni</label>
                         <Textarea
                           required
                           value={formData.message}
                           onChange={e => setFormData({ ...formData, message: e.target.value })}
-                          placeholder="Xabaringizni bu yerga kiriting..."
+                          placeholder="Qanday yordam bera olamiz?"
                           rows={6}
                           maxLength={2000}
-                          className="rounded-xl resize-none bg-background/50 border-border/70 focus:border-primary/50 text-xs md:text-sm leading-relaxed"
+                          className="resize-none bg-slate-50 dark:bg-slate-900 border-border focus-visible:ring-1 focus-visible:ring-primary shadow-none rounded-lg p-4 text-sm"
                         />
-                        <p className="text-[11px] text-muted-foreground mt-1 text-right font-mono">{formData.message.length}/2000</p>
+                        <p className="text-[10px] text-muted-foreground mt-1 text-right font-mono">{formData.message.length}/2000</p>
                       </div>
                       
-                      <div className="pt-2">
-                        <Button type="submit" className="w-full rounded-xl h-12 shadow-lg shadow-primary/10 font-bold text-sm" disabled={loading}>
-                          {loading ? (
-                            <><Loader2 className="h-4 w-4 animate-spin mr-2" /> Yuborilmoqda...</>
-                          ) : (
-                            <><SendHorizontal className="h-4 w-4 mr-2" /> Xabarni yuborish</>
-                          )}
-                        </Button>
-                      </div>
+                      <Button type="submit" className="w-full rounded-lg h-12 font-medium" disabled={loading}>
+                        {loading ? (
+                          <><Loader2 className="h-4 w-4 animate-spin mr-2" /> Yuborilmoqda...</>
+                        ) : (
+                          <><SendHorizontal className="h-4 w-4 mr-2" /> Xabarni yuborish</>
+                        )}
+                      </Button>
                     </form>
                   </CardContent>
                 </Card>

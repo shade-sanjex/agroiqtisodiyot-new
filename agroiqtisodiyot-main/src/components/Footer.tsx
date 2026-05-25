@@ -19,8 +19,8 @@ const journalLinks = [
 export function Footer() {
   return (
     <footer className="relative mt-auto">
-      {/* Top gradient line */}
-      <div className="h-1 bg-gradient-to-r from-primary via-secondary to-primary" />
+      {/* Minimal top border */}
+      <div className="h-1 bg-primary" />
 
       <div className="bg-slate-900 dark:bg-black/60 text-white/80">
         <div className="container mx-auto px-4 py-12 md:py-16">
