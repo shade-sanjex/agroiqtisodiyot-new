@@ -24,41 +24,41 @@ import centerBuilding from '@/assets/center-building.jpg';
 
 const About = () => {
   const tasks = [
-    { icon: BookOpen, title: 'Ilmiy Tadqiqotlar', desc: 'Qishloq xo\'jaligi va oziq-ovqat xavfsizligi bo\'yicha fundamental va amaliy tadqiqotlarni o\'tkazish.', color: 'border-b-blue-500 bg-blue-500/5' },
-    { icon: Target, title: 'Strategik Rejalashtirish', desc: 'Qishloq xo\'jaligi sektorining barqaror rivojlanishi uchun uzoq muddatli dasturlar.', color: 'border-b-emerald-500 bg-emerald-500/5' },
-    { icon: Lightbulb, title: 'Innovatsiyalar', desc: 'Zamonaviy agrotexnologiyalar va raqamli yechimlarni amaliyotga joriy etish.', color: 'border-b-amber-500 bg-amber-500/5' },
-    { icon: Globe, title: 'Xalqaro Hamkorlik', desc: 'Jahon ilmiy markazlari va xalqaro tashkilotlar bilan tizimli tajriba almashish.', color: 'border-b-purple-500 bg-purple-500/5' },
-    { icon: GraduationCap, title: 'O\'quv dasturlari', desc: 'Agrar soha mutaxassislari va fermerlar uchun o\'quv treninglari va kurslar.', color: 'border-b-rose-500 bg-rose-500/5' },
+    { icon: BookOpen, title: 'Ilmiy Tadqiqotlar', desc: 'Qishloq xo\'jaligi va oziq-ovqat xavfsizligi bo\'yicha fundamental va amaliy tadqiqotlarni o\'tkazish.' },
+    { icon: Target, title: 'Strategik Rejalashtirish', desc: 'Qishloq xo\'jaligi sektorining barqaror rivojlanishi uchun uzoq muddatli dasturlar.' },
+    { icon: Lightbulb, title: 'Innovatsiyalar', desc: 'Zamonaviy agrotexnologiyalar va raqamli yechimlarni amaliyotga joriy etish.' },
+    { icon: Globe, title: 'Xalqaro Hamkorlik', desc: 'Jahon ilmiy markazlari va xalqaro tashkilotlar bilan tizimli tajriba almashish.' },
+    { icon: GraduationCap, title: 'O\'quv dasturlari', desc: 'Agrar soha mutaxassislari va fermerlar uchun o\'quv treninglari va kurslar.' },
   ];
 
   return (
     <div className="min-h-screen flex flex-col bg-background text-foreground transition-colors duration-300">
       <Navbar />
 
-      {/* ============ PREMIUM HERO BANNER ============ */}
-      <section className="relative h-[280px] md:h-[380px] flex items-center justify-center overflow-hidden bg-mesh-light dark:bg-mesh-dark border-b border-border/40">
-        {/* Grid pattern overlay */}
+      {/* ============ HERO BANNER ============ */}
+      <section className="relative h-[280px] md:h-[380px] flex items-center justify-center overflow-hidden bg-hero-light dark:bg-hero-dark border-b border-border/40">
+        {/* Grid pattern */}
         <div className="absolute inset-0 bg-grid-pattern pointer-events-none" />
 
-        {/* Colorful Aurora Blobs */}
-        <div className="absolute top-1/2 left-1/4 -translate-y-1/2 w-64 h-64 rounded-full bg-primary/10 dark:bg-primary/25 blur-3xl animate-float-slow -z-10" />
-        <div className="absolute top-1/2 right-1/4 -translate-y-1/2 w-64 h-64 rounded-full bg-emerald-500/10 dark:bg-emerald-500/25 blur-3xl animate-float-delayed -z-10" />
+        {/* Soft blobs */}
+        <div className="absolute top-1/2 left-1/4 -translate-y-1/2 w-64 h-64 rounded-full bg-primary/6 blur-3xl animate-float-slow -z-10" />
+        <div className="absolute top-1/2 right-1/4 -translate-y-1/2 w-64 h-64 rounded-full bg-secondary/6 blur-3xl animate-float-delayed -z-10" />
 
         <div 
-          className="absolute inset-0 bg-cover bg-center opacity-10 dark:opacity-35 mix-blend-overlay scale-105 transition-opacity duration-300" 
+          className="absolute inset-0 bg-cover bg-center opacity-[0.07] dark:opacity-[0.12] mix-blend-luminosity dark:mix-blend-overlay scale-105 transition-opacity duration-300" 
           style={{ backgroundImage: `url(${centerBuilding})` }} 
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/40 to-background/10 dark:from-background dark:via-background/40 dark:to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-background/30 to-transparent" />
         <div className="relative text-center z-10 space-y-3 px-4">
           <ScrollReveal>
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 dark:bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 text-xs font-semibold uppercase tracking-wider border border-emerald-500/20 dark:border-emerald-500/30">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-semibold uppercase tracking-wider border border-primary/15">
               <Compass className="h-3.5 w-3.5" />
               BIZ HAQIMIZDA
             </span>
-            <h1 className="text-3xl md:text-5xl font-serif font-black mt-3 text-foreground dark:text-white drop-shadow-sm">
+            <h1 className="text-3xl md:text-5xl font-serif font-black mt-3 text-foreground drop-shadow-sm">
               Markaz Faoliyati
             </h1>
-            <p className="text-muted-foreground dark:text-white/70 text-xs md:text-sm max-w-xl mx-auto font-light leading-relaxed mt-2">
+            <p className="text-muted-foreground text-xs md:text-sm max-w-xl mx-auto font-light leading-relaxed mt-2">
               O'zbekiston qishloq xo'jaligi va oziq-ovqat xavfsizligi rivojlanishining bosh strategik ilmiy markazi
             </p>
           </ScrollReveal>
@@ -66,11 +66,11 @@ const About = () => {
       </section>
 
       {/* ============ MAIN DESCRIPTION ============ */}
-      <section className="py-16 md:py-24 bg-mesh-light dark:bg-mesh-dark">
+      <section className="py-16 md:py-24 section-alt">
         <div className="container mx-auto px-4 max-w-5xl">
           
           <ScrollReveal>
-            <div className="relative pl-6 border-l-4 border-emerald-500 mb-20 space-y-4">
+            <div className="relative pl-6 border-l-4 border-secondary mb-20 space-y-4">
               <p className="text-base md:text-lg text-muted-foreground leading-relaxed">
                 Oziq-ovqat va Qishloq Xo'jaligi Sohasida Strategik Rivojlanish va Tadqiqotlar Xalqaro Markazi (ISCAD)
                 O'zbekiston Respublikasi Qishloq xo'jaligi vazirligi huzuridagi yirik davlat ilmiy tashkiloti hisoblanadi.
@@ -81,32 +81,29 @@ const About = () => {
             </div>
           </ScrollReveal>
 
-          {/* ============ MISSION, VISION, VALUES (OVERHAULED) ============ */}
+          {/* ============ MISSION, VISION, VALUES ============ */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-24">
             {[
               { 
                 icon: Target, 
                 title: 'Missiyamiz', 
                 desc: 'Oziq-ovqat xavfsizligi darajasini ko\'tarish va qishloq xo\'jaligida barqaror iqtisodiy rivojlanish yechimlarini taqdim etish.', 
-                color: 'from-blue-500/20 to-blue-600/5 hover:border-blue-500/30 border-blue-500/10' 
               },
               { 
                 icon: Eye, 
                 title: 'Vizyonimiz', 
                 desc: 'Markaziy Osiyoda agrosanoat va strategik ilmiy tahlil bo\'yicha yetakchi ekspertiza va bilimlar markaziga aylanish.', 
-                color: 'from-emerald-500/20 to-emerald-600/5 hover:border-emerald-500/30 border-emerald-500/10' 
               },
               { 
                 icon: Heart, 
                 title: 'Qadriyatlarimiz', 
                 desc: 'Tadqiqotlar xolisligi, doimiy innovatsiyalar, professional hamkorlik va ilmiy yondashuv asosiga qurilgan halollik.', 
-                color: 'from-amber-500/20 to-amber-600/5 hover:border-amber-500/30 border-amber-500/10' 
               },
             ].map((item, i) => (
               <ScrollReveal key={item.title} delay={i * 0.1}>
-                <Card className={`card-lift h-full border bg-gradient-to-br ${item.color} shadow-sm backdrop-blur-md transition-all duration-300`}>
+                <Card className="card-lift h-full border border-border/60 bg-card/80 backdrop-blur-md shadow-sm hover:border-primary/20 transition-all duration-300">
                   <CardContent className="p-8 text-center space-y-4">
-                    <div className="w-14 h-14 rounded-2xl bg-card border border-border/80 shadow flex items-center justify-center mx-auto">
+                    <div className="w-14 h-14 rounded-2xl bg-primary/8 border border-border/50 shadow-sm flex items-center justify-center mx-auto">
                       <item.icon className="h-7 w-7 text-primary" />
                     </div>
                     <h3 className="font-serif font-bold text-lg">{item.title}</h3>
@@ -117,10 +114,10 @@ const About = () => {
             ))}
           </div>
 
-          {/* ============ TASKS (OVERHAULED) ============ */}
+          {/* ============ TASKS ============ */}
           <div className="space-y-12 mb-24">
             <ScrollReveal className="text-center">
-              <span className="inline-block px-3 py-1 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-xs font-semibold rounded-full tracking-wide mb-3">
+              <span className="inline-block px-3 py-1 bg-secondary/10 text-secondary text-xs font-semibold rounded-full tracking-wide mb-3">
                 VAZIFALARIMIZ
               </span>
               <h2 className="text-2xl md:text-3xl font-serif font-black">Markazning Asosiy Vazifalari</h2>
@@ -129,9 +126,9 @@ const About = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {tasks.map((task, i) => (
                 <ScrollReveal key={task.title} delay={i * 0.06}>
-                  <Card className={`card-lift h-full border-0 border-b-4 ${task.color} shadow-sm bg-card/60 backdrop-blur-md`}>
+                  <Card className="card-lift h-full border border-border/60 bg-card/80 backdrop-blur-md shadow-sm hover:border-primary/20 transition-all duration-300">
                     <CardContent className="p-6 space-y-4 text-left">
-                      <div className="w-10 h-10 rounded-xl bg-primary/10 text-primary flex items-center justify-center">
+                      <div className="w-10 h-10 rounded-xl bg-primary/8 text-primary flex items-center justify-center">
                         <task.icon className="h-5 w-5" />
                       </div>
                       <h3 className="font-serif font-bold text-sm">{task.title}</h3>
@@ -152,7 +149,7 @@ const About = () => {
               { label: 'Xalqaro hamkorlar', value: 15, suffix: '+' },
             ].map((stat, i) => (
               <ScrollReveal key={stat.label} delay={i * 0.08}>
-                <Card className="border border-border/80 bg-card/45 backdrop-blur-md text-center p-6 shadow-sm card-lift">
+                <Card className="border border-border/60 bg-card/80 backdrop-blur-md text-center p-6 shadow-sm card-lift">
                   <div className="text-3xl font-black gradient-text-primary mb-1">
                     <AnimatedCounter end={stat.value} suffix={stat.suffix} duration={1500} />
                   </div>
@@ -164,7 +161,7 @@ const About = () => {
 
           {/* ============ CONTACT BLOCK ============ */}
           <ScrollReveal>
-            <Card className="border border-border/70 bg-gradient-to-tr from-card via-card/85 to-card/50 shadow-lg rounded-2xl overflow-hidden backdrop-blur-md">
+            <Card className="border border-border/60 bg-card/80 shadow-md rounded-2xl overflow-hidden backdrop-blur-md">
               <CardContent className="p-8 md:p-10 space-y-8">
                 <div className="flex items-center gap-3">
                   <Award className="h-6 w-6 text-primary" />
@@ -174,7 +171,7 @@ const About = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 text-left">
                   
                   <div className="flex items-start gap-4">
-                    <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0 text-primary">
+                    <div className="w-10 h-10 rounded-xl bg-primary/8 flex items-center justify-center flex-shrink-0 text-primary">
                       <MapPin className="h-5 w-5" />
                     </div>
                     <div>
@@ -186,7 +183,7 @@ const About = () => {
                   </div>
 
                   <div className="flex items-start gap-4">
-                    <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0 text-primary">
+                    <div className="w-10 h-10 rounded-xl bg-primary/8 flex items-center justify-center flex-shrink-0 text-primary">
                       <Phone className="h-5 w-5" />
                     </div>
                     <div>
@@ -198,7 +195,7 @@ const About = () => {
                   </div>
 
                   <div className="flex items-start gap-4">
-                    <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0 text-primary">
+                    <div className="w-10 h-10 rounded-xl bg-primary/8 flex items-center justify-center flex-shrink-0 text-primary">
                       <Mail className="h-5 w-5" />
                     </div>
                     <div>
@@ -210,14 +207,14 @@ const About = () => {
                   </div>
 
                   <div className="flex items-start gap-4">
-                    <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center flex-shrink-0 text-primary">
+                    <div className="w-10 h-10 rounded-xl bg-primary/8 flex items-center justify-center flex-shrink-0 text-primary">
                       <ExternalLink className="h-5 w-5" />
                     </div>
                     <div>
                       <p className="font-semibold text-xs text-muted-foreground uppercase tracking-wider mb-1">Veb-sayt</p>
                       <a href="https://www.agroiqtisodiyot.uz" target="_blank" rel="noopener noreferrer" className="text-xs md:text-sm font-bold text-foreground hover:text-primary transition-colors flex items-center gap-1">
                         www.agroiqtisodiyot.uz
-                        <CheckCircle2 className="h-3 w-3 text-emerald-500" />
+                        <CheckCircle2 className="h-3 w-3 text-secondary" />
                       </a>
                     </div>
                   </div>

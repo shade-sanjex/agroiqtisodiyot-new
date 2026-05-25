@@ -63,24 +63,20 @@ function ArticleCheckerContent() {
       <Navbar />
 
       {/* Hero */}
-      <section className="relative bg-mesh-light dark:bg-mesh-dark border-b border-border/40 py-12 md:py-16 overflow-hidden">
-        {/* Grid pattern overlay */}
+      <section className="relative bg-hero-light dark:bg-hero-dark border-b border-border/40 py-12 md:py-16 overflow-hidden">
         <div className="absolute inset-0 bg-grid-pattern pointer-events-none" />
+        <div className="absolute top-1/2 left-1/4 -translate-y-1/2 w-64 h-64 rounded-full bg-primary/6 blur-3xl animate-float-slow -z-10" />
+        <div className="absolute top-1/2 right-1/4 -translate-y-1/2 w-64 h-64 rounded-full bg-secondary/6 blur-3xl animate-float-delayed -z-10" />
 
-        {/* Colorful Aurora Blobs */}
-        <div className="absolute top-1/2 left-1/4 -translate-y-1/2 w-64 h-64 rounded-full bg-primary/10 dark:bg-primary/25 blur-3xl animate-float-slow -z-10" />
-        <div className="absolute top-1/2 right-1/4 -translate-y-1/2 w-64 h-64 rounded-full bg-emerald-500/10 dark:bg-emerald-500/25 blur-3xl animate-float-delayed -z-10" />
-
-        <div className="absolute top-10 right-20 w-32 h-32 border border-primary/5 dark:border-white/5 rounded-full animate-spin-slow -z-10" />
         <div className="container mx-auto px-4 text-center relative z-10">
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-500/10 dark:bg-white/10 rounded-full text-emerald-700 dark:text-amber-300 text-sm mb-4 backdrop-blur-sm border border-emerald-500/20 dark:border-white/10 animate-float-slow">
-            <Sparkles className="h-4 w-4 text-amber-500 dark:text-amber-300" />
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-gold/10 rounded-full text-foreground text-sm mb-4 backdrop-blur-sm border border-gold/20 animate-float-slow">
+            <Sparkles className="h-4 w-4 text-gold" />
             Sun'iy Intellekt
           </div>
-          <h1 className="text-3xl md:text-4xl lg:text-5xl font-serif font-black mb-4 text-foreground dark:text-white">
+          <h1 className="text-3xl md:text-4xl lg:text-5xl font-serif font-black mb-4 text-foreground">
             AI Maqola Tekshirish
           </h1>
-          <p className="text-muted-foreground dark:text-white/70 max-w-2xl mx-auto font-light">
+          <p className="text-muted-foreground max-w-2xl mx-auto font-light">
             Maqolangizni imlo xatolari, grammatika va jurnal talablariga mosligi bo'yicha AI yordamida tekshiring
           </p>
         </div>
@@ -92,7 +88,7 @@ function ArticleCheckerContent() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-7xl mx-auto">
             {/* Input panel */}
             <ScrollReveal direction="left">
-              <Card className="shadow-glass border-0 h-full">
+              <Card className="shadow-glass border border-border/60 bg-card/80 h-full">
                 <CardHeader>
                   <CardTitle className="font-serif flex items-center gap-2">
                     <FileText className="h-5 w-5 text-primary" />
@@ -178,7 +174,7 @@ function ArticleCheckerContent() {
                   </Card>
 
                   {/* Summary */}
-                  <Card className="shadow-glass border-0">
+                  <Card className="shadow-glass border border-border/60 bg-card/80">
                     <CardContent className="p-5">
                       <h3 className="font-serif font-bold mb-2">Xulosa</h3>
                       <p className="text-sm text-muted-foreground">{result.summary}</p>
@@ -187,7 +183,7 @@ function ArticleCheckerContent() {
 
                   {/* Requirements */}
                   {result.requirementChecks.length > 0 && (
-                    <Card className="shadow-glass border-0">
+                    <Card className="shadow-glass border border-border/60 bg-card/80">
                       <CardContent className="p-5">
                         <h3 className="font-serif font-bold mb-3">Talablar tekshiruvi</h3>
                         <div className="space-y-2">
@@ -211,7 +207,7 @@ function ArticleCheckerContent() {
 
                   {/* Spelling errors */}
                   {result.spellingErrors.length > 0 && (
-                    <Card className="shadow-glass border-0">
+                    <Card className="shadow-glass border border-border/60 bg-card/80">
                       <CardContent className="p-5">
                         <h3 className="font-serif font-bold mb-3">
                           Imlo xatolari ({result.spellingErrors.length})
@@ -238,7 +234,7 @@ function ArticleCheckerContent() {
 
                   {/* Grammar issues */}
                   {result.grammarIssues.length > 0 && (
-                    <Card className="shadow-glass border-0">
+                    <Card className="shadow-glass border border-border/60 bg-card/80">
                       <CardContent className="p-5">
                         <h3 className="font-serif font-bold mb-3">Grammatik muammolar</h3>
                         <ul className="space-y-2">
@@ -255,7 +251,7 @@ function ArticleCheckerContent() {
 
                   {/* Suggestions */}
                   {result.suggestions.length > 0 && (
-                    <Card className="shadow-glass border-0">
+                    <Card className="shadow-glass border border-border/60 bg-card/80">
                       <CardContent className="p-5">
                         <h3 className="font-serif font-bold mb-3">Tavsiyalar</h3>
                         <ul className="space-y-2">

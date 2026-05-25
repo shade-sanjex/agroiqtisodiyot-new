@@ -12,10 +12,8 @@ import {
   Download,
   Search,
   FileX,
-  Sparkles,
   X,
   Calendar,
-  Eye,
 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 
@@ -87,23 +85,19 @@ const Journals = () => {
       <Navbar />
 
       {/* Hero */}
-      <section className="relative bg-mesh-light dark:bg-mesh-dark border-b border-border/40 py-12 md:py-16 overflow-hidden">
-        {/* Grid pattern overlay */}
+      <section className="relative bg-hero-light dark:bg-hero-dark border-b border-border/40 py-12 md:py-16 overflow-hidden">
         <div className="absolute inset-0 bg-grid-pattern pointer-events-none" />
+        <div className="absolute top-1/2 left-1/4 -translate-y-1/2 w-64 h-64 rounded-full bg-primary/6 blur-3xl animate-float-slow -z-10" />
+        <div className="absolute top-1/2 right-1/4 -translate-y-1/2 w-64 h-64 rounded-full bg-secondary/6 blur-3xl animate-float-delayed -z-10" />
 
-        {/* Colorful Aurora Blobs */}
-        <div className="absolute top-1/2 left-1/4 -translate-y-1/2 w-64 h-64 rounded-full bg-primary/10 dark:bg-primary/25 blur-3xl animate-float-slow -z-10" />
-        <div className="absolute top-1/2 right-1/4 -translate-y-1/2 w-64 h-64 rounded-full bg-emerald-500/10 dark:bg-emerald-500/25 blur-3xl animate-float-delayed -z-10" />
-
-        <div className="absolute bottom-10 right-10 w-40 h-40 border border-primary/5 dark:border-white/5 rounded-3xl rotate-12 animate-spin-slow -z-10" />
         <div className="container mx-auto px-4 text-center relative z-10">
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-emerald-500/10 dark:bg-white/10 mb-4 animate-float-slow">
-            <BookOpen className="h-8 w-8 text-primary dark:text-emerald-300" />
+          <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-primary/8 mb-4 animate-float-slow">
+            <BookOpen className="h-8 w-8 text-primary" />
           </div>
-          <h1 className="text-3xl md:text-5xl font-serif font-black mb-4 text-foreground dark:text-white animate-fade-in-up">
+          <h1 className="text-3xl md:text-5xl font-serif font-black mb-4 text-foreground">
             Ilmiy Jurnallar
           </h1>
-          <p className="text-muted-foreground dark:text-white/70 max-w-lg mx-auto animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
+          <p className="text-muted-foreground max-w-lg mx-auto text-sm">
             "AGROIQTISODIYOT" ilmiy jurnalining barcha sonlarini ko'ring va yuklab oling
           </p>
         </div>
@@ -138,7 +132,7 @@ const Journals = () => {
       </section>
 
       {/* Main Content */}
-      <section className="py-10 md:py-16 flex-1">
+      <section className="py-10 md:py-16 flex-1 section-alt">
         <div className="container mx-auto px-4 max-w-7xl">
           {loading ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
@@ -153,7 +147,7 @@ const Journals = () => {
               {filtered.map((journal, i) => (
                 <ScrollReveal key={journal.id} delay={i * 0.05}>
                   <div
-                    className="journal-card cursor-pointer h-full group/journal border border-border/70 shadow-sm hover:shadow-xl hover:border-emerald-500/20 transition-all duration-300 p-4 rounded-2xl flex flex-col justify-between"
+                    className="journal-card cursor-pointer h-full group/journal border border-border/60 shadow-sm hover:shadow-xl hover:border-primary/20 transition-all duration-300 p-4 rounded-2xl flex flex-col justify-between bg-card/80"
                     onClick={() => setSelectedJournal(journal)}
                   >
                     <div className="relative aspect-[3/4] w-full rounded-xl overflow-hidden bg-slate-900 border border-border/20 shadow-md mb-4">
@@ -171,11 +165,11 @@ const Journals = () => {
                       ) : (
                         <div className="absolute inset-0 bg-gradient-to-br from-navy-950 via-slate-900 to-navy-900 flex flex-col justify-between p-5">
                           <div className="flex justify-between items-start">
-                            <BookOpen className="h-5 w-5 text-amber-300/60" />
-                            <span className="text-[8px] font-bold text-white/40 tracking-[0.2em] uppercase">ISCAD</span>
+                            <BookOpen className="h-5 w-5 text-white/40" />
+                            <span className="text-[9px] font-bold text-white/30 tracking-[0.2em] uppercase">ISCAD</span>
                           </div>
                           <div className="space-y-2 text-left">
-                            <p className="text-[8px] tracking-[0.2em] text-emerald-400 font-bold uppercase">Agroiqtisodiyot</p>
+                            <p className="text-[9px] tracking-[0.2em] text-white/50 font-bold uppercase">Agroiqtisodiyot</p>
                             <h4 className="font-serif font-bold text-white/90 text-xs leading-snug line-clamp-3">
                               {journal.title}
                             </h4>
@@ -183,7 +177,7 @@ const Journals = () => {
                         </div>
                       )}
                       
-                      {/* Top badge */}
+                      {/* New badge */}
                       {isNew(journal.created_at) && (
                         <div className="absolute top-2.5 left-2.5 z-20">
                           <span className="journal-badge-new text-[10px] px-2 py-0.5">Yangi</span>
@@ -191,9 +185,9 @@ const Journals = () => {
                       )}
                     </div>
                     
-                    {/* Metadata text below cover */}
+                    {/* Metadata text */}
                     <div className="space-y-1.5 px-1 text-left">
-                      <div className="flex items-center justify-between text-[10px] text-muted-foreground font-medium">
+                      <div className="flex items-center justify-between text-[11px] text-muted-foreground font-medium">
                         <span>№ Nashr</span>
                         <span>{new Date(journal.created_at).toLocaleDateString('uz-UZ', { year: 'numeric', month: 'short' })}</span>
                       </div>
@@ -289,7 +283,7 @@ const Journals = () => {
 
               <div className="pt-2">
                 <Button
-                  className="w-full rounded-full shadow-lg bg-gradient-to-r from-primary to-primary/90 text-white font-medium"
+                  className="w-full rounded-full shadow-lg font-medium"
                   onClick={() => window.open(selectedJournal.pdf_url, '_blank')}
                 >
                   <Download className="h-4 w-4 mr-2" />

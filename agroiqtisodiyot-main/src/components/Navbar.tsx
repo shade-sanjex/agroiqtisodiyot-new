@@ -32,7 +32,7 @@ export function Navbar() {
   return (
     <>
       {/* Top Bar */}
-      <div className="hidden lg:block bg-navy-900 dark:bg-black/40 text-white/80 text-xs py-1.5">
+      <div className="hidden lg:block bg-slate-900 dark:bg-black/40 text-white/80 text-xs py-1.5">
         <div className="container mx-auto px-4 flex items-center justify-between">
           <div className="flex items-center gap-6">
             <a href="tel:+998903586164" className="flex items-center gap-1.5 hover:text-white transition-colors">
@@ -82,7 +82,7 @@ export function Navbar() {
                   <span className="flex items-center gap-1.5">
                     {link.label}
                     {link.badge && (
-                      <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 text-[10px] font-bold bg-gradient-to-r from-amber-500 to-orange-500 text-white rounded-full leading-none">
+                      <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 text-[10px] font-bold bg-gold text-white rounded-full leading-none">
                         <Sparkles className="h-2.5 w-2.5" />
                         AI
                       </span>
@@ -161,7 +161,7 @@ export function Navbar() {
                         >
                           {link.label}
                           {link.badge && (
-                            <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 text-[10px] font-bold bg-gradient-to-r from-amber-500 to-orange-500 text-white rounded-full">
+                            <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 text-[10px] font-bold bg-gold text-white rounded-full">
                               <Sparkles className="h-2.5 w-2.5" />
                               AI
                             </span>

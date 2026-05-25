@@ -14,44 +14,37 @@ import {
   Send, 
   Sparkles, 
   ArrowRight, 
-  AlertTriangle,
-  BookOpen,
-  Scale
+  AlertTriangle
 } from 'lucide-react';
 
 const Requirements = () => {
   const steps = [
-    { num: 1, icon: PenTool, title: 'Maqolani tayyorlang', desc: 'Quyidagi talablarga muvofiq maqolangizni tayyorlang. Format, hajm va til bo\'yicha barcha ko\'rsatmalarga amal qiling.', color: 'border-l-blue-500 bg-blue-500/5' },
-    { num: 2, icon: Search, title: 'AI bilan tekshiring', desc: 'Maqolangizni AI tekshirish xizmatimiz orqali imlo, grammatik xatolar va talablarga mosligini tekshiring.', color: 'border-l-emerald-500 bg-emerald-500/5' },
-    { num: 3, icon: Send, title: 'Tahrir hay\'atiga yuboring', desc: 'Tekshirilgan maqolani tahrir hay\'ati e-pochtasiga (ooqxssrtxm@agro.uz) yuboring.', color: 'border-l-amber-500 bg-amber-500/5' },
-    { num: 4, icon: CheckCircle, title: 'Ko\'rib chiqish va nashr', desc: 'Tahrir hay\'ati maqolani ko\'rib chiqadi, kerak bo\'lsa tuzatishlarni tavsiya etadi va nashr etadi.', color: 'border-l-purple-500 bg-purple-500/5' },
+    { num: 1, icon: PenTool, title: 'Maqolani tayyorlang', desc: 'Quyidagi talablarga muvofiq maqolangizni tayyorlang. Format, hajm va til bo\'yicha barcha ko\'rsatmalarga amal qiling.' },
+    { num: 2, icon: Search, title: 'AI bilan tekshiring', desc: 'Maqolangizni AI tekshirish xizmatimiz orqali imlo, grammatik xatolar va talablarga mosligini tekshiring.' },
+    { num: 3, icon: Send, title: 'Tahrir hay\'atiga yuboring', desc: 'Tekshirilgan maqolani tahrir hay\'ati e-pochtasiga (ooqxssrtxm@agro.uz) yuboring.' },
+    { num: 4, icon: CheckCircle, title: 'Ko\'rib chiqish va nashr', desc: 'Tahrir hay\'ati maqolani ko\'rib chiqadi, kerak bo\'lsa tuzatishlarni tavsiya etadi va nashr etadi.' },
   ];
 
   return (
     <div className="min-h-screen flex flex-col bg-background text-foreground transition-colors duration-300">
       <Navbar />
 
-      {/* ============ PREMIUM HERO BANNER ============ */}
-      <section className="relative h-[250px] md:h-[320px] flex items-center justify-center overflow-hidden bg-mesh-light dark:bg-mesh-dark border-b border-border/40">
-        {/* Grid pattern overlay */}
+      {/* ============ HERO BANNER ============ */}
+      <section className="relative h-[250px] md:h-[320px] flex items-center justify-center overflow-hidden bg-hero-light dark:bg-hero-dark border-b border-border/40">
         <div className="absolute inset-0 bg-grid-pattern pointer-events-none" />
-
-        {/* Colorful Aurora Blobs */}
-        <div className="absolute top-1/2 left-1/4 -translate-y-1/2 w-64 h-64 rounded-full bg-primary/10 dark:bg-primary/25 blur-3xl animate-float-slow -z-10" />
-        <div className="absolute top-1/2 right-1/4 -translate-y-1/2 w-64 h-64 rounded-full bg-emerald-500/10 dark:bg-emerald-500/25 blur-3xl animate-float-delayed -z-10" />
-
-        <div className="absolute top-20 left-10 w-24 h-24 border border-primary/5 dark:border-white/5 rounded-xl rotate-45 animate-float -z-10" />
+        <div className="absolute top-1/2 left-1/4 -translate-y-1/2 w-64 h-64 rounded-full bg-primary/6 blur-3xl animate-float-slow -z-10" />
+        <div className="absolute top-1/2 right-1/4 -translate-y-1/2 w-64 h-64 rounded-full bg-secondary/6 blur-3xl animate-float-delayed -z-10" />
         
         <div className="relative text-center z-10 space-y-3 px-4">
           <ScrollReveal>
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 dark:bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 text-xs font-semibold uppercase tracking-wider border border-emerald-500/20 dark:border-emerald-500/30">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-semibold uppercase tracking-wider border border-primary/15">
               <FileText className="h-3.5 w-3.5" />
               TARTIB VA QOIDALAR
             </span>
-            <h1 className="text-3xl md:text-5xl font-serif font-black mt-3 text-foreground dark:text-white drop-shadow-sm">
+            <h1 className="text-3xl md:text-5xl font-serif font-black mt-3 text-foreground drop-shadow-sm">
               Jurnal Talablari
             </h1>
-            <p className="text-muted-foreground dark:text-white/70 text-xs md:text-sm max-w-xl mx-auto font-light leading-relaxed mt-2">
+            <p className="text-muted-foreground text-xs md:text-sm max-w-xl mx-auto font-light leading-relaxed mt-2">
               "AGROIQTISODIYOT" ilmiy jurnalida maqola chop etish uchun belgilangan barcha rasmiy talablar
             </p>
           </ScrollReveal>
@@ -59,7 +52,7 @@ const Requirements = () => {
       </section>
 
       {/* ============ MAIN PROCESS SECTION ============ */}
-      <section className="py-16 md:py-24 bg-mesh-light dark:bg-mesh-dark">
+      <section className="py-16 md:py-24 section-alt">
         <div className="container mx-auto px-4 max-w-4xl">
           
           {/* Steps section */}
@@ -80,13 +73,13 @@ const Requirements = () => {
               {steps.map((step, i) => (
                 <ScrollReveal key={step.num} delay={i * 0.08}>
                   <div className="flex gap-4 md:gap-6 items-start relative">
-                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-primary to-primary/95 text-white flex items-center justify-center font-bold text-sm flex-shrink-0 shadow-md z-10 animate-float-slow" style={{ animationDelay: `${i * 0.5}s` }}>
+                    <div className="w-12 h-12 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold text-sm flex-shrink-0 shadow-md z-10">
                       {step.num}
                     </div>
-                    <Card className={`flex-1 border-0 border-l-4 ${step.color} shadow-sm bg-card/50 backdrop-blur-md card-lift`}>
+                    <Card className="flex-1 border border-border/60 bg-card/80 backdrop-blur-md shadow-sm card-lift border-l-4 border-l-primary">
                       <CardContent className="p-6">
                         <div className="flex items-center gap-2 mb-2">
-                          <step.icon className="h-4.5 w-4.5 text-primary" />
+                          <step.icon className="h-4 w-4 text-primary" />
                           <h3 className="font-serif font-bold text-sm md:text-base">{step.title}</h3>
                         </div>
                         <p className="text-xs md:text-sm text-muted-foreground leading-relaxed">{step.desc}</p>
@@ -101,7 +94,7 @@ const Requirements = () => {
           {/* ============ DETAILED REQUIREMENTS ============ */}
           <div className="space-y-6">
             <ScrollReveal className="text-center mb-4">
-              <span className="inline-block px-3 py-1 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-xs font-semibold rounded-full tracking-wide mb-2">
+              <span className="inline-block px-3 py-1 bg-secondary/10 text-secondary text-xs font-semibold rounded-full tracking-wide mb-2">
                 TEXNIK PARAMETRLAR
               </span>
               <h2 className="text-2xl md:text-3xl font-serif font-bold text-foreground">
@@ -112,7 +105,7 @@ const Requirements = () => {
             <ScrollReveal>
               <Accordion type="single" collapsible className="space-y-3">
                 
-                <AccordionItem value="format" className="border border-border/80 rounded-xl px-5 bg-card/45 backdrop-blur-md shadow-sm">
+                <AccordionItem value="format" className="border border-border/60 rounded-xl px-5 bg-card/80 backdrop-blur-md shadow-sm">
                   <AccordionTrigger className="text-xs md:text-sm font-bold py-4 hover:text-primary transition-colors">
                     📄 Format Talablari
                   </AccordionTrigger>
@@ -124,7 +117,7 @@ const Requirements = () => {
                   </AccordionContent>
                 </AccordionItem>
 
-                <AccordionItem value="volume" className="border border-border/80 rounded-xl px-5 bg-card/45 backdrop-blur-md shadow-sm">
+                <AccordionItem value="volume" className="border border-border/60 rounded-xl px-5 bg-card/80 backdrop-blur-md shadow-sm">
                   <AccordionTrigger className="text-xs md:text-sm font-bold py-4 hover:text-primary transition-colors">
                     📏 Hajm Talablari
                   </AccordionTrigger>
@@ -136,7 +129,7 @@ const Requirements = () => {
                   </AccordionContent>
                 </AccordionItem>
 
-                <AccordionItem value="language" className="border border-border/80 rounded-xl px-5 bg-card/45 backdrop-blur-md shadow-sm">
+                <AccordionItem value="language" className="border border-border/60 rounded-xl px-5 bg-card/80 backdrop-blur-md shadow-sm">
                   <AccordionTrigger className="text-xs md:text-sm font-bold py-4 hover:text-primary transition-colors">
                     🌐 Til Talablari
                   </AccordionTrigger>
@@ -147,7 +140,7 @@ const Requirements = () => {
                   </AccordionContent>
                 </AccordionItem>
 
-                <AccordionItem value="author" className="border border-border/80 rounded-xl px-5 bg-card/45 backdrop-blur-md shadow-sm">
+                <AccordionItem value="author" className="border border-border/60 rounded-xl px-5 bg-card/80 backdrop-blur-md shadow-sm">
                   <AccordionTrigger className="text-xs md:text-sm font-bold py-4 hover:text-primary transition-colors">
                     👤 Mualliflar Haqida
                   </AccordionTrigger>
@@ -158,7 +151,7 @@ const Requirements = () => {
                   </AccordionContent>
                 </AccordionItem>
 
-                <AccordionItem value="refs" className="border border-border/80 rounded-xl px-5 bg-card/45 backdrop-blur-md shadow-sm">
+                <AccordionItem value="refs" className="border border-border/60 rounded-xl px-5 bg-card/80 backdrop-blur-md shadow-sm">
                   <AccordionTrigger className="text-xs md:text-sm font-bold py-4 hover:text-primary transition-colors">
                     📚 Adabiyotlar Ro'yxati
                   </AccordionTrigger>
@@ -175,9 +168,9 @@ const Requirements = () => {
 
           {/* Warning */}
           <ScrollReveal>
-            <Card className="mt-10 border-amber-500/30 bg-amber-500/5 backdrop-blur-md">
+            <Card className="mt-10 border border-gold/25 bg-gold/5 backdrop-blur-md">
               <CardContent className="p-6 flex items-start gap-4 text-left">
-                <AlertTriangle className="h-5 w-5 text-amber-500 flex-shrink-0 mt-0.5" />
+                <AlertTriangle className="h-5 w-5 text-gold flex-shrink-0 mt-0.5" />
                 <div>
                   <h4 className="font-bold text-xs md:text-sm text-foreground mb-1">Muhim Eslatma (Plagiat & Originallik)</h4>
                   <p className="text-xs md:text-sm text-muted-foreground leading-relaxed">
@@ -190,9 +183,9 @@ const Requirements = () => {
 
           {/* AI checker promo banner */}
           <ScrollReveal>
-            <Card className="mt-10 bg-gradient-to-r from-emerald-500/10 to-teal-500/10 border border-emerald-500/20 shadow-glass rounded-2xl overflow-hidden backdrop-blur-md">
+            <Card className="mt-10 bg-card/80 border border-secondary/20 shadow-md rounded-2xl overflow-hidden backdrop-blur-md">
               <CardContent className="p-8 text-center space-y-4">
-                <Sparkles className="h-8 w-8 text-emerald-500 mx-auto animate-pulse" />
+                <Sparkles className="h-8 w-8 text-secondary mx-auto animate-pulse" />
                 <h3 className="font-serif font-black text-lg text-foreground">Maqolangizni AI bilan bepul tekshiring</h3>
                 <p className="text-xs md:text-sm text-muted-foreground max-w-md mx-auto leading-relaxed">
                   Tahririyatga yuborishdan oldin, maqolani imlo, grammatika va jurnalimiz format talablariga mosligini AI yordamida tekshirib oling.

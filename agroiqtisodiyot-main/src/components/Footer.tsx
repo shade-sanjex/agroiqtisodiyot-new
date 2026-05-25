@@ -22,7 +22,7 @@ export function Footer() {
       {/* Top gradient line */}
       <div className="h-1 bg-gradient-to-r from-primary via-secondary to-primary" />
 
-      <div className="bg-navy-900 dark:bg-black/60 text-white/80">
+      <div className="bg-slate-900 dark:bg-black/60 text-white/80">
         <div className="container mx-auto px-4 py-12 md:py-16">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
             {/* Brand */}

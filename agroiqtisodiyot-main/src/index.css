@@ -3,9 +3,9 @@
 @tailwind utilities;
 
 /*
- * ISCAD Design System
- * Logodagi ranglar: Navy Blue (#1B4F8A) + ISCAD Green (#4CAF50)
- * Qo'shimcha: Gold accent, neutral slate tones
+ * ISCAD Design System — v2
+ * Brand Colors: Navy (#1B4F8A), Green (#4CAF50), Gold (#E8A838)
+ * Philosophy: Clean, professional, consistent across light/dark
  */
 
 @layer base {
@@ -20,11 +20,11 @@
     --popover: 0 0% 100%;
     --popover-foreground: 215 50% 15%;
 
-    /* Navy Blue — logo primary */
+    /* Navy Blue — brand primary */
     --primary: 215 65% 32%;
     --primary-foreground: 0 0% 100%;
 
-    /* ISCAD Green — logo accent */
+    /* ISCAD Green — brand accent */
     --secondary: 142 50% 40%;
     --secondary-foreground: 0 0% 100%;
 
@@ -161,34 +161,40 @@
    GRADIENT UTILITIES
    ============================================ */
 @layer utilities {
+  /* Primary navy gradient */
   .gradient-primary {
     @apply bg-gradient-to-r from-[hsl(215,65%,32%)] to-[hsl(215,65%,45%)];
   }
 
+  /* Green accent gradient */
   .gradient-accent {
     @apply bg-gradient-to-r from-[hsl(142,50%,35%)] to-[hsl(142,60%,48%)];
   }
 
+  /* Hero gradient — navy to navy-green blend */
   .gradient-hero {
-    background: linear-gradient(135deg, hsl(215 65% 28%) 0%, hsl(215 55% 38%) 40%, hsl(142 50% 35%) 100%);
+    background: linear-gradient(135deg, hsl(215 65% 28%) 0%, hsl(215 55% 38%) 50%, hsl(200 45% 32%) 100%);
   }
 
   .gradient-hero-dark {
-    background: linear-gradient(135deg, hsl(220 30% 8%) 0%, hsl(215 40% 18%) 40%, hsl(142 40% 15%) 100%);
+    background: linear-gradient(135deg, hsl(220 30% 8%) 0%, hsl(215 40% 18%) 50%, hsl(200 30% 14%) 100%);
   }
 
+  /* Gold highlight gradient */
   .gradient-gold {
     background: linear-gradient(135deg, hsl(45 93% 58%) 0%, hsl(35 90% 50%) 100%);
   }
 
+  /* Brand text gradient: Navy → Green */
   .gradient-text-primary {
     @apply bg-gradient-to-r from-[hsl(215,65%,32%)] to-[hsl(142,50%,40%)] bg-clip-text text-transparent;
   }
 
   .dark .gradient-text-primary {
-    @apply from-[hsl(215,60%,55%)] to-[hsl(142,50%,50%)];
+    @apply from-[hsl(215,60%,60%)] to-[hsl(142,50%,55%)];
   }
 
+  /* Gradient border utility */
   .gradient-border {
     position: relative;
   }
@@ -203,6 +209,24 @@
     mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
     -webkit-mask-composite: xor;
     mask-composite: exclude;
+  }
+}
+
+/* ============================================
+   SECTION ALTERNATION — visual rhythm
+   ============================================ */
+@layer utilities {
+  /* Alternate between bg-background and bg-muted/30 for visible section separation */
+  .section-base {
+    @apply bg-background;
+  }
+
+  .section-alt {
+    @apply bg-muted/30;
+  }
+
+  .section-accent {
+    @apply bg-muted/50 border-t border-b border-border/30;
   }
 }
 
@@ -229,16 +253,16 @@
   }
 
   .card-lift:hover {
-    transform: translateY(-8px) scale(1.01);
+    transform: translateY(-6px);
     box-shadow:
-      0 20px 40px -15px rgba(0, 0, 0, 0.15),
-      0 0 0 1px rgba(27, 79, 138, 0.1);
+      0 20px 40px -15px rgba(0, 0, 0, 0.12),
+      0 0 0 1px hsl(var(--primary) / 0.08);
   }
 
   .dark .card-lift:hover {
     box-shadow:
       0 20px 40px -15px rgba(0, 0, 0, 0.4),
-      0 0 0 1px rgba(100, 160, 255, 0.15);
+      0 0 0 1px hsl(var(--primary) / 0.15);
   }
 }
 
@@ -482,16 +506,16 @@
 .journal-card:hover {
   border-color: hsl(var(--primary) / 0.3);
   box-shadow:
-    0 25px 50px -12px rgba(0, 0, 0, 0.15),
+    0 25px 50px -12px rgba(0, 0, 0, 0.12),
     0 0 0 1px hsl(var(--primary) / 0.1),
-    0 0 80px -20px hsl(var(--primary) / 0.12);
+    0 0 60px -20px hsl(var(--primary) / 0.08);
 }
 
 .dark .journal-card:hover {
   box-shadow:
     0 25px 50px -12px rgba(0, 0, 0, 0.5),
     0 0 0 1px hsl(var(--primary) / 0.2),
-    0 0 80px -20px hsl(var(--primary) / 0.15);
+    0 0 60px -20px hsl(var(--primary) / 0.12);
 }
 
 /* Cover image container */
@@ -699,7 +723,7 @@
 
 /* Gold glow for chief editor */
 .shadow-glow-gold {
-  box-shadow: 0 0 20px hsl(45 93% 58% / 0.25), 0 0 40px hsl(45 93% 58% / 0.1);
+  box-shadow: 0 0 20px hsl(45 93% 58% / 0.2), 0 0 40px hsl(45 93% 58% / 0.08);
 }
 
 /* Premium Animations */
@@ -708,7 +732,7 @@
     transform: translateY(0) rotate(0deg);
   }
   50% {
-    transform: translateY(-15px) rotate(1deg);
+    transform: translateY(-12px) rotate(0.5deg);
   }
 }
 
@@ -717,7 +741,7 @@
     transform: translateY(0) rotate(0deg);
   }
   50% {
-    transform: translateY(-8px) rotate(-1deg);
+    transform: translateY(-6px) rotate(-0.5deg);
   }
 }
 
@@ -745,20 +769,41 @@
   animation: scanline 4s linear infinite;
 }
 
-/* Mesh Gradients */
+/* ============================================
+   MESH GRADIENT BACKGROUNDS
+   ============================================ */
 .bg-mesh-dark {
   background-color: hsl(220 25% 6%);
   background-image: 
-    radial-gradient(at 0% 0%, hsl(215 65% 20% / 0.15) 0px, transparent 50%),
-    radial-gradient(at 100% 0%, hsl(142 50% 15% / 0.15) 0px, transparent 50%),
-    radial-gradient(at 50% 100%, hsl(220 25% 10% / 0.2) 0px, transparent 50%);
+    radial-gradient(at 0% 0%, hsl(215 65% 20% / 0.12) 0px, transparent 50%),
+    radial-gradient(at 100% 0%, hsl(142 50% 15% / 0.08) 0px, transparent 50%),
+    radial-gradient(at 50% 100%, hsl(220 25% 10% / 0.15) 0px, transparent 50%);
 }
 
 .bg-mesh-light {
   background-color: hsl(220 20% 97%);
   background-image: 
-    radial-gradient(at 0% 0%, hsl(215 65% 32% / 0.05) 0px, transparent 50%),
-    radial-gradient(at 100% 0%, hsl(142 50% 40% / 0.05) 0px, transparent 50%);
+    radial-gradient(at 0% 0%, hsl(215 65% 32% / 0.04) 0px, transparent 50%),
+    radial-gradient(at 100% 0%, hsl(142 50% 40% / 0.03) 0px, transparent 50%);
+}
+
+/* ============================================
+   HERO SECTION BACKGROUND
+   ============================================ */
+.bg-hero-light {
+  background-color: hsl(215 30% 95%);
+  background-image:
+    radial-gradient(at 20% 30%, hsl(215 65% 32% / 0.06) 0px, transparent 50%),
+    radial-gradient(at 80% 20%, hsl(142 50% 40% / 0.04) 0px, transparent 50%),
+    radial-gradient(at 50% 80%, hsl(45 93% 58% / 0.03) 0px, transparent 50%);
+}
+
+.bg-hero-dark {
+  background-color: hsl(220 30% 7%);
+  background-image:
+    radial-gradient(at 20% 30%, hsl(215 65% 25% / 0.2) 0px, transparent 50%),
+    radial-gradient(at 80% 20%, hsl(142 50% 20% / 0.1) 0px, transparent 50%),
+    radial-gradient(at 50% 80%, hsl(45 93% 30% / 0.05) 0px, transparent 50%);
 }
 
 /* Book Cover Styling */
@@ -814,15 +859,40 @@
 .bg-grid-pattern {
   background-size: 50px 50px;
   background-image: 
-    linear-gradient(to right, hsl(var(--primary) / 0.04) 1px, transparent 1px),
-    linear-gradient(to bottom, hsl(var(--primary) / 0.04) 1px, transparent 1px);
+    linear-gradient(to right, hsl(var(--primary) / 0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, hsl(var(--primary) / 0.03) 1px, transparent 1px);
 }
 
 .dark .bg-grid-pattern {
   background-image: 
-    linear-gradient(to right, hsl(var(--primary) / 0.07) 1px, transparent 1px),
-    linear-gradient(to bottom, hsl(var(--primary) / 0.07) 1px, transparent 1px);
+    linear-gradient(to right, hsl(var(--primary) / 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, hsl(var(--primary) / 0.05) 1px, transparent 1px);
 }
 
+/* ============================================
+   STANDARDIZED CARD STYLES
+   ============================================ */
+.iscad-card {
+  @apply bg-card/80 backdrop-blur-md border border-border/60 rounded-2xl shadow-sm;
+  transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+}
 
+.iscad-card:hover {
+  @apply shadow-md border-primary/15;
+  transform: translateY(-4px);
+}
 
+.dark .iscad-card:hover {
+  @apply border-primary/25;
+}
+
+/* Card with left accent bar */
+.iscad-card-accent {
+  @apply bg-card/80 backdrop-blur-md border border-border/60 rounded-2xl shadow-sm border-l-4;
+  transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.iscad-card-accent:hover {
+  @apply shadow-md;
+  transform: translateY(-4px);
+}
