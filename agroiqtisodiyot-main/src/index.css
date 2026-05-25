@@ -451,26 +451,49 @@
 }
 
 /* ============================================
-   SMOOTH MODAL WITH BLUR
+   SMOOTH MODAL WITH BLUR (PURE CSS FOR RELIABILITY)
    ============================================ */
 .premium-modal-overlay {
-  @apply fixed inset-0 z-50 flex items-center justify-center p-4 bg-background/40 dark:bg-black/60 backdrop-blur-md;
-  animation: fade-in 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  background-color: rgba(15, 23, 42, 0.5); /* Slate-900 overlay */
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  z-index: 9999;
+  animation: premium-fade-in 0.25s ease-out forwards;
+}
+
+@keyframes premium-fade-in {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
 }
 
 .premium-modal-content {
-  @apply relative w-full max-w-lg bg-card border border-border/80 rounded-2xl shadow-glass-lg overflow-hidden;
-  animation: modal-rise 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  position: relative;
+  width: 100%;
+  background-color: hsl(var(--card));
+  border: 1px solid hsl(var(--border) / 0.8);
+  border-radius: 1rem;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  overflow: hidden;
+  animation: premium-fade-in 0.3s ease-out forwards;
 }
 
 @keyframes modal-rise {
   0% {
     opacity: 0;
-    transform: translateY(40px) scale(0.92) perspective(800px) rotateX(5deg);
+    transform: scale(0.9) translateY(20px);
   }
   100% {
     opacity: 1;
-    transform: translateY(0) scale(1) perspective(800px) rotateX(0deg);
+    transform: scale(1) translateY(0);
   }
 }
 
@@ -711,4 +734,142 @@
   );
   background-size: 200% 100%;
   animation: shimmer 1.5s ease-in-out infinite;
+}
+
+/* ============================================
+   NAVBAR GLASSMORPHISM (iOS-STYLE)
+   ============================================ */
+.navbar-glass {
+  background: hsl(var(--background) / 0.65);
+  backdrop-filter: blur(24px) saturate(1.8);
+  -webkit-backdrop-filter: blur(24px) saturate(1.8);
+  border: 1px solid hsl(var(--border) / 0.35);
+  box-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.04),
+    0 8px 24px rgba(0, 0, 0, 0.06),
+    inset 0 1px 0 hsl(0 0% 100% / 0.12);
+}
+
+.dark .navbar-glass {
+  background: hsl(var(--card) / 0.55);
+  border-color: hsl(var(--border) / 0.25);
+  box-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.2),
+    0 8px 24px rgba(0, 0, 0, 0.25),
+    inset 0 1px 0 hsl(0 0% 100% / 0.04);
+}
+
+.navbar-collapsed {
+  max-width: 380px !important;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.navbar-expanded {
+  max-width: 80rem;
+}
+
+/* Dropdown glass panel */
+.navbar-dropdown-glass {
+  background: hsl(var(--background) / 0.75);
+  backdrop-filter: blur(28px) saturate(1.8);
+  -webkit-backdrop-filter: blur(28px) saturate(1.8);
+  border: 1px solid hsl(var(--border) / 0.4);
+  box-shadow:
+    0 4px 16px rgba(0, 0, 0, 0.06),
+    0 16px 48px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 hsl(0 0% 100% / 0.1);
+}
+
+.dark .navbar-dropdown-glass {
+  background: hsl(var(--card) / 0.65);
+  border-color: hsl(var(--border) / 0.2);
+  box-shadow:
+    0 4px 16px rgba(0, 0, 0, 0.2),
+    0 16px 48px rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 hsl(0 0% 100% / 0.03);
+}
+
+/* Dropdown link entrance animation */
+.dropdown-link-item {
+  animation: dropdown-item-enter 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes dropdown-item-enter {
+  0% {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.96);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Nav link items entrance when expanding */
+.navbar-expanded .nav-link-item {
+  animation: nav-link-expand 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes nav-link-expand {
+  0% {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.9);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* ============================================
+   ANIMATED HAMBURGER ICON (3-LINE TO X)
+   ============================================ */
+.hamburger-icon {
+  width: 16px;
+  height: 12px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  cursor: pointer;
+}
+
+.hamburger-icon span {
+  display: block;
+  width: 100%;
+  height: 1.5px;
+  background: hsl(var(--foreground));
+  border-radius: 2px;
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  transform-origin: center;
+}
+
+.hamburger-icon.is-active span:nth-child(1) {
+  transform: translateY(5.25px) rotate(45deg);
+}
+
+.hamburger-icon.is-active span:nth-child(2) {
+  opacity: 0;
+  transform: scaleX(0);
+}
+
+.hamburger-icon.is-active span:nth-child(3) {
+  transform: translateY(-5.25px) rotate(-45deg);
+}
+
+/* ============================================
+   THEME TOGGLE BUTTON EFFECTS
+   ============================================ */
+.theme-toggle-btn {
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.theme-toggle-btn:hover {
+  background: hsl(var(--secondary) / 0.6);
+  transform: scale(1.08);
+}
+
+.theme-toggle-btn:active {
+  transform: scale(0.92);
 }

@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef, useCallback } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Navbar } from '@/components/Navbar';
@@ -41,8 +41,31 @@ const Index = () => {
   const [journals, setJournals] = useState<Journal[]>([]);
   const [selectedJournal, setSelectedJournal] = useState<Journal | null>(null);
   const [scrollY, setScrollY] = useState(0);
+  const navigate = useNavigate();
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const heroRef = useRef<HTMLDivElement>(null);
+
+  const formatDate = (dateString: string | null | undefined) => {
+    if (!dateString) return "";
+    try {
+      const d = new Date(dateString);
+      if (isNaN(d.getTime())) return "";
+      return d.toLocaleDateString('uz-UZ', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      });
+    } catch (e) {
+      console.error(e);
+      return "";
+    }
+  };
+
+  const handleJournalClick = (journal: Journal) => {
+    console.log("Index: selected journal set to", journal.title);
+    alert("Index: Tanlangan jurnal: " + journal.title);
+    setSelectedJournal(journal);
+  };
 
   useEffect(() => {
     fetchLatestJournals();
@@ -80,6 +103,11 @@ const Index = () => {
     return () => {
       document.body.style.overflow = 'unset';
     };
+  }, [selectedJournal]);
+
+  // Debug state changes
+  useEffect(() => {
+    console.log("Index: selectedJournal changed to", selectedJournal);
   }, [selectedJournal]);
 
   const fetchLatestJournals = async () => {
@@ -477,19 +505,23 @@ const Index = () => {
               </div>
             </ScrollReveal>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10">
-              {journals.slice(0, 3).map((journal, i) => (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              {journals.slice(0, 4).map((journal, i) => (
                 <ScrollReveal key={journal.id} delay={i * 0.1}>
-                  <div className="group cursor-pointer" onClick={() => setSelectedJournal(journal)}>
+                  <div 
+                    className="group cursor-pointer" 
+                    onClick={() => handleJournalClick(journal)}
+                  >
                     
                     {/* 3D Realistic publication book container */}
-                    <div className="journal-cover-realistic cover-shine mb-5 border border-border/60 bg-slate-950">
+                    <div className="journal-cover-realistic cover-shine relative mb-5 border border-border/80 bg-slate-950 overflow-hidden">
                       
                       {journal.cover_image_url ? (
                         <img 
                           src={journal.cover_image_url} 
                           alt={journal.title} 
-                          className="w-full h-full object-cover" 
+                          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" 
+                          loading="lazy"
                         />
                       ) : (
                         <div className="w-full h-full bg-slate-900 p-6 flex flex-col justify-between text-left">
@@ -506,7 +538,13 @@ const Index = () => {
                       )}
                       
                       {/* Light Hover Overlay (not dark) */}
-                      <div className="journal-hover-overlay">
+                      <div 
+                        className="journal-hover-overlay"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleJournalClick(journal);
+                        }}
+                      >
                         <span className="bg-white/95 dark:bg-slate-900/95 text-foreground dark:text-slate-100 text-[10px] font-bold uppercase tracking-wider px-4 py-2 rounded-full shadow-lg transition-all scale-90 group-hover:scale-100 flex items-center gap-2">
                           <Eye className="h-3.5 w-3.5 text-primary" />
                           Batafsil o'qish
@@ -554,57 +592,93 @@ const Index = () => {
       {/* ============ PREMIUM DETAIL MODAL (3D entrance) ============ */}
       {selectedJournal && (
         <div className="premium-modal-overlay" onClick={() => setSelectedJournal(null)}>
-          <div className="premium-modal-content max-w-lg bg-card border border-border" onClick={(e) => e.stopPropagation()}>
+          <div className="premium-modal-content max-w-[90vw] md:max-w-2xl lg:max-w-3xl bg-card border border-border" onClick={(e) => e.stopPropagation()}>
+            {/* Header decoration */}
             <div className="h-1 bg-gradient-to-r from-primary to-accent" />
-            <div className="p-6 md:p-8 space-y-6 text-left">
-              <div className="flex justify-between items-start">
-                <div className="w-12 h-12 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center text-primary">
-                  <BookOpen className="h-5 w-5" />
+
+            <div className="p-6 md:p-8 space-y-6 text-left relative">
+              {/* Close button */}
+              <button
+                onClick={() => setSelectedJournal(null)}
+                className="absolute top-6 right-6 p-2 rounded-full bg-secondary/80 hover:bg-secondary transition-colors text-muted-foreground hover:text-foreground border border-border/60 z-30"
+              >
+                <X className="h-4 w-4" />
+              </button>
+
+              <div className="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-8 items-start">
+                
+                {/* Left column: 3D realistic vertical book cover */}
+                <div className="md:col-span-5 flex justify-center">
+                  <div className="journal-cover-realistic cover-shine bg-slate-950 border border-slate-900 shadow-2xl relative w-full max-w-[200px] md:max-w-full aspect-[3/4.2] rounded-lg overflow-hidden">
+                    {selectedJournal.cover_image_url ? (
+                      <img 
+                        src={selectedJournal.cover_image_url} 
+                        alt={selectedJournal.title}
+                        className="absolute inset-0 w-full h-full object-cover"
+                      />
+                    ) : (
+                      <div className="absolute inset-0 flex flex-col justify-between p-4 text-slate-100 text-left bg-slate-900">
+                        <div className="flex justify-between items-start">
+                          <div className="px-1.5 py-0.5 border border-slate-700/50 bg-slate-800/30 rounded text-[7px] uppercase tracking-widest text-slate-400 font-bold">
+                            ISCAD
+                          </div>
+                          <BookOpen className="h-3.5 w-3.5 text-slate-500" />
+                        </div>
+                        <div className="space-y-1.5">
+                          <p className="text-[7px] text-accent tracking-widest uppercase font-bold">AGROIQTISODIYOT</p>
+                          <h4 className="text-xs font-serif font-black leading-tight text-white line-clamp-3">
+                            {selectedJournal.title}
+                          </h4>
+                        </div>
+                      </div>
+                    )}
+                    {/* Spine reflection and folding lines */}
+                    <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(0,0,0,0.15)_0%,rgba(0,0,0,0)_2%,rgba(255,255,255,0.05)_3%,rgba(255,255,255,0)_6%,rgba(0,0,0,0.03)_7%,rgba(0,0,0,0)_90%)] pointer-events-none z-10" />
+                    <div className="absolute top-0 bottom-0 left-0 w-[4px] bg-black/20 shadow-[1px_0_2px_rgba(0,0,0,0.1)] z-20" />
+                  </div>
                 </div>
-                <button
-                  onClick={() => setSelectedJournal(null)}
-                  className="p-2 rounded-full bg-secondary/80 hover:bg-secondary transition-colors text-muted-foreground hover:text-foreground border border-border/60"
-                >
-                  <X className="h-4 w-4" />
-                </button>
+
+                {/* Right column: Info & actions */}
+                <div className="md:col-span-7 space-y-4">
+                  <div className="flex items-center gap-2">
+                    <div className="w-10 h-10 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center text-primary">
+                      <BookOpen className="h-5 w-5" />
+                    </div>
+                    <div>
+                      <p className="text-[8px] text-muted-foreground uppercase tracking-widest font-black">ILMIY NASHR</p>
+                      <h3 className="text-xs font-black text-foreground">AGROIQTISODIYOT</h3>
+                    </div>
+                  </div>
+
+                  <h2 className="font-serif font-black text-foreground text-lg md:text-xl leading-tight">
+                    {selectedJournal.title}
+                  </h2>
+
+                  <div className="flex flex-wrap items-center gap-3 text-[9px] font-black text-muted-foreground uppercase tracking-widest border-y border-border/60 py-2.5">
+                    <div className="flex items-center gap-1.5">
+                      <Calendar className="h-3.5 w-3.5 text-primary" />
+                      <span>{formatDate(selectedJournal.created_at)}</span>
+                    </div>
+                  </div>
+
+                  <p className="text-xs text-muted-foreground font-medium leading-relaxed max-h-[140px] overflow-y-auto pr-1">
+                    {selectedJournal.description ||
+                      "Ushbu nashrda agrosanoat kompleksi, barqaror qishloq xo'jaligi iqtisodiyoti va oziq-ovqat xavfsizligini ta'minlash yo'nalishlaridagi original ilmiy-tadqiqot ishlari taqdim etilgan."}
+                  </p>
+
+                  <div className="pt-4">
+                    <Button
+                      className="w-full rounded-full h-12 font-bold text-sm uppercase tracking-wider glow-button-primary bg-primary text-primary-foreground flex items-center justify-center"
+                      onClick={() => window.open(selectedJournal.pdf_url, '_blank')}
+                    >
+                      <Download className="h-4.5 w-4.5 mr-2" />
+                      Yuklab olish
+                    </Button>
+                  </div>
+                </div>
+
               </div>
 
-              {/* Cover preview in modal */}
-              {selectedJournal.cover_image_url && (
-                <div className="w-full aspect-[16/9] rounded-xl overflow-hidden border border-border/60">
-                  <img 
-                    src={selectedJournal.cover_image_url} 
-                    alt={selectedJournal.title}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-              )}
-
-              <h2 className="font-serif font-black text-foreground text-xl md:text-2xl leading-tight">
-                {selectedJournal.title}
-              </h2>
-
-              <div className="flex items-center gap-4 text-[9px] font-black text-muted-foreground uppercase tracking-widest border-y border-border/60 py-2.5">
-                <div className="flex items-center gap-1.5">
-                  <Calendar className="h-3.5 w-3.5 text-primary" />
-                  <span>{new Date(selectedJournal.created_at).toLocaleDateString('uz-UZ', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
-                </div>
-              </div>
-
-              <p className="text-xs md:text-sm text-muted-foreground font-medium leading-relaxed">
-                {selectedJournal.description ||
-                  "Ushbu nashrda agrosanoat kompleksi, barqaror qishloq xo'jaligi iqtisodiyoti va oziq-ovqat xavfsizligini ta'minlash yo'nalishlaridagi original ilmiy-tadqiqot ishlari taqdim etilgan."}
-              </p>
-
-              <div className="pt-4">
-                <Button
-                  className="w-full rounded-full h-12 font-bold text-sm uppercase tracking-wider glow-button-primary bg-primary text-primary-foreground"
-                  onClick={() => window.open(selectedJournal.pdf_url, '_blank')}
-                >
-                  <Download className="h-4.5 w-4.5 mr-2" />
-                  PDF ni Yuklab olish
-                </Button>
-              </div>
             </div>
           </div>
         </div>
