@@ -78,7 +78,7 @@ const Index = () => {
       <Navbar />
 
       {/* ============ HERO SECTION ============ */}
-      <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden">
+      <section className="relative min-h-[85vh] flex items-center justify-center overflow-hidden">
         {/* Background layers */}
         <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat scale-110"
@@ -93,15 +93,15 @@ const Index = () => {
         <div className="absolute top-1/2 left-1/4 w-40 h-40 border border-white/10 rounded-2xl rotate-45 animate-spin-slow" />
 
         {/* Hero content */}
-        <div className="relative container mx-auto px-4 text-center text-white z-10">
+        <div className="relative container mx-auto px-4 text-center text-white z-10 py-12">
           <div className="max-w-4xl mx-auto">
             {/* Logo */}
-            <div className="flex justify-center mb-6 md:mb-8 animate-fade-in-down">
+            <div className="flex justify-center mb-5 md:mb-6 animate-fade-in-down">
               <div className="relative">
                 <img
                   src={iscadLogo}
                   alt="ISCAD Logo"
-                  className="h-28 md:h-36 lg:h-44 w-auto drop-shadow-2xl"
+                  className="h-20 md:h-28 lg:h-36 w-auto drop-shadow-2xl"
                   style={{ filter: 'brightness(0) invert(1)' }}
                 />
                 <div className="absolute -inset-4 bg-white/5 rounded-3xl blur-2xl -z-10" />
@@ -109,10 +109,10 @@ const Index = () => {
             </div>
 
             {/* Subtitle */}
-            <p className="text-base md:text-xl lg:text-2xl mb-3 font-light tracking-wide opacity-0 animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
+            <p className="text-sm md:text-lg lg:text-xl mb-2.5 font-light tracking-wide opacity-0 animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
               Oziq-ovqat va Qishloq Xo'jaligi Sohasida
             </p>
-            <h1 className="text-2xl md:text-4xl lg:text-5xl font-serif font-bold mb-4 leading-tight opacity-0 animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
+            <h1 className="text-xl md:text-3.5xl lg:text-[40px] font-serif font-bold mb-3.5 leading-tight opacity-0 animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
               Strategik Rivojlanish va Tadqiqotlar
               <br />
               <span className="bg-gradient-to-r from-emerald-300 to-emerald-100 bg-clip-text text-transparent">
@@ -120,31 +120,24 @@ const Index = () => {
               </span>
             </h1>
 
-            <p className="text-sm md:text-base lg:text-lg mb-8 md:mb-10 max-w-2xl mx-auto text-white/70 font-light opacity-0 animate-fade-in-up" style={{ animationDelay: '0.6s' }}>
+            <p className="text-xs md:text-sm lg:text-base mb-6 md:mb-8 max-w-2xl mx-auto text-white/70 font-light opacity-0 animate-fade-in-up" style={{ animationDelay: '0.6s' }}>
               O'zbekiston Respublikasi Qishloq xo'jaligi vazirligi huzuridagi davlat tashkiloti
             </p>
 
             {/* CTA Buttons */}
-            <div className="flex flex-col sm:flex-row gap-4 justify-center px-4 opacity-0 animate-fade-in-up" style={{ animationDelay: '0.8s' }}>
+            <div className="flex flex-col sm:flex-row gap-3.5 justify-center px-4 opacity-0 animate-fade-in-up" style={{ animationDelay: '0.8s' }}>
               <Link to="/journals">
-                <Button size="lg" className="text-base md:text-lg bg-white text-navy-800 hover:bg-white/90 shadow-xl shadow-black/20 px-8 rounded-full font-semibold">
-                  <BookOpen className="mr-2 h-5 w-5" />
+                <Button size="lg" className="text-sm md:text-base bg-white text-navy-800 hover:bg-white/90 shadow-xl shadow-black/20 px-6 md:px-7 rounded-full font-semibold">
+                  <BookOpen className="mr-2 h-4 w-4" />
                   Jurnallarni ko'rish
                 </Button>
               </Link>
               <Link to="/article-checker">
-                <Button size="lg" variant="outline" className="text-base md:text-lg border-white/30 bg-transparent text-white hover:bg-white/10 hover:text-white backdrop-blur-sm px-8 rounded-full">
-                  <Sparkles className="mr-2 h-5 w-5" />
+                <Button size="lg" variant="outline" className="text-sm md:text-base border-white/30 bg-transparent text-white hover:bg-white/10 hover:text-white backdrop-blur-sm px-6 md:px-7 rounded-full">
+                  <Sparkles className="mr-2 h-4 w-4" />
                   AI Maqola Tekshirish
                 </Button>
               </Link>
-            </div>
-          </div>
-
-          {/* Scroll indicator */}
-          <div className="absolute bottom-8 left-1/2 -translate-x-1/2 opacity-0 animate-fade-in" style={{ animationDelay: '1.2s' }}>
-            <div className="w-6 h-10 border-2 border-white/30 rounded-full flex justify-center">
-              <div className="w-1 h-3 bg-white/60 rounded-full mt-2 animate-bounce-gentle" />
             </div>
           </div>
         </div>
