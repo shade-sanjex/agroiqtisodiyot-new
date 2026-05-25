@@ -99,6 +99,27 @@ const Admin = () => {
     }
   };
 
+  const uploadToTelegramCDN = async (file: File): Promise<string> => {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    const backendUrl = import.meta.env.VITE_BACKEND_URL || '';
+    const uploadUrl = backendUrl ? `${backendUrl}/api/upload-file` : '/api/upload-file';
+
+    const response = await fetch(uploadUrl, {
+      method: 'POST',
+      body: formData,
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.error || 'Telegram CDN ga yuklashda xatolik yuz berdi');
+    }
+
+    const data = await response.json();
+    return data.url;
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
@@ -112,33 +133,18 @@ const Admin = () => {
     try {
       const validatedData = journalSchema.parse(formData);
 
-      // Upload PDF
-      const pdfFileName = `${Date.now()}_${pdfFile.name}`;
-      const { data: pdfData, error: pdfError } = await supabase.storage
-        .from('journal-pdfs')
-        .upload(pdfFileName, pdfFile);
+      // Upload PDF to Telegram CDN
+      toast.info('PDF fayl yuklanmoqda, kuting...');
+      const pdfUrl = await uploadToTelegramCDN(pdfFile);
 
-      if (pdfError) throw pdfError;
-
-      const pdfUrl = supabase.storage
-        .from('journal-pdfs')
-        .getPublicUrl(pdfData.path).data.publicUrl;
-
+      // Upload Cover to Telegram CDN (if exists)
       let coverUrl = null;
       if (coverFile) {
-        const coverFileName = `${Date.now()}_${coverFile.name}`;
-        const { data: coverData, error: coverError } = await supabase.storage
-          .from('journal-covers')
-          .upload(coverFileName, coverFile);
-
-        if (coverError) throw coverError;
-
-        coverUrl = supabase.storage
-          .from('journal-covers')
-          .getPublicUrl(coverData.path).data.publicUrl;
+        toast.info('Muqova rasmi yuklanmoqda, kuting...');
+        coverUrl = await uploadToTelegramCDN(coverFile);
       }
 
-      // Insert journal record
+      // Insert journal record in Supabase
       const { error: insertError } = await supabase
         .from('journals')
         .insert({
@@ -156,12 +162,12 @@ const Admin = () => {
       setPdfFile(null);
       setCoverFile(null);
       fetchJournals();
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error uploading journal:', error);
       if (error instanceof z.ZodError) {
         error.errors.forEach(err => toast.error(err.message));
       } else {
-        toast.error('Jurnal yuklashda xatolik yuz berdi');
+        toast.error(error.message || 'Jurnal yuklashda xatolik yuz berdi');
       }
     } finally {
       setLoading(false);
@@ -189,35 +195,19 @@ const Admin = () => {
       let pdfUrl = editingJournal.pdf_url;
       let coverUrl = editingJournal.cover_image_url;
 
-      // Upload new PDF if provided
+      // Upload new PDF to Telegram CDN if provided
       if (pdfFile) {
-        const pdfFileName = `${Date.now()}_${pdfFile.name}`;
-        const { data: pdfData, error: pdfError } = await supabase.storage
-          .from('journal-pdfs')
-          .upload(pdfFileName, pdfFile);
-
-        if (pdfError) throw pdfError;
-
-        pdfUrl = supabase.storage
-          .from('journal-pdfs')
-          .getPublicUrl(pdfData.path).data.publicUrl;
+        toast.info('Yangi PDF fayl yuklanmoqda...');
+        pdfUrl = await uploadToTelegramCDN(pdfFile);
       }
 
-      // Upload new cover if provided
+      // Upload new cover to Telegram CDN if provided
       if (coverFile) {
-        const coverFileName = `${Date.now()}_${coverFile.name}`;
-        const { data: coverData, error: coverError } = await supabase.storage
-          .from('journal-covers')
-          .upload(coverFileName, coverFile);
-
-        if (coverError) throw coverError;
-
-        coverUrl = supabase.storage
-          .from('journal-covers')
-          .getPublicUrl(coverData.path).data.publicUrl;
+        toast.info('Yangi muqova rasmi yuklanmoqda...');
+        coverUrl = await uploadToTelegramCDN(coverFile);
       }
 
-      // Update journal record
+      // Update journal record in Supabase
       const { error: updateError } = await supabase
         .from('journals')
         .update({
@@ -237,12 +227,12 @@ const Admin = () => {
       setEditingJournal(null);
       setEditDialogOpen(false);
       fetchJournals();
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error updating journal:', error);
       if (error instanceof z.ZodError) {
         error.errors.forEach(err => toast.error(err.message));
       } else {
-        toast.error('Jurnal yangilashda xatolik yuz berdi');
+        toast.error(error.message || 'Jurnal yangilashda xatolik yuz berdi');
       }
     } finally {
       setLoading(false);

@@ -40,6 +40,80 @@ if (!token || !supabaseUrl || !supabaseKey) {
 // Initialize Supabase Client
 const supabase = createClient(supabaseUrl, supabaseKey);
 
+// Setup Admin Account automatically on boot
+setupAdminAccount();
+
+async function setupAdminAccount() {
+  const adminEmail = 'admin@gmail.com';
+  const adminPassword = 'Admin1234';
+
+  try {
+    console.log("🔒 Admin akkauntini tekshirish...");
+    
+    // Check if user exists in auth.users
+    const { data: { users }, error: listError } = await supabase.auth.admin.listUsers();
+    
+    if (listError) {
+      console.error("⚠️ Supabase user list fetch failed. Make sure SUPABASE_SERVICE_ROLE_KEY is set correctly:", listError);
+      return;
+    }
+
+    let adminUser = users.find(u => u.email === adminEmail);
+
+    if (!adminUser) {
+      console.log("➕ Admin foydalanuvchisi topilmadi. Yaratilmoqda...");
+      const { data: { user }, error: createError } = await supabase.auth.admin.createUser({
+        email: adminEmail,
+        password: adminPassword,
+        email_confirm: true,
+        user_metadata: { full_name: 'Admin' }
+      });
+
+      if (createError) {
+        console.error("❌ Admin user creation failed:", createError);
+        return;
+      }
+      adminUser = user;
+      console.log(`✅ Admin foydalanuvchisi yaratildi: ID = ${adminUser.id}`);
+    } else {
+      console.log("ℹ️ Admin foydalanuvchisi allaqachon mavjud.");
+    }
+
+    // Ensure profile exists and has 'admin' role in the database
+    const { data: profile, error: profileError } = await supabase
+      .from('profiles')
+      .select('*')
+      .eq('id', adminUser.id)
+      .single();
+
+    if (profileError || !profile) {
+      console.log("➕ Admin profili yaratilmoqda...");
+      const { error: insertError } = await supabase
+        .from('profiles')
+        .insert({
+          id: adminUser.id,
+          full_name: 'Admin',
+          role: 'admin'
+        });
+      if (insertError) console.error("❌ Error creating admin profile:", insertError);
+      else console.log("✅ Admin profili 'admin' roli bilan yaratildi.");
+    } else if (profile.role !== 'admin') {
+      console.log("🔄 Profil roli 'admin' ga yangilanmoqda...");
+      const { error: updateError } = await supabase
+        .from('profiles')
+        .update({ role: 'admin' })
+        .eq('id', adminUser.id);
+      if (updateError) console.error("❌ Error updating admin profile role:", updateError);
+      else console.log("✅ Profil roli 'admin' ga o'zgartirildi.");
+    } else {
+      console.log("✅ Admin profili va roli allaqachon to'g'ri sozlangan.");
+    }
+
+  } catch (err) {
+    console.error("❌ setupAdminAccount'da kutilmagan xatolik:", err);
+  }
+}
+
 const allowedUsers = (process.env.ALLOWED_TELEGRAM_IDS || '')
   .split(',')
   .map(id => id.trim())
@@ -292,6 +366,65 @@ app.post('/api/upload-magazine', upload.fields([
   } catch (err) {
     console.error("Internal upload error:", err);
     res.status(500).json({ error: "Server ichki xatoligi yuz berdi." });
+  }
+});
+
+// Generic file upload to Telegram CDN endpoint
+app.post('/api/upload-file', upload.single('file'), async (req, res) => {
+  if (!req.file) {
+    return res.status(400).json({ error: "Fayl yuborilmadi." });
+  }
+
+  try {
+    const file = req.file;
+    const targetChatId = process.env.TELEGRAM_STORAGE_CHAT_ID || allowedUsers[0];
+    
+    if (!targetChatId) {
+      return res.status(500).json({ error: "Faylni saqlash uchun Telegram Chat ID aniqlanmadi." });
+    }
+
+    console.log(`📤 Fayl Telegram CDN ga yuklanmoqda... (Hajmi: ${(file.size / 1024 / 1024).toFixed(2)} MB)`);
+
+    const formData = new FormData();
+    formData.append('chat_id', targetChatId);
+
+    const isImage = file.mimetype.startsWith('image/');
+    let telegramEndpoint = 'sendDocument';
+    let fileField = 'document';
+
+    if (isImage) {
+      telegramEndpoint = 'sendPhoto';
+      fileField = 'photo';
+    }
+
+    const blob = new Blob([file.buffer], { type: file.mimetype });
+    formData.append(fileField, blob, file.originalname);
+
+    const telegramRes = await fetch(`https://api.telegram.org/bot${token}/${telegramEndpoint}`, {
+      method: 'POST',
+      body: formData
+    });
+
+    const uploadResult = await telegramRes.json();
+    if (!uploadResult.ok) {
+      console.error("Telegram CDN upload failed:", uploadResult);
+      return res.status(500).json({ error: `Telegram'ga yuklashda xatolik: ${uploadResult.description}` });
+    }
+
+    let fileId = '';
+    if (isImage) {
+      const photos = uploadResult.result.photo;
+      fileId = photos[photos.length - 1].file_id; // highest resolution
+    } else {
+      fileId = uploadResult.result.document.file_id;
+    }
+
+    const filePublicUrl = `${backendUrl}/api/file/${fileId}`;
+    res.json({ success: true, url: filePublicUrl, file_id: fileId });
+
+  } catch (err) {
+    console.error("Upload file error:", err);
+    res.status(500).json({ error: "Faylni yuklashda server xatoligi yuz berdi." });
   }
 });
 
