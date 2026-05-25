@@ -97,9 +97,12 @@ const Index = () => {
       <section className="relative min-h-[85vh] lg:min-h-[90vh] flex items-center justify-center overflow-hidden bg-mesh-light dark:bg-mesh-dark border-b border-border/40 pt-12 pb-20">
         <ParticleBackground className="absolute inset-0 z-[1]" particleCount={40} />
 
+        {/* Grid pattern overlay */}
+        <div className="absolute inset-0 bg-grid-pattern pointer-events-none" />
+
         {/* Background Image Watermark */}
         <div 
-          className="absolute inset-0 opacity-[0.06] dark:opacity-[0.16] mix-blend-overlay pointer-events-none transition-opacity duration-300"
+          className="absolute inset-0 opacity-[0.1] dark:opacity-[0.18] mix-blend-luminosity dark:mix-blend-overlay pointer-events-none transition-opacity duration-300"
           style={{ 
             backgroundImage: `url(${heroImage})`,
             backgroundPosition: 'center',
@@ -359,7 +362,7 @@ const Index = () => {
       </section>
 
       {/* ============ HIGH-TECH MOCKUP AI CHECKER SECTION ============ */}
-      <section className="py-20 md:py-28 relative overflow-hidden bg-mesh-dark text-white">
+      <section className="py-20 md:py-28 relative overflow-hidden bg-mesh-light dark:bg-mesh-dark border-t border-b border-border/40 text-foreground dark:text-white">
         <ParticleBackground className="absolute inset-0" particleCount={25} />
 
         <div className="relative container mx-auto px-4 z-10">
@@ -368,17 +371,17 @@ const Index = () => {
             {/* Left AI Text side */}
             <div className="lg:col-span-6 space-y-6 text-left">
               <ScrollReveal>
-                <div className="inline-flex items-center gap-2 px-3 py-1 bg-white/10 rounded-full text-white/80 text-xs mb-4 backdrop-blur-sm">
-                  <Cpu className="h-3.5 w-3.5 text-amber-300 animate-pulse" />
+                <div className="inline-flex items-center gap-2 px-3 py-1 bg-primary/5 dark:bg-white/10 border border-primary/10 dark:border-white/10 rounded-full text-primary dark:text-white/80 text-xs mb-4 backdrop-blur-sm">
+                  <Cpu className="h-3.5 w-3.5 text-emerald-600 dark:text-amber-300 animate-pulse" />
                   Sun'iy Intellekt bilan Tekshirish
                 </div>
-                <h2 className="text-3xl md:text-5xl font-serif font-black leading-tight text-white">
+                <h2 className="text-3xl md:text-5xl font-serif font-black leading-tight text-foreground dark:text-white">
                   Maqolangizni <br />
-                  <span className="bg-gradient-to-r from-amber-300 via-amber-200 to-emerald-200 bg-clip-text text-transparent">
+                  <span className="bg-gradient-to-r from-primary via-emerald-600 to-secondary bg-clip-text text-transparent dark:from-amber-300 dark:via-amber-200 dark:to-emerald-200">
                     AI yordamida tahlil qiling
                   </span>
                 </h2>
-                <p className="text-sm text-white/70 leading-relaxed max-w-xl">
+                <p className="text-sm text-muted-foreground dark:text-white/70 leading-relaxed max-w-xl">
                   Bizning innovatsion modelimiz maqolangizni O'zbekistondagi imlo qoidalari, ilmiy uslub va jurnal talablariga mosligini bir necha soniyada tahlil qilib beradi.
                 </p>
                 
@@ -391,17 +394,17 @@ const Index = () => {
                     "Tahrirga tayyorlik darajasi (ball)"
                   ].map((benefit, i) => (
                     <div key={i} className="flex items-center gap-3">
-                      <div className="w-5 h-5 rounded-full bg-amber-500/20 text-amber-300 flex items-center justify-center flex-shrink-0">
+                      <div className="w-5 h-5 rounded-full bg-amber-500/10 dark:bg-amber-500/20 text-amber-600 dark:text-amber-300 flex items-center justify-center flex-shrink-0">
                         <Zap className="h-3 w-3" />
                       </div>
-                      <span className="text-xs text-white/85">{benefit}</span>
+                      <span className="text-xs text-foreground/85 dark:text-white/85">{benefit}</span>
                     </div>
                   ))}
                 </div>
 
                 <div className="pt-6">
                   <Link to="/article-checker">
-                    <Button size="lg" className="bg-white text-navy-900 hover:bg-white/95 shadow-xl font-semibold rounded-full px-8">
+                    <Button size="lg" className="bg-primary text-primary-foreground dark:bg-white dark:text-navy-900 hover:bg-primary/90 dark:hover:bg-white/95 shadow-xl font-semibold rounded-full px-8">
                       <FileText className="mr-2 h-4 w-4" />
                       Maqolani tekshirish
                       <ArrowRight className="ml-2 h-4 w-4" />
@@ -414,34 +417,34 @@ const Index = () => {
             {/* Right Interactive mock console */}
             <div className="lg:col-span-6 flex justify-center">
               <ScrollReveal direction="right" delay={0.2} className="w-full max-w-[450px]">
-                <div className="bg-slate-900/90 backdrop-blur-xl border border-white/10 rounded-2xl overflow-hidden shadow-2xl p-6 relative">
+                <div className="bg-card dark:bg-slate-900/90 backdrop-blur-xl border border-border dark:border-white/10 rounded-2xl overflow-hidden shadow-2xl p-6 relative">
                   
                   {/* Console Header */}
-                  <div className="flex items-center justify-between pb-4 border-b border-white/15 mb-6">
+                  <div className="flex items-center justify-between pb-4 border-b border-border dark:border-white/15 mb-6">
                     <div className="flex items-center gap-2">
                       <div className="w-3 h-3 rounded-full bg-red-500" />
                       <div className="w-3 h-3 rounded-full bg-yellow-500" />
                       <div className="w-3 h-3 rounded-full bg-green-500" />
                     </div>
-                    <span className="text-[10px] text-white/40 font-mono">ISCAD_AI_ANALYZER.EXE</span>
+                    <span className="text-[10px] text-muted-foreground/60 dark:text-white/40 font-mono">ISCAD_AI_ANALYZER.EXE</span>
                   </div>
 
                   {/* Mock Drag & Drop Box */}
-                  <div className="border border-dashed border-white/20 rounded-xl p-8 text-center relative overflow-hidden bg-slate-950/40">
+                  <div className="border border-dashed border-primary/25 dark:border-white/20 rounded-xl p-8 text-center relative overflow-hidden bg-muted/40 dark:bg-slate-950/40">
                     
                     {/* Scanner line animation */}
-                    <div className="absolute left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-emerald-400 to-transparent animate-scanline z-10" />
+                    <div className="absolute left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-emerald-500 dark:via-emerald-400 to-transparent animate-scanline z-10" />
 
                     <div className="relative z-20 space-y-4">
-                      <div className="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center mx-auto border border-white/10">
-                        <FolderOpen className="h-6 w-6 text-emerald-400" />
+                      <div className="w-12 h-12 rounded-xl bg-primary/5 dark:bg-white/5 flex items-center justify-center mx-auto border border-primary/10 dark:border-white/10">
+                        <FolderOpen className="h-6 w-6 text-emerald-600 dark:text-emerald-400" />
                       </div>
                       <div>
-                        <p className="text-xs text-white/80 font-bold">Maqola faylini bu yerga torting</p>
-                        <p className="text-[10px] text-white/40 mt-1">.docx, .pdf yoki .txt formatlari</p>
+                        <p className="text-xs text-foreground/80 dark:text-white/80 font-bold">Maqola faylini bu yerga torting</p>
+                        <p className="text-[10px] text-muted-foreground/60 dark:text-white/40 mt-1">.docx, .pdf yoki .txt formatlari</p>
                       </div>
                       <div className="pt-2">
-                        <span className="inline-block px-3 py-1 rounded bg-emerald-500/10 text-emerald-400 text-[10px] font-bold border border-emerald-500/20">
+                        <span className="inline-block px-3 py-1 rounded bg-emerald-500/10 dark:bg-emerald-500/20 text-emerald-700 dark:text-emerald-400 text-[10px] font-bold border border-emerald-500/20">
                           FAYL YUKLASH
                         </span>
                       </div>
@@ -449,15 +452,15 @@ const Index = () => {
                   </div>
 
                   {/* Mock Results panel */}
-                  <div className="mt-6 space-y-3 pt-6 border-t border-white/10">
+                  <div className="mt-6 space-y-3 pt-6 border-t border-border dark:border-white/10">
                     <div className="flex justify-between items-center text-xs">
-                      <span className="text-white/60">Tahlil natijasi:</span>
-                      <span className="font-bold text-emerald-400">92% (A'lo)</span>
+                      <span className="text-muted-foreground dark:text-white/60">Tahlil natijasi:</span>
+                      <span className="font-bold text-emerald-600 dark:text-emerald-400">92% (A'lo)</span>
                     </div>
-                    <div className="w-full h-1.5 bg-white/10 rounded-full overflow-hidden">
-                      <div className="w-[92%] h-full bg-emerald-400 rounded-full" />
+                    <div className="w-full h-1.5 bg-muted dark:bg-white/10 rounded-full overflow-hidden">
+                      <div className="w-[92%] h-full bg-emerald-600 dark:bg-emerald-400 rounded-full" />
                     </div>
-                    <p className="text-[10px] text-white/45 italic leading-snug">
+                    <p className="text-[10px] text-muted-foreground/75 dark:text-white/45 italic leading-snug">
                       * Matn 3450 ta so'zdan iborat, annotatsiya va kalit so'zlar aniqlandi. Imlo xatoliklar darajasi past.
                     </p>
                   </div>
