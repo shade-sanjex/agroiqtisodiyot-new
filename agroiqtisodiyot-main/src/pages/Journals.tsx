@@ -88,7 +88,14 @@ const Journals = () => {
 
       {/* Hero */}
       <section className="relative bg-mesh-light dark:bg-mesh-dark border-b border-border/40 py-12 md:py-16 overflow-hidden">
-        <div className="absolute bottom-10 right-10 w-40 h-40 border border-primary/5 dark:border-white/5 rounded-3xl rotate-12 animate-spin-slow" />
+        {/* Grid pattern overlay */}
+        <div className="absolute inset-0 bg-grid-pattern pointer-events-none" />
+
+        {/* Colorful Aurora Blobs */}
+        <div className="absolute top-1/2 left-1/4 -translate-y-1/2 w-64 h-64 rounded-full bg-primary/10 dark:bg-primary/25 blur-3xl animate-float-slow -z-10" />
+        <div className="absolute top-1/2 right-1/4 -translate-y-1/2 w-64 h-64 rounded-full bg-emerald-500/10 dark:bg-emerald-500/25 blur-3xl animate-float-delayed -z-10" />
+
+        <div className="absolute bottom-10 right-10 w-40 h-40 border border-primary/5 dark:border-white/5 rounded-3xl rotate-12 animate-spin-slow -z-10" />
         <div className="container mx-auto px-4 text-center relative z-10">
           <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-emerald-500/10 dark:bg-white/10 mb-4 animate-float-slow">
             <BookOpen className="h-8 w-8 text-primary dark:text-emerald-300" />

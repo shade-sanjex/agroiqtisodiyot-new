@@ -33,8 +33,14 @@ const Requirements = () => {
 
       {/* ============ PREMIUM HERO BANNER ============ */}
       <section className="relative h-[250px] md:h-[320px] flex items-center justify-center overflow-hidden bg-mesh-light dark:bg-mesh-dark border-b border-border/40">
+        {/* Grid pattern overlay */}
+        <div className="absolute inset-0 bg-grid-pattern pointer-events-none" />
+
+        {/* Colorful Aurora Blobs */}
+        <div className="absolute top-1/2 left-1/4 -translate-y-1/2 w-64 h-64 rounded-full bg-primary/10 dark:bg-primary/25 blur-3xl animate-float-slow -z-10" />
+        <div className="absolute top-1/2 right-1/4 -translate-y-1/2 w-64 h-64 rounded-full bg-emerald-500/10 dark:bg-emerald-500/25 blur-3xl animate-float-delayed -z-10" />
+
         <div className="absolute top-20 left-10 w-24 h-24 border border-primary/5 dark:border-white/5 rounded-xl rotate-45 animate-float -z-10" />
-        <div className="absolute bottom-10 right-10 w-36 h-36 rounded-full bg-emerald-500/5 blur-2xl animate-float-slow -z-10" />
         
         <div className="relative text-center z-10 space-y-3 px-4">
           <ScrollReveal>

@@ -64,6 +64,13 @@ function ArticleCheckerContent() {
 
       {/* Hero */}
       <section className="relative bg-mesh-light dark:bg-mesh-dark border-b border-border/40 py-12 md:py-16 overflow-hidden">
+        {/* Grid pattern overlay */}
+        <div className="absolute inset-0 bg-grid-pattern pointer-events-none" />
+
+        {/* Colorful Aurora Blobs */}
+        <div className="absolute top-1/2 left-1/4 -translate-y-1/2 w-64 h-64 rounded-full bg-primary/10 dark:bg-primary/25 blur-3xl animate-float-slow -z-10" />
+        <div className="absolute top-1/2 right-1/4 -translate-y-1/2 w-64 h-64 rounded-full bg-emerald-500/10 dark:bg-emerald-500/25 blur-3xl animate-float-delayed -z-10" />
+
         <div className="absolute top-10 right-20 w-32 h-32 border border-primary/5 dark:border-white/5 rounded-full animate-spin-slow -z-10" />
         <div className="container mx-auto px-4 text-center relative z-10">
           <div className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-500/10 dark:bg-white/10 rounded-full text-emerald-700 dark:text-amber-300 text-sm mb-4 backdrop-blur-sm border border-emerald-500/20 dark:border-white/10 animate-float-slow">
