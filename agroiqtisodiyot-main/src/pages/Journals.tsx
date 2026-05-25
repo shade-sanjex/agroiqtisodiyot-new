@@ -276,23 +276,14 @@ const Journals = () => {
                   "Ushbu nashr uchun qo'shimcha tavsif kiritilmagan. Nashrdagi barcha materiallar agrosanoat kompleksi, barqaror qishloq xo'jaligi iqtisodiyoti va oziq-ovqat xavfsizligini ta'minlash yo'nalishlaridagi original ilmiy-tadqiqot ishlarini o'z ichiga oladi."}
               </p>
 
-              <div className="flex flex-col sm:flex-row gap-3 pt-2">
+              <div className="pt-2">
                 <Button
-                  className="flex-1 rounded-full shadow-lg bg-gradient-to-r from-primary to-primary/90 text-white font-medium"
+                  className="w-full rounded-full shadow-lg bg-gradient-to-r from-primary to-primary/90 text-white font-medium"
                   onClick={() => window.open(selectedJournal.pdf_url, '_blank')}
                 >
                   <Download className="h-4 w-4 mr-2" />
                   Yuklab olish
                 </Button>
-                <Link to="/article-checker" className="flex-1">
-                  <Button
-                    variant="outline"
-                    className="w-full rounded-full border-primary/30 text-primary hover:bg-primary/5 hover:text-primary font-medium"
-                  >
-                    <Sparkles className="h-4 w-4 mr-2 text-amber-500" />
-                    AI Tekshirish
-                  </Button>
-                </Link>
               </div>
             </div>
           </div>
