@@ -132,64 +132,68 @@ const Journals = () => {
 
       {/* Main Content */}
       <section className="py-10 md:py-16 flex-1">
-        <div className="container mx-auto px-4 max-w-6xl">
+        <div className="container mx-auto px-4 max-w-7xl">
           {loading ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {Array.from({ length: 6 }).map((_, i) => (
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+              {Array.from({ length: 8 }).map((_, i) => (
                 <div key={i} className="rounded-2xl overflow-hidden">
                   <Skeleton className="aspect-[3/4] w-full" />
                 </div>
               ))}
             </div>
           ) : filtered.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
               {filtered.map((journal, i) => (
-                <ScrollReveal key={journal.id} delay={i * 0.06}>
+                <ScrollReveal key={journal.id} delay={i * 0.05}>
                   <div
-                    className="journal-card cursor-pointer h-full"
+                    className="journal-card cursor-pointer h-full group/journal border border-border/70 shadow-sm hover:shadow-xl hover:border-emerald-500/20 transition-all duration-300 p-4 rounded-2xl flex flex-col justify-between"
                     onClick={() => setSelectedJournal(journal)}
                   >
-                    {journal.cover_image_url ? (
-                      <div className="journal-card-cover">
+                    <div className="relative aspect-[3/4] w-full rounded-xl overflow-hidden bg-slate-900 border border-border/20 shadow-md mb-4">
+                      <div className="journal-page-fold" />
+                      <div className="journal-cover-shine" />
+                      <div className="journal-book-spine" />
+                      
+                      {journal.cover_image_url ? (
                         <img
                           src={journal.cover_image_url}
                           alt={journal.title}
+                          className="absolute inset-0 w-full h-full object-cover group-hover/journal:scale-105 transition-transform duration-500"
                           loading="lazy"
                         />
-                        {/* Badge */}
-                        {isNew(journal.created_at) && (
-                          <div className="absolute top-3 left-3 z-10">
-                            <span className="journal-badge-new">Yangi</span>
+                      ) : (
+                        <div className="absolute inset-0 bg-gradient-to-br from-navy-950 via-slate-900 to-navy-900 flex flex-col justify-between p-5">
+                          <div className="flex justify-between items-start">
+                            <BookOpen className="h-5 w-5 text-amber-300/60" />
+                            <span className="text-[8px] font-bold text-white/40 tracking-[0.2em] uppercase">ISCAD</span>
                           </div>
-                        )}
-
-                        {/* Info overlay */}
-                        <div className="journal-card-info">
-                          <h3 className="font-serif font-bold text-white text-sm line-clamp-2 mb-1 drop-shadow-lg">
-                            {journal.title}
-                          </h3>
-                          <div className="flex items-center gap-2 text-white/60 text-xs">
-                            <Calendar className="h-3 w-3" />
-                            <span>{formatDate(journal.created_at)}</span>
+                          <div className="space-y-2 text-left">
+                            <p className="text-[8px] tracking-[0.2em] text-emerald-400 font-bold uppercase">Agroiqtisodiyot</p>
+                            <h4 className="font-serif font-bold text-white/90 text-xs leading-snug line-clamp-3">
+                              {journal.title}
+                            </h4>
                           </div>
                         </div>
-                      </div>
-                    ) : (
-                      <div className="journal-card-placeholder bg-gradient-to-br from-slate-800 to-slate-900">
-                        <div className="relative z-10 space-y-3 flex flex-col items-center">
-                          <div className="w-12 h-12 rounded-2xl bg-white/10 flex items-center justify-center">
-                            <BookOpen className="h-6 w-6 text-white/50" />
-                          </div>
-                          <h3 className="font-serif font-bold text-white/80 text-sm line-clamp-3 leading-snug">
-                            {journal.title}
-                          </h3>
-                          <div className="flex items-center gap-1.5 text-white/40 text-[10px]">
-                            <Calendar className="h-3 w-3" />
-                            <span>{formatDate(journal.created_at)}</span>
-                          </div>
+                      )}
+                      
+                      {/* Top badge */}
+                      {isNew(journal.created_at) && (
+                        <div className="absolute top-2.5 left-2.5 z-20">
+                          <span className="journal-badge-new text-[10px] px-2 py-0.5">Yangi</span>
                         </div>
+                      )}
+                    </div>
+                    
+                    {/* Metadata text below cover */}
+                    <div className="space-y-1.5 px-1 text-left">
+                      <div className="flex items-center justify-between text-[10px] text-muted-foreground font-medium">
+                        <span>№ Nashr</span>
+                        <span>{new Date(journal.created_at).toLocaleDateString('uz-UZ', { year: 'numeric', month: 'short' })}</span>
                       </div>
-                    )}
+                      <h4 className="font-serif font-bold text-foreground text-xs md:text-sm line-clamp-2 leading-snug group-hover/journal:text-primary transition-colors duration-200">
+                        {journal.title}
+                      </h4>
+                    </div>
                   </div>
                 </ScrollReveal>
               ))}
