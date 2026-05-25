@@ -10,7 +10,6 @@ import {
   Loader2, 
   CheckCircle, 
   AlertCircle, 
-  User,
   ExternalLink
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -161,7 +160,6 @@ export default function TelegramApp() {
       setUploadProgress(30);
 
       // Determine backend endpoint URL
-      // If deployed locally, fetch from localhost, else use relative or custom URL
       const API_URL = import.meta.env.DEV 
         ? 'http://localhost:3000/api/upload-magazine' 
         : '/api/upload-magazine';
@@ -207,41 +205,41 @@ export default function TelegramApp() {
   );
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans antialiased pb-12 selection:bg-teal-500 selection:text-slate-950">
+    <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans antialiased pb-12 overflow-x-hidden relative selection:bg-teal-500 selection:text-slate-950">
       
       {/* Background gradients */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
-        <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full bg-teal-500/10 blur-[120px]" />
-        <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full bg-blue-600/10 blur-[120px]" />
+        <div className="absolute top-[-10%] left-[-10%] w-[65%] h-[65%] rounded-full bg-emerald-500/10 blur-[130px]" />
+        <div className="absolute bottom-[-10%] right-[-10%] w-[65%] h-[65%] rounded-full bg-amber-500/5 blur-[130px]" />
       </div>
 
       {/* Header Container */}
-      <header className="sticky top-0 z-50 backdrop-blur-md bg-slate-950/80 border-b border-slate-800/60 px-4 py-3 flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <div className="p-1.5 bg-teal-500/10 border border-teal-500/30 rounded-lg text-teal-400">
-            <BookOpen className="h-5 w-5 animate-pulse" />
+      <header className="sticky top-0 z-50 backdrop-blur-md bg-slate-950/80 border-b border-slate-900 px-4 py-3.5 flex items-center justify-between pointer-events-auto">
+        <div className="flex items-center gap-2.5">
+          <div className="p-1.5 bg-emerald-500/10 border border-emerald-500/30 rounded-xl text-emerald-400">
+            <BookOpen className="h-5 w-5" />
           </div>
-          <div>
-            <h1 className="font-bold text-base bg-clip-text text-transparent bg-gradient-to-r from-teal-400 to-blue-400 leading-none">ISCAD</h1>
-            <p className="text-[10px] text-slate-400">Telegram Web App</p>
+          <div className="text-left">
+            <h1 className="font-bold text-sm bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 to-amber-400 leading-none tracking-tight">ISCAD</h1>
+            <p className="text-[9px] font-bold text-slate-500 uppercase tracking-widest mt-0.5">Telegram Web App</p>
           </div>
         </div>
 
-        {/* User Card */}
+        {/* User Badge */}
         {tgUser && (
-          <div className="flex items-center gap-2 bg-slate-900/60 border border-slate-800/80 rounded-full pl-2 pr-3 py-1 text-xs">
+          <div className="flex items-center gap-2 bg-slate-900 border border-slate-800 rounded-full pl-2 pr-3.5 py-1 text-xs">
             {tgUser.photo_url ? (
               <img 
                 src={tgUser.photo_url} 
                 alt={tgUser.first_name} 
-                className="w-5 h-5 rounded-full object-cover"
+                className="w-5.5 h-5.5 rounded-full object-cover"
               />
             ) : (
-              <div className="w-5 h-5 rounded-full bg-gradient-to-br from-teal-400 to-blue-500 text-slate-950 flex items-center justify-center font-bold text-[9px]">
-                {tgUser.first_name.slice(0, 2).toUpperCase()}
+              <div className="w-5.5 h-5.5 rounded-full bg-gradient-to-br from-emerald-400 to-teal-500 text-slate-950 flex items-center justify-center font-bold text-[9px] uppercase">
+                {tgUser.first_name.slice(0, 2)}
               </div>
             )}
-            <span className="font-medium text-slate-300 max-w-[80px] truncate">{tgUser.first_name}</span>
+            <span className="font-bold text-slate-300 max-w-[80px] truncate">{tgUser.first_name}</span>
           </div>
         )}
       </header>
@@ -250,12 +248,12 @@ export default function TelegramApp() {
       <main className="flex-1 z-10 px-4 pt-4 max-w-md mx-auto w-full">
         
         {/* Navigation Tabs */}
-        <div className="grid grid-cols-2 p-1 bg-slate-900/80 border border-slate-800/50 rounded-xl mb-6 backdrop-blur-sm">
+        <div className="grid grid-cols-2 p-1 bg-slate-900 border border-slate-800/80 rounded-full mb-6 backdrop-blur-sm">
           <button
             onClick={() => { setActiveTab('journals'); setUploadSuccess(false); setUploadError(null); }}
-            className={`flex items-center justify-center gap-2 py-2.5 rounded-lg text-xs font-semibold transition-all duration-300 ${
+            className={`flex items-center justify-center gap-2 py-3 rounded-full text-xs font-bold uppercase tracking-wider transition-all ${
               activeTab === 'journals' 
-                ? 'bg-gradient-to-r from-teal-500 to-teal-600 text-slate-950 shadow-md shadow-teal-500/20' 
+                ? 'bg-emerald-500 text-slate-950 shadow-md shadow-emerald-500/10' 
                 : 'text-slate-400 hover:text-slate-200'
             }`}
           >
@@ -264,9 +262,9 @@ export default function TelegramApp() {
           </button>
           <button
             onClick={() => { setActiveTab('upload'); setUploadSuccess(false); setUploadError(null); }}
-            className={`flex items-center justify-center gap-2 py-2.5 rounded-lg text-xs font-semibold transition-all duration-300 ${
+            className={`flex items-center justify-center gap-2 py-3 rounded-full text-xs font-bold uppercase tracking-wider transition-all ${
               activeTab === 'upload' 
-                ? 'bg-gradient-to-r from-teal-500 to-teal-600 text-slate-950 shadow-md shadow-teal-500/20' 
+                ? 'bg-emerald-500 text-slate-950 shadow-md shadow-emerald-500/10' 
                 : 'text-slate-400 hover:text-slate-200'
             }`}
           >
@@ -281,38 +279,38 @@ export default function TelegramApp() {
             
             {/* Search Input */}
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+              <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-emerald-400" />
               <Input
                 type="text"
                 placeholder="Jurnal qidirish..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full bg-slate-900/40 border-slate-800 pl-9 text-slate-200 placeholder:text-slate-500 focus-visible:ring-teal-500/30"
+                className="w-full bg-slate-900 border-slate-800 pl-10 text-xs md:text-sm text-slate-200 placeholder:text-slate-600 focus-visible:ring-emerald-500/30 rounded-xl h-11"
               />
             </div>
 
             {/* List */}
             {loading ? (
               <div className="py-20 text-center flex flex-col items-center justify-center gap-3">
-                <Loader2 className="h-8 w-8 animate-spin text-teal-400" />
-                <p className="text-sm text-slate-400">Jurnallar yuklanmoqda...</p>
+                <Loader2 className="h-8 w-8 animate-spin text-emerald-400" />
+                <p className="text-xs font-semibold text-slate-400">Jurnallar yuklanmoqda...</p>
               </div>
             ) : filteredJournals.length === 0 ? (
               <div className="py-16 text-center border border-dashed border-slate-800/80 rounded-2xl">
-                <BookOpen className="h-10 w-10 text-slate-600 mx-auto mb-2" />
-                <p className="text-sm text-slate-400 font-medium">Hech qanday jurnal topilmadi</p>
-                <p className="text-xs text-slate-500 mt-1">Qidiruv so'zini o'zgartirib ko'ring</p>
+                <BookOpen className="h-10 w-10 text-slate-700 mx-auto mb-2" />
+                <p className="text-xs font-bold text-slate-400">Hech qanday jurnal topilmadi</p>
+                <p className="text-[10px] text-slate-600 mt-1 font-semibold">Qidiruv so'zini o'zgartirib ko'ring</p>
               </div>
             ) : (
-              <div className="grid grid-cols-1 gap-4">
+              <div className="grid grid-cols-1 gap-3.5 text-left">
                 {filteredJournals.map((journal) => (
                   <Card 
                     key={journal.id} 
-                    className="overflow-hidden bg-slate-900/40 border-slate-800/60 backdrop-blur-sm hover:border-slate-700/60 transition-all duration-300"
+                    className="overflow-hidden bg-slate-900/60 border-slate-800 backdrop-blur-sm hover:border-emerald-500/30 transition-all duration-300 rounded-xl"
                   >
-                    <CardContent className="p-3 flex gap-3">
+                    <CardContent className="p-3 flex gap-4">
                       {/* Cover Thumbnail */}
-                      <div className="w-16 h-20 bg-slate-800/80 rounded-md overflow-hidden flex-shrink-0 border border-slate-800">
+                      <div className="w-16 h-22 bg-slate-800/80 rounded-lg overflow-hidden flex-shrink-0 border border-slate-750 relative shadow-md">
                         {journal.cover_image_url ? (
                           <img 
                             src={journal.cover_image_url} 
@@ -321,30 +319,31 @@ export default function TelegramApp() {
                             loading="lazy"
                           />
                         ) : (
-                          <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-slate-800 to-slate-900 text-slate-600">
-                            <FileText className="h-6 w-6" />
+                          <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-slate-900 to-slate-950 text-slate-600">
+                            <FileText className="h-6 w-6 text-emerald-500/50" />
                           </div>
                         )}
+                        <div className="absolute inset-y-0 left-0 w-[3px] bg-black/25 z-10" />
                       </div>
 
                       {/* Details */}
                       <div className="flex-1 min-w-0 flex flex-col justify-between">
                         <div>
                           <h3 className="font-bold text-xs text-slate-200 line-clamp-1 leading-tight">{journal.title}</h3>
-                          <p className="text-[10px] text-slate-400 line-clamp-2 mt-1 leading-snug">
-                            {journal.description || "Tavsif berilmagan."}
+                          <p className="text-[10px] text-slate-400 line-clamp-2 mt-1.5 leading-relaxed font-semibold">
+                            {journal.description || "Annotatsiya kiritilmagan."}
                           </p>
                         </div>
                         
-                        <div className="flex items-center justify-between pt-1">
-                          <span className="text-[9px] text-slate-500">
+                        <div className="flex items-center justify-between pt-2 border-t border-slate-800/65 mt-2">
+                          <span className="text-[9px] font-black text-slate-500 uppercase tracking-wider">
                             {new Date(journal.created_at).toLocaleDateString('uz-UZ')}
                           </span>
                           <a 
                             href={journal.pdf_url} 
                             target="_blank" 
                             rel="noopener noreferrer"
-                            className="inline-flex items-center gap-1 text-[10px] font-bold text-teal-400 hover:text-teal-300 transition-colors"
+                            className="inline-flex items-center gap-1 text-[10px] font-black text-emerald-400 hover:text-emerald-300 transition-colors uppercase tracking-wider"
                           >
                             O'qish
                             <ExternalLink className="h-3 w-3" />
@@ -361,20 +360,20 @@ export default function TelegramApp() {
 
         {/* Tab 2: Upload Form */}
         {activeTab === 'upload' && (
-          <div className="bg-slate-900/40 border border-slate-850 backdrop-blur-sm rounded-2xl p-4 shadow-xl">
+          <div className="bg-slate-900/60 border border-slate-800 backdrop-blur-sm rounded-2xl p-5 shadow-xl text-left">
             
             {uploadSuccess ? (
               <div className="py-8 text-center space-y-4">
-                <div className="inline-flex items-center justify-center p-3 bg-teal-500/10 border border-teal-500/20 text-teal-400 rounded-full">
+                <div className="inline-flex items-center justify-center p-3.5 bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 rounded-full">
                   <CheckCircle className="h-10 w-10 animate-bounce" />
                 </div>
                 <h3 className="font-bold text-base text-slate-100">Muvaffaqiyatli Yuklandi!</h3>
-                <p className="text-xs text-slate-400 max-w-xs mx-auto">
-                  Jurnal fayllari Telegram CDN xotirasiga yuklandi va Supabase ma'lumotlar bazasiga saqlandi.
+                <p className="text-xs text-slate-400 max-w-xs mx-auto font-semibold">
+                  Jurnal fayllari Telegram xotirasiga yuklandi va ma'lumotlar bazasiga kiritildi.
                 </p>
                 <Button 
                   onClick={() => { setUploadSuccess(false); setActiveTab('journals'); }}
-                  className="bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs w-full py-2.5 rounded-xl border border-slate-700/60"
+                  className="bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs w-full py-3 rounded-xl border border-slate-700 font-bold uppercase tracking-wider"
                 >
                   Nashrlar ro'yxatiga qaytish
                 </Button>
@@ -382,20 +381,20 @@ export default function TelegramApp() {
             ) : (
               <form onSubmit={handleUploadSubmit} className="space-y-4">
                 <div>
-                  <h3 className="text-sm font-bold text-slate-200 mb-1">Yangi Jurnal Qo'shish</h3>
-                  <p className="text-[10px] text-slate-500">Jurnal ma'lumotlarini to'ldiring va fayllarni tanlang.</p>
+                  <h3 className="text-sm font-bold text-slate-200">Yangi Jurnal Qo'shish</h3>
+                  <p className="text-[10px] font-semibold text-slate-500 mt-1">Jurnal ma'lumotlarini to'ldiring va fayllarni tanlang.</p>
                 </div>
 
                 {uploadError && (
                   <div className="p-3 bg-red-950/40 border border-red-900/40 rounded-xl flex items-start gap-2.5 text-red-400">
                     <AlertCircle className="h-4 w-4 mt-0.5 flex-shrink-0" />
-                    <p className="text-[10px] font-medium leading-normal">{uploadError}</p>
+                    <p className="text-[10px] font-semibold leading-normal">{uploadError}</p>
                   </div>
                 )}
 
                 {/* Title */}
                 <div className="space-y-1.5">
-                  <label className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Jurnal nomi *</label>
+                  <label className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Jurnal nomi *</label>
                   <Input
                     type="text"
                     required
@@ -403,27 +402,27 @@ export default function TelegramApp() {
                     placeholder="Masalan: Agroiqtisodiyot Jurnali 2026 #1"
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
-                    className="bg-slate-950/50 border-slate-800 text-slate-200 placeholder:text-slate-600 focus-visible:ring-teal-500/30 text-xs"
+                    className="bg-slate-950 border-slate-800 text-slate-200 placeholder:text-slate-750 focus-visible:ring-emerald-500/30 text-xs font-semibold rounded-xl h-11"
                   />
                 </div>
 
                 {/* Description */}
                 <div className="space-y-1.5">
-                  <label className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Tavsif (Tavsif/Annotatsiya)</label>
+                  <label className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Tavsif / Annotatsiya</label>
                   <Textarea
                     disabled={uploading}
-                    placeholder="Jurnal haqida qisqacha ma'lumot yoki annotatsiya yozing..."
+                    placeholder="Jurnal haqida qisqacha ma'lumot yoki annotatsiya..."
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
                     rows={3}
-                    className="bg-slate-950/50 border-slate-800 text-slate-200 placeholder:text-slate-600 focus-visible:ring-teal-500/30 text-xs"
+                    className="bg-slate-950 border-slate-800 text-slate-200 placeholder:text-slate-750 focus-visible:ring-emerald-500/30 text-xs font-semibold rounded-xl"
                   />
                 </div>
 
-                {/* PDF Upload Button */}
+                {/* PDF Drop Zone */}
                 <div className="space-y-1.5">
-                  <label className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">PDF Fayl *</label>
-                  <div className="relative group border border-dashed border-slate-800 hover:border-slate-700/80 rounded-xl bg-slate-950/30 transition-all p-3 text-center cursor-pointer">
+                  <label className="text-[9px] font-black text-slate-400 uppercase tracking-widest">PDF Fayl *</label>
+                  <div className="relative group border border-dashed border-slate-800 hover:border-slate-700 rounded-xl bg-slate-950/40 transition-all p-4 text-center cursor-pointer">
                     <input 
                       type="file" 
                       accept="application/pdf"
@@ -433,19 +432,19 @@ export default function TelegramApp() {
                       className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
                     />
                     <div className="flex flex-col items-center justify-center gap-1.5">
-                      <FileText className={`h-6 w-6 ${pdfFile ? 'text-teal-400' : 'text-slate-500 group-hover:text-slate-400'}`} />
-                      <span className="text-[10px] font-semibold text-slate-300">
-                        {pdfFile ? pdfFile.name : "PDF fayl tanlash yoki sudrab tashlash"}
+                      <FileText className={`h-6 w-6 ${pdfFile ? 'text-emerald-400' : 'text-slate-650 group-hover:text-slate-500'}`} />
+                      <span className="text-[10px] font-bold text-slate-300">
+                        {pdfFile ? pdfFile.name : "PDF faylini yuklang"}
                       </span>
-                      <span className="text-[9px] text-slate-500">Maksimal hajm: 50MB</span>
+                      <span className="text-[9px] text-slate-500 font-medium">Maksimal hajm: 50MB</span>
                     </div>
                   </div>
                 </div>
 
-                {/* Cover Image Upload Button */}
+                {/* Cover Image */}
                 <div className="space-y-1.5">
-                  <label className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Muqova rasmi (ixtiyoriy)</label>
-                  <div className="relative group border border-dashed border-slate-800 hover:border-slate-700/80 rounded-xl bg-slate-950/30 transition-all p-3 text-center cursor-pointer">
+                  <label className="text-[9px] font-black text-slate-400 uppercase tracking-widest">Muqova rasmi (ixtiyoriy)</label>
+                  <div className="relative group border border-dashed border-slate-800 hover:border-slate-700 rounded-xl bg-slate-950/40 transition-all p-4 text-center cursor-pointer">
                     <input 
                       type="file" 
                       accept="image/*"
@@ -454,39 +453,39 @@ export default function TelegramApp() {
                       className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
                     />
                     <div className="flex flex-col items-center justify-center gap-1.5">
-                      <ImageIcon className={`h-6 w-6 ${coverFile ? 'text-teal-400' : 'text-slate-500 group-hover:text-slate-400'}`} />
-                      <span className="text-[10px] font-semibold text-slate-300">
-                        {coverFile ? coverFile.name : "Muqova rasmini tanlash"}
+                      <ImageIcon className={`h-6 w-6 ${coverFile ? 'text-emerald-400' : 'text-slate-650 group-hover:text-slate-500'}`} />
+                      <span className="text-[10px] font-bold text-slate-300">
+                        {coverFile ? coverFile.name : "Muqova rasmini yuklang"}
                       </span>
-                      <span className="text-[9px] text-slate-500">JPG, PNG formatida</span>
+                      <span className="text-[9px] text-slate-500 font-medium">JPG, PNG formatlari</span>
                     </div>
                   </div>
                 </div>
 
-                {/* Progress bar */}
+                {/* Upload Progress Bar */}
                 {uploading && (
                   <div className="space-y-1.5 pt-2">
                     <div className="flex justify-between items-center text-[10px]">
-                      <span className="text-slate-400 flex items-center gap-1">
-                        <Loader2 className="h-3 w-3 animate-spin text-teal-400" />
+                      <span className="text-slate-400 flex items-center gap-1.5">
+                        <Loader2 className="h-3.5 w-3.5 animate-spin text-emerald-400" />
                         Yuklanmoqda...
                       </span>
-                      <span className="text-teal-400 font-bold">{uploadProgress}%</span>
+                      <span className="text-emerald-400 font-bold">{uploadProgress}%</span>
                     </div>
-                    <div className="w-full bg-slate-900 rounded-full h-1.5 overflow-hidden">
+                    <div className="w-full bg-slate-950 rounded-full h-1.5 overflow-hidden">
                       <div 
-                        className="bg-gradient-to-r from-teal-400 to-blue-500 h-full transition-all duration-350"
+                        className="bg-emerald-500 h-full transition-all duration-300"
                         style={{ width: `${uploadProgress}%` }}
                       />
                     </div>
                   </div>
                 )}
 
-                {/* Submit */}
+                {/* Submit button */}
                 <Button
                   type="submit"
                   disabled={uploading}
-                  className="w-full bg-gradient-to-r from-teal-400 to-teal-500 hover:from-teal-500 hover:to-teal-600 text-slate-950 font-bold text-xs py-3 rounded-xl shadow-lg shadow-teal-500/10 mt-2 transition-all active:scale-[0.98]"
+                  className="w-full bg-emerald-500 hover:bg-emerald-600 text-slate-950 font-black text-xs py-3.5 rounded-xl shadow-md mt-2 transition-all uppercase tracking-wider"
                 >
                   {uploading ? "Yuklanmoqda..." : "Serverga yuklash"}
                 </Button>

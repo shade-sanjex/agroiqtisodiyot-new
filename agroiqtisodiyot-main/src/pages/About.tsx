@@ -9,7 +9,6 @@ import {
   Lightbulb,
   Microscope,
   LineChart,
-  Users,
   Globe2,
   Leaf
 } from 'lucide-react';
@@ -46,24 +45,23 @@ const About = () => {
   ];
 
   return (
-    <div className="min-h-screen flex flex-col bg-background text-foreground transition-colors duration-300">
+    <div className="min-h-screen flex flex-col bg-background text-foreground transition-colors duration-300 overflow-x-hidden">
       <Navbar />
 
-      {/* ============ MINIMAL HERO ============ */}
-      <section className="relative pt-24 pb-16 lg:pt-32 lg:pb-24 border-b border-border overflow-hidden bg-background">
-        {/* Subtle grid pattern and elegant glow */}
+      {/* ============ PREMIUM HERO ============ */}
+      <section className="relative pt-20 pb-16 lg:pt-28 lg:pb-24 border-b border-border/80 overflow-hidden bg-background">
         <div className="absolute inset-0 bg-grid-pattern opacity-40 pointer-events-none" />
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[400px] opacity-15 dark:opacity-5 bg-primary/30 blur-[100px] rounded-full pointer-events-none" />
+        <div className="mesh-gradient-glow top-[-300px] left-[-300px] opacity-70" />
         
-        <div className="container mx-auto px-4 text-center relative z-10 max-w-4xl">
+        <div className="container mx-auto px-6 text-center relative z-10 max-w-4xl">
           <ScrollReveal>
-            <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-primary/10 text-primary mb-6">
+            <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-primary/10 border border-primary/20 text-primary mb-6">
               <Building2 className="h-6 w-6" />
             </div>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif font-black mb-6 text-foreground tracking-tight">
               Tashkilot Haqida
             </h1>
-            <p className="text-base md:text-lg text-muted-foreground font-light leading-relaxed">
+            <p className="text-sm md:text-base text-muted-foreground font-medium leading-relaxed">
               O'zbekiston Respublikasi Qishloq xo'jaligi vazirligi huzuridagi Oziq-ovqat va qishloq xo'jaligi sohasida strategik rivojlanish va tadqiqotlar xalqaro markazi (ISCAD)
             </p>
           </ScrollReveal>
@@ -72,16 +70,16 @@ const About = () => {
 
       {/* ============ MISSION & VISION ============ */}
       <section className="py-20 section-alt">
-        <div className="container mx-auto px-4 max-w-5xl">
+        <div className="container mx-auto px-6 max-w-5xl">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12">
             <ScrollReveal direction="left">
-              <Card className="iscad-card h-full border-none shadow-none bg-background">
+              <Card className="glass-card h-full border border-border/80 bg-background/90 p-2">
                 <CardContent className="p-8 lg:p-10">
-                  <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-6">
-                    <Target className="h-5 w-5 text-primary" />
+                  <div className="w-12 h-12 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center mb-6 text-primary">
+                    <Target className="h-5 w-5" />
                   </div>
-                  <h2 className="text-2xl font-serif font-bold mb-4">Bizning Missiyamiz</h2>
-                  <p className="text-muted-foreground leading-relaxed text-sm md:text-base">
+                  <h2 className="text-2xl font-serif font-black mb-4">Bizning Missiyamiz</h2>
+                  <p className="text-muted-foreground leading-relaxed text-xs md:text-sm font-medium">
                     Mamlakatimiz agrar tarmog'ini barqaror rivojlantirish, oziq-ovqat xavfsizligini ta'minlash va sohada innovatsion iqtisodiy mexanizmlarni yaratish orqali xalqimiz farovonligiga xizmat qilish.
                   </p>
                 </CardContent>
@@ -89,13 +87,13 @@ const About = () => {
             </ScrollReveal>
 
             <ScrollReveal direction="right" delay={0.2}>
-              <Card className="iscad-card h-full border-none shadow-none bg-background">
+              <Card className="glass-card h-full border border-border/80 bg-background/90 p-2">
                 <CardContent className="p-8 lg:p-10">
-                  <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-6">
-                    <Leaf className="h-5 w-5 text-primary" />
+                  <div className="w-12 h-12 rounded-xl bg-accent/10 border border-accent/25 flex items-center justify-center mb-6 text-accent">
+                    <Leaf className="h-5 w-5" />
                   </div>
-                  <h2 className="text-2xl font-serif font-bold mb-4">Bizning Maqsadimiz</h2>
-                  <p className="text-muted-foreground leading-relaxed text-sm md:text-base">
+                  <h2 className="text-2xl font-serif font-black mb-4">Bizning Maqsadimiz</h2>
+                  <p className="text-muted-foreground leading-relaxed text-xs md:text-sm font-medium">
                     Agroiqtisodiyot sohasida Markaziy Osiyodagi eng ilg'or va nufuzli tahliliy-tadqiqot markaziga aylanish hamda jahon ilmiy hamjamiyatida o'z o'rnimizni topish.
                   </p>
                 </CardContent>
@@ -106,12 +104,12 @@ const About = () => {
       </section>
 
       {/* ============ CORE TASKS ============ */}
-      <section className="py-20 section-base">
-        <div className="container mx-auto px-4 max-w-6xl">
+      <section className="py-20 bg-background">
+        <div className="container mx-auto px-6 max-w-6xl">
           <ScrollReveal>
             <div className="text-center max-w-2xl mx-auto mb-16">
-              <h2 className="text-3xl md:text-4xl font-serif font-bold mb-4">Asosiy Vazifalarimiz</h2>
-              <p className="text-muted-foreground">
+              <h2 className="text-3xl md:text-4xl font-serif font-black mb-4">Asosiy Vazifalarimiz</h2>
+              <p className="text-muted-foreground text-sm font-medium">
                 Markaz o'z oldiga qo'ygan strategik maqsadlarga erishish uchun quyidagi ustuvor vazifalarni amalga oshiradi
               </p>
             </div>
@@ -120,13 +118,14 @@ const About = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
             {tasks.map((task, i) => (
               <ScrollReveal key={i} delay={i * 0.1}>
-                <div className="group p-6 rounded-2xl border border-border bg-background hover:border-primary/30 transition-all duration-300 flex gap-5 items-start">
-                  <div className="w-10 h-10 rounded-lg bg-slate-50 dark:bg-slate-900 flex items-center justify-center flex-shrink-0 group-hover:bg-primary/10 transition-colors">
+                <div className="group p-6 rounded-2xl border border-border/80 bg-card hover:border-primary/40 transition-all duration-300 flex gap-5 items-start relative overflow-hidden">
+                  <div className="absolute top-0 left-0 w-1.5 h-full bg-gradient-to-b from-primary to-accent opacity-0 group-hover:opacity-100 transition-opacity" />
+                  <div className="w-11 h-11 rounded-xl bg-secondary/50 flex items-center justify-center flex-shrink-0 group-hover:bg-primary/10 group-hover:text-primary transition-all">
                     <task.icon className="h-5 w-5 text-muted-foreground group-hover:text-primary transition-colors" />
                   </div>
                   <div>
-                    <h3 className="text-lg font-bold mb-2 text-foreground">{task.title}</h3>
-                    <p className="text-sm text-muted-foreground leading-relaxed">
+                    <h3 className="text-base font-bold mb-2 text-foreground tracking-tight">{task.title}</h3>
+                    <p className="text-xs md:text-sm text-muted-foreground font-medium leading-relaxed">
                       {task.desc}
                     </p>
                   </div>
@@ -138,15 +137,15 @@ const About = () => {
       </section>
 
       {/* ============ STATS ============ */}
-      <section className="py-20 section-alt border-t border-border">
-        <div className="container mx-auto px-4 max-w-5xl">
+      <section className="py-20 section-alt border-t border-border/80">
+        <div className="container mx-auto px-6 max-w-5xl">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {stats.map((stat, i) => (
               <ScrollReveal key={i} delay={i * 0.1} className="text-center">
-                <div className="text-4xl md:text-5xl font-serif font-black text-foreground mb-2">
+                <div className="text-3xl md:text-4xl lg:text-5xl font-serif font-black text-foreground mb-2 tracking-tight">
                   {stat.value}
                 </div>
-                <div className="text-xs uppercase tracking-widest text-muted-foreground font-semibold">
+                <div className="text-[10px] font-bold uppercase tracking-widest text-muted-foreground">
                   {stat.label}
                 </div>
               </ScrollReveal>

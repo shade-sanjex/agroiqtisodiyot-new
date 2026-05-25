@@ -31,25 +31,24 @@ const EditorialBoard = () => {
   ];
 
   return (
-    <div className="min-h-screen flex flex-col bg-background text-foreground transition-colors duration-300">
+    <div className="min-h-screen flex flex-col bg-background text-foreground transition-colors duration-300 overflow-x-hidden">
       <Navbar />
 
-      {/* ============ MINIMAL HERO ============ */}
-      <section className="relative pt-24 pb-16 lg:pt-32 lg:pb-24 border-b border-border overflow-hidden bg-background">
-        {/* Subtle grid pattern and elegant glow */}
+      {/* ============ PREMIUM HERO ============ */}
+      <section className="relative pt-20 pb-16 lg:pt-28 lg:pb-24 border-b border-border/80 overflow-hidden bg-background">
         <div className="absolute inset-0 bg-grid-pattern opacity-40 pointer-events-none" />
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[400px] opacity-15 dark:opacity-5 bg-primary/30 blur-[100px] rounded-full pointer-events-none" />
+        <div className="mesh-gradient-glow top-[-300px] left-[-300px] opacity-70" />
         
-        <div className="container mx-auto px-4 text-center relative z-10 max-w-4xl">
+        <div className="container mx-auto px-6 text-center relative z-10 max-w-4xl">
           <ScrollReveal>
-            <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-primary/10 text-primary mb-6">
+            <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-primary/10 border border-primary/20 text-primary mb-6">
               <Users className="h-6 w-6" />
             </div>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif font-black mb-6 text-foreground tracking-tight">
               Tahrir Hay'ati
             </h1>
-            <p className="text-base md:text-lg text-muted-foreground font-light leading-relaxed">
-              Jurnalning ilmiy yo'nalishi va sifatini ta'minlovchi mahalliy hamda xalqaro ekspertlar jamoasi
+            <p className="text-sm md:text-base text-muted-foreground font-medium leading-relaxed">
+              Jurnalning ilmiy yo'nalishi va tadqiqot sifatini ta'minlovchi mahalliy hamda xalqaro ekspertlar jamoasi
             </p>
           </ScrollReveal>
         </div>
@@ -57,28 +56,29 @@ const EditorialBoard = () => {
 
       {/* ============ CHIEF EDITOR ============ */}
       <section className="py-20 section-alt">
-        <div className="container mx-auto px-4 max-w-5xl">
+        <div className="container mx-auto px-6 max-w-5xl">
           <ScrollReveal>
-            {/* Elegant, clean card for the chief editor without the tacky gold glow */}
-            <Card className="iscad-card overflow-hidden bg-background">
-              <div className="grid grid-cols-1 md:grid-cols-12 gap-0">
-                <div className="md:col-span-5 relative">
-                  <div className="aspect-[4/5] md:aspect-auto md:h-full relative overflow-hidden bg-slate-100 dark:bg-slate-900 flex items-center justify-center">
-                    <User className="w-32 h-32 text-slate-300 dark:text-slate-700" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent md:hidden" />
+            <Card className="glass-card overflow-hidden bg-background border border-border/80 p-1">
+              <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
+                
+                {/* Photo space */}
+                <div className="md:col-span-4 relative flex justify-center py-6">
+                  <div className="w-48 h-48 md:w-56 md:h-56 rounded-2xl overflow-hidden bg-secondary/80 flex items-center justify-center border border-border">
+                    <User className="w-24 h-24 text-muted-foreground/60" />
                   </div>
                 </div>
                 
-                <div className="md:col-span-7 p-8 md:p-12 flex flex-col justify-center">
-                  <div className="inline-flex items-center gap-2 px-3 py-1 bg-primary/10 rounded-full text-primary text-xs font-semibold uppercase tracking-wider mb-6">
+                {/* Chief info */}
+                <div className="md:col-span-8 p-6 md:p-10 flex flex-col justify-center text-left">
+                  <div className="inline-flex items-center gap-2 px-3.5 py-1 bg-accent/15 border border-accent/25 rounded-full text-accent text-[10px] font-black uppercase tracking-wider mb-6 w-fit">
                     <Award className="h-3.5 w-3.5" /> Bosh Muharrir
                   </div>
                   
-                  <h2 className="text-3xl md:text-4xl font-serif font-bold text-foreground mb-4 leading-tight">
+                  <h2 className="text-3xl md:text-4xl font-serif font-black text-foreground mb-4 leading-tight">
                     Shuxrat Teshayev
                   </h2>
                   
-                  <div className="space-y-4 text-sm text-muted-foreground">
+                  <div className="space-y-4 text-sm font-medium text-muted-foreground">
                     <div className="flex items-start gap-3">
                       <GraduationCap className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
                       <span>Qishloq xo'jaligi fanlari doktori, professor</span>
@@ -96,11 +96,11 @@ const EditorialBoard = () => {
       </section>
 
       {/* ============ EDITORIAL BOARD MEMBERS ============ */}
-      <section className="py-20 section-base">
-        <div className="container mx-auto px-4 max-w-6xl">
+      <section className="py-20 bg-background">
+        <div className="container mx-auto px-6 max-w-6xl">
           <ScrollReveal>
             <div className="text-center mb-16">
-              <h2 className="text-3xl font-serif font-bold mb-4">Mahalliy Tahrir A'zolari</h2>
+              <h2 className="text-3xl font-serif font-black mb-4">Mahalliy Tahrir A'zolari</h2>
               <div className="w-12 h-1 bg-primary/20 mx-auto rounded-full" />
             </div>
           </ScrollReveal>
@@ -108,10 +108,11 @@ const EditorialBoard = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {editors.map((editor, i) => (
               <ScrollReveal key={i} delay={i * 0.05}>
-                <div className="p-6 rounded-xl border border-border bg-background hover:border-primary/30 transition-all group">
-                  <h3 className="font-bold text-foreground mb-2 group-hover:text-primary transition-colors">{editor.name}</h3>
-                  <div className="text-sm text-muted-foreground flex flex-col gap-1">
-                    <span className="font-medium text-foreground/80">{editor.role}</span>
+                <div className="p-6 rounded-2xl border border-border/80 bg-card hover:border-primary/40 hover:shadow-sm transition-all duration-300 group text-left relative overflow-hidden">
+                  <div className="absolute top-0 left-0 w-1.5 h-full bg-primary opacity-0 group-hover:opacity-100 transition-opacity" />
+                  <h3 className="font-bold text-foreground mb-3 text-base tracking-tight group-hover:text-primary transition-colors">{editor.name}</h3>
+                  <div className="text-xs md:text-sm font-medium text-muted-foreground flex flex-col gap-1">
+                    <span className="text-foreground/80 font-bold">{editor.role}</span>
                     <span>{editor.degree}</span>
                   </div>
                 </div>
@@ -122,11 +123,11 @@ const EditorialBoard = () => {
       </section>
 
       {/* ============ INTERNATIONAL BOARD ============ */}
-      <section className="py-20 section-alt border-t border-border">
-        <div className="container mx-auto px-4 max-w-6xl">
+      <section className="py-20 section-alt border-t border-border/80">
+        <div className="container mx-auto px-6 max-w-6xl">
           <ScrollReveal>
             <div className="text-center mb-16">
-              <h2 className="text-3xl font-serif font-bold mb-4">Xalqaro Tahrir A'zolari</h2>
+              <h2 className="text-3xl font-serif font-black mb-4">Xalqaro Tahrir A'zolari</h2>
               <div className="w-12 h-1 bg-primary/20 mx-auto rounded-full" />
             </div>
           </ScrollReveal>
@@ -134,13 +135,13 @@ const EditorialBoard = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {intEditors.map((editor, i) => (
               <ScrollReveal key={i} delay={i * 0.1}>
-                <div className="p-6 rounded-xl border border-border bg-background hover:border-primary/30 transition-all text-center">
-                  <div className="w-12 h-12 rounded-full bg-slate-100 dark:bg-slate-900 mx-auto mb-4 flex items-center justify-center text-xl">
+                <div className="p-6 rounded-2xl border border-border/80 bg-background hover:border-primary/40 transition-all duration-300 text-center">
+                  <div className="w-12 h-12 rounded-full bg-secondary/80 mx-auto mb-4 flex items-center justify-center text-xl">
                     {editor.country === 'Rossiya' ? '🇷🇺' : editor.country === 'AQSh' ? '🇺🇸' : editor.country === 'Buyuk Britaniya' ? '🇬🇧' : '🇨🇳'}
                   </div>
-                  <h3 className="font-bold text-foreground mb-1">{editor.name}</h3>
-                  <p className="text-xs font-medium text-foreground/80 mb-2">{editor.country}</p>
-                  <p className="text-sm text-muted-foreground">{editor.degree}</p>
+                  <h3 className="font-bold text-foreground mb-1 tracking-tight">{editor.name}</h3>
+                  <p className="text-[10px] font-black text-primary uppercase tracking-wider mb-2">{editor.country}</p>
+                  <p className="text-xs md:text-sm font-medium text-muted-foreground">{editor.degree}</p>
                 </div>
               </ScrollReveal>
             ))}

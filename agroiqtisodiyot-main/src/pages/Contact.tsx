@@ -52,24 +52,23 @@ const Contact = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-background text-foreground transition-colors duration-300">
+    <div className="min-h-screen flex flex-col bg-background text-foreground transition-colors duration-300 overflow-x-hidden">
       <Navbar />
 
-      {/* ============ MINIMAL HERO ============ */}
-      <section className="relative pt-24 pb-16 lg:pt-32 lg:pb-24 border-b border-border overflow-hidden bg-background">
-        {/* Subtle grid pattern and elegant glow */}
+      {/* ============ PREMIUM HERO ============ */}
+      <section className="relative pt-20 pb-16 lg:pt-28 lg:pb-24 border-b border-border/80 overflow-hidden bg-background">
         <div className="absolute inset-0 bg-grid-pattern opacity-40 pointer-events-none" />
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[400px] opacity-15 dark:opacity-5 bg-primary/30 blur-[100px] rounded-full pointer-events-none" />
+        <div className="mesh-gradient-glow top-[-300px] left-[-300px] opacity-70" />
         
-        <div className="container mx-auto px-4 text-center relative z-10 max-w-4xl">
+        <div className="container mx-auto px-6 text-center relative z-10 max-w-4xl">
           <ScrollReveal>
-            <div className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-primary/10 text-primary mb-6">
+            <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-primary/10 border border-primary/20 text-primary mb-6">
               <MessageCircle className="h-6 w-6" />
             </div>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif font-black mb-6 text-foreground tracking-tight">
               Biz Bilan Bog'laning
             </h1>
-            <p className="text-base md:text-lg text-muted-foreground font-light leading-relaxed">
+            <p className="text-sm md:text-base text-muted-foreground font-medium leading-relaxed">
               Loyiha haqida savollaringiz, takliflaringiz yoki ilmiy hamkorlik g'oyalaringiz bo'lsa, quyidagi vositalar orqali murojaat qiling.
             </p>
           </ScrollReveal>
@@ -77,14 +76,14 @@ const Contact = () => {
       </section>
 
       {/* ============ CONTACT CONTENT ============ */}
-      <section className="py-20 section-base">
-        <div className="container mx-auto px-4 max-w-6xl">
+      <section className="py-20 bg-background">
+        <div className="container mx-auto px-6 max-w-6xl">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
             
-            {/* Left Contact Info */}
+            {/* Left Column Contact Details */}
             <div className="lg:col-span-5 space-y-6 text-left">
               <ScrollReveal>
-                <h2 className="text-2xl font-serif font-bold text-foreground mb-8">
+                <h2 className="text-2xl font-serif font-black text-foreground mb-8">
                   Aloqa Ma'lumotlari
                 </h2>
               </ScrollReveal>
@@ -92,77 +91,78 @@ const Contact = () => {
               <div className="space-y-4">
                 {contactInfo.map((item, i) => (
                   <ScrollReveal key={i} delay={i * 0.05}>
-                    <div className="group p-5 rounded-xl border border-border bg-background hover:border-primary/30 transition-all duration-300 flex items-start gap-5">
-                      <div className="w-10 h-10 rounded-lg bg-slate-50 dark:bg-slate-900 flex items-center justify-center flex-shrink-0 group-hover:bg-primary/10 transition-colors">
-                        <item.icon className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors" />
+                    <div className="group p-5 rounded-2xl border border-border bg-card hover:border-primary/30 transition-all duration-300 flex items-start gap-5 relative overflow-hidden">
+                      <div className="absolute top-0 left-0 w-1 h-full bg-primary opacity-0 group-hover:opacity-100 transition-opacity" />
+                      <div className="w-10 h-10 rounded-xl bg-secondary/80 flex items-center justify-center flex-shrink-0 group-hover:bg-primary/10 transition-colors">
+                        <item.icon className="h-4.5 w-4.5 text-muted-foreground group-hover:text-primary transition-colors" />
                       </div>
                       <div>
-                        <p className="font-semibold text-[10px] text-muted-foreground uppercase tracking-widest mb-1">{item.label}</p>
+                        <p className="font-bold text-[9px] text-muted-foreground uppercase tracking-widest mb-1">{item.label}</p>
                         {item.href ? (
-                          <a href={item.href} className="text-sm font-medium text-foreground hover:text-primary transition-colors">{item.value}</a>
+                          <a href={item.href} className="text-xs md:text-sm font-bold text-foreground hover:text-primary transition-colors">{item.value}</a>
                         ) : (
-                          <p className="text-sm font-medium text-foreground">{item.value}</p>
+                          <p className="text-xs md:text-sm font-bold text-foreground">{item.value}</p>
                         )}
                       </div>
                     </div>
                   </ScrollReveal>
                 ))}
 
-                {/* Minimal Telegram Card */}
+                {/* Telegram Bot Card */}
                 <ScrollReveal delay={0.2}>
-                  <div className="mt-8 p-6 rounded-xl border border-border bg-slate-50 dark:bg-slate-900/50 flex items-center gap-5">
-                    <div className="w-10 h-10 rounded-full bg-blue-500/10 flex items-center justify-center flex-shrink-0 text-blue-500">
+                  <div className="mt-8 p-6 rounded-2xl border border-border/80 bg-secondary/20 flex items-center gap-5">
+                    <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 text-primary border border-primary/20">
                       <svg className="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
                         <path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/>
                       </svg>
                     </div>
                     <div>
-                      <p className="font-bold text-sm text-foreground">Telegram bot</p>
-                      <p className="text-xs text-muted-foreground mt-0.5">Nashrlarni yuklash va yangiliklar</p>
+                      <p className="font-bold text-sm text-foreground">Telegram botimiz</p>
+                      <p className="text-xs text-muted-foreground mt-0.5 font-medium">Nashrlarni yuklash va yangiliklar kanali</p>
                     </div>
                   </div>
                 </ScrollReveal>
               </div>
             </div>
 
-            {/* Right Contact Form */}
+            {/* Right Column Contact Form */}
             <div className="lg:col-span-7">
               <ScrollReveal direction="right">
-                <Card className="iscad-card border-border shadow-sm p-2 md:p-4 bg-background">
-                  <CardContent className="p-6 md:p-8">
-                    <h2 className="text-2xl font-serif font-bold text-foreground mb-8">
+                <Card className="glass-card border border-border/80 shadow-md p-2 md:p-4 bg-card">
+                  <CardContent className="p-6 md:p-8 text-left">
+                    <h2 className="text-2xl font-serif font-black text-foreground mb-8">
                       Xabar Yuborish
                     </h2>
 
                     <form onSubmit={handleSubmit} className="space-y-6">
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div className="space-y-2">
-                          <label className="text-xs font-semibold text-foreground uppercase tracking-widest">Ismingiz</label>
+                          <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">Ismingiz</label>
                           <Input
                             required
                             value={formData.name}
                             onChange={e => setFormData({ ...formData, name: e.target.value })}
                             placeholder="To'liq ism"
                             maxLength={100}
-                            className="h-12 bg-slate-50 dark:bg-slate-900 border-border focus-visible:ring-1 focus-visible:ring-primary shadow-none rounded-lg"
+                            className="h-12 bg-secondary/30 border-border focus-visible:ring-1 focus-visible:ring-primary shadow-none rounded-xl text-xs md:text-sm font-medium"
                           />
                         </div>
                         
                         <div className="space-y-2">
-                          <label className="text-xs font-semibold text-foreground uppercase tracking-widest">Email</label>
+                          <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">Email</label>
                           <Input
                             type="email"
                             required
                             value={formData.email}
                             onChange={e => setFormData({ ...formData, email: e.target.value })}
                             placeholder="email@example.com"
-                            className="h-12 bg-slate-50 dark:bg-slate-900 border-border focus-visible:ring-1 focus-visible:ring-primary shadow-none rounded-lg"
+                            className="h-12 bg-secondary/30 border-border focus-visible:ring-1 focus-visible:ring-primary shadow-none rounded-xl text-xs md:text-sm font-medium"
                           />
                         </div>
                       </div>
                       
                       <div className="space-y-2">
-                        <label className="text-xs font-semibold text-foreground uppercase tracking-widest">Xabar Matni</label>
+                        <label className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">Xabar Matni</label>
                         <Textarea
                           required
                           value={formData.message}
@@ -170,12 +170,12 @@ const Contact = () => {
                           placeholder="Qanday yordam bera olamiz?"
                           rows={6}
                           maxLength={2000}
-                          className="resize-none bg-slate-50 dark:bg-slate-900 border-border focus-visible:ring-1 focus-visible:ring-primary shadow-none rounded-lg p-4 text-sm"
+                          className="resize-none bg-secondary/30 border-border focus-visible:ring-1 focus-visible:ring-primary shadow-none rounded-xl p-4 text-xs md:text-sm font-medium"
                         />
                         <p className="text-[10px] text-muted-foreground mt-1 text-right font-mono">{formData.message.length}/2000</p>
                       </div>
                       
-                      <Button type="submit" className="w-full rounded-lg h-12 font-medium" disabled={loading}>
+                      <Button type="submit" className="w-full rounded-full h-12 font-bold glow-button-primary bg-primary text-primary-foreground uppercase tracking-wider text-xs" disabled={loading}>
                         {loading ? (
                           <><Loader2 className="h-4 w-4 animate-spin mr-2" /> Yuborilmoqda...</>
                         ) : (

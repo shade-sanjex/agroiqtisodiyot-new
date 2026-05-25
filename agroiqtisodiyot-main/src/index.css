@@ -3,84 +3,87 @@
 @tailwind utilities;
 
 /*
- * ISCAD Design System — Premium Minimalist
- * Brand Colors: Slate (Monochrome Base) + Emerald Green (Accent)
- * Philosophy: Extreme clean, massive whitespace, zero clutter, high readability.
+ * ISCAD Premium Design System v2.0
+ * Palette: Emerald Forest Green (Primary) + Luxurious Warm Gold (Accent) + Obsidian/Pearl Base
+ * Typography: Playfair Display (Serif Headings) + Plus Jakarta Sans (Sans Body)
+ * Features: 3D Perspective, Parallax, Glassmorphism, Micro-animations
  */
 
 @layer base {
   :root {
     /* === LIGHT MODE === */
-    --background: 0 0% 100%; /* Pure white */
-    --foreground: 222.2 84% 4.9%; /* Slate 950 */
+    --background: 45 15% 99%; /* Pearl White */
+    --foreground: 220 40% 12%; /* Deep Slate-Charcoal */
 
     --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card-foreground: 220 40% 12%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover-foreground: 220 40% 12%;
 
     /* Premium Emerald Green */
-    --primary: 150 60% 35%;
-    --primary-foreground: 0 0% 100%;
+    --primary: 154 55% 26%;
+    --primary-foreground: 45 15% 99%;
 
-    /* Deep Slate */
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    /* Warm Premium Gold */
+    --accent: 43 90% 50%;
+    --accent-foreground: 220 40% 12%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%; /* Slate 500 */
+    /* Soft Sage/Slate Gray */
+    --secondary: 154 15% 95%;
+    --secondary-foreground: 154 40% 20%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --muted: 215 15% 94%;
+    --muted-foreground: 215 16% 40%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 350 80% 55%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 214.3 31.8% 91.4%; /* Slate 200 */
-    --input: 214.3 31.8% 91.4%;
-    --ring: 150 60% 35%;
+    --border: 154 15% 90%;
+    --input: 154 15% 90%;
+    --ring: 154 55% 26%;
 
-    --radius: 0.75rem;
-
-    /* Removed Gold/Navy concepts, sticking strictly to the minimal palette */
-    --gold: 45 93% 58%; /* Kept for compatibility if used strictly for badges */
-    --gold-foreground: 45 80% 20%;
+    --radius: 1rem;
+    
+    --gold: 43 90% 50%;
+    --gold-foreground: 220 40% 12%;
   }
 
   .dark {
     /* === DARK MODE === */
-    --background: 222.2 84% 4.9%; /* Slate 950 */
-    --foreground: 210 40% 98%; /* Slate 50 */
+    --background: 165 35% 3.5%; /* Obsidian Deep Green-Black */
+    --foreground: 150 20% 97%; /* Soft Light Sage-White */
 
-    --card: 222.2 84% 4.9%; /* Slate 950 */
-    --card-foreground: 210 40% 98%;
+    --card: 165 25% 6%; /* Deep Glassmorphic Charcoal Green */
+    --card-foreground: 150 20% 97%;
 
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
+    --popover: 165 25% 6%;
+    --popover-foreground: 150 20% 97%;
 
-    /* Emerald remains vibrant but readable */
-    --primary: 150 60% 45%;
-    --primary-foreground: 222.2 47.4% 1.2%;
+    /* Bright Emerald Green */
+    --primary: 150 62% 43%;
+    --primary-foreground: 165 35% 3.5%;
 
-    --secondary: 217.2 32.6% 17.5%; /* Slate 800 */
-    --secondary-foreground: 210 40% 98%;
+    /* Glowing Warm Gold */
+    --accent: 43 92% 54%;
+    --accent-foreground: 165 35% 3.5%;
 
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%; /* Slate 400 */
+    /* Sleek Deep Forest Gray */
+    --secondary: 165 20% 10%;
+    --secondary-foreground: 150 40% 90%;
 
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
+    --muted: 165 15% 12%;
+    --muted-foreground: 150 12% 65%;
 
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 350 70% 45%;
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 217.2 32.6% 17.5%; /* Slate 800 */
-    --input: 217.2 32.6% 17.5%;
-    --ring: 150 60% 45%;
-
-    --gold: 45 85% 55%;
-    --gold-foreground: 45 80% 90%;
+    --border: 165 15% 12%;
+    --input: 165 15% 12%;
+    --ring: 150 62% 43%;
+    
+    --gold: 43 92% 54%;
+    --gold-foreground: 165 35% 3.5%;
   }
 }
 
@@ -95,113 +98,221 @@
 
   body {
     @apply bg-background text-foreground antialiased selection:bg-primary/20 selection:text-primary;
-    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    perspective: 1200px;
   }
 
   h1, h2, h3, h4, h5, h6 {
     font-family: 'Playfair Display', 'Georgia', serif;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.01em;
   }
 }
 
 /* ============================================
-   CLEAN SECTIONS & UTILITIES
+   PREMIUM UTILITIES & CLASSES
    ============================================ */
 @layer utilities {
-  .section-base {
-    @apply bg-background;
+  /* Glassmorphism */
+  .glass-card {
+    @apply bg-card/85 dark:bg-card/75 backdrop-blur-xl border border-border/80 shadow-glass;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
-  .section-alt {
-    @apply bg-slate-50 dark:bg-slate-900/50;
-  }
-
-  .section-accent {
-    @apply bg-primary/5 dark:bg-primary/5;
-  }
-
-  /* Ultra-subtle text gradient for big headers */
-  .gradient-text-primary {
-    @apply bg-gradient-to-br from-primary to-[hsl(150,50%,20%)] dark:to-[hsl(150,40%,70%)] bg-clip-text text-transparent;
-  }
-}
-
-/* ============================================
-   PREMIUM CARD SYSTEM
-   ============================================ */
-@layer utilities {
-  .iscad-card {
-    @apply bg-card border border-border rounded-2xl;
-    transition: all 0.3s ease;
-  }
-
-  .iscad-card:hover {
-    @apply border-border shadow-sm;
-    transform: translateY(-2px);
-  }
-
-  .dark .iscad-card:hover {
-    @apply border-border shadow-none;
-    transform: translateY(-2px);
-  }
-
-  /* Clean subtle lift without colored glows */
-  .card-lift {
-    transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
-  }
-
-  .card-lift:hover {
+  .glass-card:hover {
+    @apply border-primary/30 shadow-glass-lg dark:shadow-black/40;
     transform: translateY(-4px);
-    box-shadow: 0 12px 24px -10px rgba(0, 0, 0, 0.05);
   }
 
-  .dark .card-lift:hover {
-    box-shadow: 0 12px 24px -10px rgba(0, 0, 0, 0.4);
+  .glass-nav {
+    @apply bg-background/70 dark:bg-background/60 backdrop-blur-xl border-b border-border/40;
+  }
+
+  /* Dual gradients */
+  .gradient-text-primary {
+    @apply bg-gradient-to-r from-primary via-[hsl(150,55%,45%)] to-accent bg-clip-text text-transparent;
+  }
+
+  .gradient-text-gold {
+    @apply bg-gradient-to-r from-accent to-[hsl(30,100%,50%)] bg-clip-text text-transparent;
+  }
+
+  .bg-gradient-forest {
+    @apply bg-gradient-to-br from-primary via-[hsl(154,50%,15%)] to-background;
+  }
+
+  .bg-gradient-forest-light {
+    @apply bg-gradient-to-br from-primary/5 via-[hsl(154,50%,98%)] to-background;
+  }
+
+  /* Glowing and borders */
+  .glow-button-primary {
+    @apply shadow-[0_4px_20px_-2px_rgba(16,185,129,0.3)] hover:shadow-[0_8px_30px_rgba(16,185,129,0.5)] active:scale-[0.98] transition-all duration-300;
+  }
+
+  .glow-button-accent {
+    @apply shadow-[0_4px_20px_-2px_rgba(245,158,11,0.3)] hover:shadow-[0_8px_30px_rgba(245,158,11,0.5)] active:scale-[0.98] transition-all duration-300;
+  }
+
+  .premium-border {
+    position: relative;
+    border-radius: var(--radius);
+  }
+
+  .premium-border::after {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: calc(var(--radius) + 1px);
+    padding: 1px;
+    background: linear-gradient(135deg, hsl(var(--primary) / 0.4), transparent, hsl(var(--accent) / 0.4));
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
   }
 }
 
 /* ============================================
-   SCROLL REVEAL ANIMATIONS (Kept clean)
+   SECTION ALTERNATING BACKGROUND
+   ============================================ */
+.section-alt {
+  background-color: hsl(var(--secondary) / 0.35);
+}
+
+.dark .section-alt {
+  background-color: hsl(var(--secondary) / 0.2);
+}
+
+/* ============================================
+   LOGO ADAPTIVE (LIGHT/DARK)
+   ============================================ */
+.logo-adaptive {
+  filter: none;
+  transition: filter 0.3s ease;
+}
+
+.dark .logo-adaptive {
+  filter: brightness(1.2) contrast(1.1);
+}
+
+/* ============================================
+   3D PARALLAX SECTIONS
+   Each section slides up with depth on scroll
+   ============================================ */
+.parallax-section {
+  transform-style: preserve-3d;
+  will-change: transform;
+  transition: transform 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+/* ============================================
+   SCROLL REVEAL ANIMATIONS
    ============================================ */
 .reveal {
   opacity: 0;
-  transform: translateY(30px);
-  transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+  transform: translateY(50px) scale(0.97);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .reveal.revealed {
   opacity: 1;
-  transform: translateY(0);
+  transform: translateY(0) scale(1);
 }
 
 .reveal-left {
   opacity: 0;
-  transform: translateX(-40px);
-  transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+  transform: translateX(-60px) rotate3d(0, 1, 0, 5deg);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .reveal-left.revealed {
   opacity: 1;
-  transform: translateX(0);
+  transform: translateX(0) rotate3d(0, 1, 0, 0deg);
 }
 
 .reveal-right {
   opacity: 0;
-  transform: translateX(40px);
-  transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+  transform: translateX(60px) rotate3d(0, 1, 0, -5deg);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .reveal-right.revealed {
   opacity: 1;
-  transform: translateX(0);
+  transform: translateX(0) rotate3d(0, 1, 0, 0deg);
+}
+
+.reveal-scale {
+  opacity: 0;
+  transform: scale(0.85) rotateX(5deg);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal-scale.revealed {
+  opacity: 1;
+  transform: scale(1) rotateX(0deg);
+}
+
+.reveal-stagger {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.reveal-stagger.revealed {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 /* ============================================
-   FLOATING ANIMATIONS (Minimal)
+   BACKGROUND EFFECTS
+   ============================================ */
+.bg-grid-pattern {
+  background-size: 36px 36px;
+  background-image: 
+    linear-gradient(to right, hsl(var(--foreground) / 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, hsl(var(--foreground) / 0.04) 1px, transparent 1px);
+}
+
+.mesh-gradient-glow {
+  position: absolute;
+  width: 800px;
+  height: 800px;
+  background: radial-gradient(circle, hsl(var(--primary)/0.15) 0%, hsl(var(--accent)/0.06) 50%, transparent 100%);
+  filter: blur(80px);
+  pointer-events: none;
+}
+
+.glow-blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(100px);
+  opacity: 0.15;
+  mix-blend-mode: plus-lighter;
+  pointer-events: none;
+  animation: morphing 12s ease-in-out infinite alternate;
+}
+
+/* ============================================
+   FLOATING ANIMATION
    ============================================ */
 @keyframes float {
-  0%, 100% { transform: translateY(0px); }
-  50% { transform: translateY(-8px); }
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  25% {
+    transform: translateY(-12px) rotate(0.5deg);
+  }
+  50% {
+    transform: translateY(-6px) rotate(-0.5deg);
+  }
+  75% {
+    transform: translateY(-14px) rotate(0.3deg);
+  }
 }
 
 .animate-float {
@@ -209,28 +320,120 @@
 }
 
 /* ============================================
-   SMOOTH PAGE TRANSITIONS
+   3D TILT ON MOUSE MOVE (CSS-only gentle tilt)
    ============================================ */
-@keyframes page-enter {
-  0% {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
+.tilt-3d {
+  transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+  transform-style: preserve-3d;
 }
 
-.page-enter {
-  animation: page-enter 0.5s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+.tilt-3d:hover {
+  transform: perspective(800px) rotateX(2deg) rotateY(-4deg) scale(1.02);
+}
+
+/* ============================================
+   REALISTIC JOURNAL COVER STYLING (ENHANCED 3D)
+   ============================================ */
+.journal-cover-realistic {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 3/4.2;
+  border-radius: 4px 12px 12px 4px;
+  background: linear-gradient(135deg, hsl(var(--secondary)) 0%, hsl(var(--background)) 100%);
+  box-shadow: 
+    0 15px 35px -10px rgba(0, 0, 0, 0.25),
+    2px 0 4px rgba(0, 0, 0, 0.08),
+    inset -3px 0 10px rgba(255, 255, 255, 0.05);
+  overflow: hidden;
+  transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+  transform-style: preserve-3d;
+  transform: perspective(1000px) rotateY(0deg);
+}
+
+/* Spine (left edge book spine effect) */
+.journal-cover-realistic::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 16px;
+  background: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0.3) 0%,
+    rgba(0, 0, 0, 0.08) 15%,
+    rgba(255, 255, 255, 0.18) 20%,
+    rgba(255, 255, 255, 0) 30%,
+    rgba(0, 0, 0, 0.12) 40%,
+    rgba(0, 0, 0, 0) 100%
+  );
+  z-index: 10;
+  pointer-events: none;
+}
+
+/* Page edges at right side */
+.journal-cover-realistic::after {
+  content: '';
+  position: absolute;
+  top: 3px;
+  right: 0;
+  bottom: 3px;
+  width: 4px;
+  background: repeating-linear-gradient(
+    to bottom,
+    hsl(var(--foreground) / 0.04) 0px,
+    hsl(var(--foreground) / 0.02) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+  border-radius: 0 2px 2px 0;
+  z-index: 10;
+  pointer-events: none;
+}
+
+/* 3D hover: opens like a book */
+.journal-cover-realistic:hover {
+  transform: perspective(1000px) rotateY(-12deg) rotateX(3deg) translateZ(10px);
+  box-shadow: 
+    0 30px 60px -20px rgba(0, 0, 0, 0.35),
+    8px 0 20px rgba(0, 0, 0, 0.12),
+    inset -4px 0 20px rgba(255, 255, 255, 0.12);
+}
+
+.journal-badge-premium {
+  @apply bg-accent text-accent-foreground font-sans font-bold text-[9px] uppercase tracking-widest px-2.5 py-1 rounded-md shadow-sm;
+}
+
+/* ============================================
+   JOURNAL CARD HOVER (Light, not too dark)
+   ============================================ */
+.journal-hover-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.5) 0%,
+    rgba(0, 0, 0, 0.15) 40%,
+    rgba(0, 0, 0, 0.05) 100%
+  );
+  opacity: 0;
+  transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 20;
+}
+
+.group:hover .journal-hover-overlay {
+  opacity: 1;
 }
 
 /* ============================================
    CUSTOM SCROLLBAR
    ============================================ */
 ::-webkit-scrollbar {
-  width: 6px;
+  width: 8px;
+  height: 8px;
 }
 
 ::-webkit-scrollbar-track {
@@ -238,150 +441,274 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  background: hsl(var(--border));
-  border-radius: 3px;
+  background: hsl(var(--border) / 1.5);
+  border-radius: 8px;
+  border: 2px solid hsl(var(--background));
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: hsl(var(--muted-foreground));
+  background: hsl(var(--primary) / 0.5);
 }
 
 /* ============================================
-   MINIMALIST JOURNAL CARD STYLES
+   SMOOTH MODAL WITH BLUR
    ============================================ */
+.premium-modal-overlay {
+  @apply fixed inset-0 z-50 flex items-center justify-center p-4 bg-background/40 dark:bg-black/60 backdrop-blur-md;
+  animation: fade-in 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
 
-/* Journal card wrapper — completely stripped down to pure class */
-.journal-card {
+.premium-modal-content {
+  @apply relative w-full max-w-lg bg-card border border-border/80 rounded-2xl shadow-glass-lg overflow-hidden;
+  animation: modal-rise 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes modal-rise {
+  0% {
+    opacity: 0;
+    transform: translateY(40px) scale(0.92) perspective(800px) rotateX(5deg);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1) perspective(800px) rotateX(0deg);
+  }
+}
+
+/* Custom radial progress container */
+.circular-progress-svg {
+  transform: rotate(-90deg);
+}
+
+.circular-progress-bg {
+  fill: none;
+  stroke: hsl(var(--border));
+}
+
+.circular-progress-bar {
+  fill: none;
+  stroke: url(#progressGradient);
+  stroke-linecap: round;
+  transition: stroke-dashoffset 1s ease-in-out;
+}
+
+/* ============================================
+   AI ANALYSIS SCAN ANIMATIONS
+   ============================================ */
+@keyframes scan-laser {
+  0%, 100% {
+    top: 0%;
+    opacity: 0;
+  }
+  10%, 90% {
+    opacity: 1;
+  }
+  50% {
+    top: 100%;
+    opacity: 1;
+  }
+}
+
+.animate-scan-laser {
+  animation: scan-laser 3s ease-in-out infinite;
+}
+
+@keyframes progress-sim {
+  0% {
+    width: 0%;
+  }
+  10% {
+    width: 0%;
+  }
+  50% {
+    width: 92%;
+  }
+  90% {
+    width: 92%;
+  }
+  100% {
+    width: 0%;
+  }
+}
+
+.animate-progress-sim {
+  animation: progress-sim 6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+@keyframes score-pulse {
+  0%, 100% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.animate-score-pulse {
+  animation: score-pulse 6s ease-in-out infinite;
+}
+
+/* ============================================
+   AI ANALYZING ANIMATION EFFECTS
+   ============================================ */
+@keyframes data-stream {
+  0% { background-position: 0% 0%; }
+  100% { background-position: 0% 100%; }
+}
+
+.ai-data-stream {
+  background-image: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 4px,
+    hsl(var(--primary) / 0.06) 4px,
+    hsl(var(--primary) / 0.06) 5px
+  );
+  background-size: 100% 40px;
+  animation: data-stream 4s linear infinite;
+}
+
+@keyframes orbit-glow {
+  0% {
+    transform: rotate(0deg) translateX(50px) rotate(0deg);
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    transform: rotate(360deg) translateX(50px) rotate(-360deg);
+    opacity: 0.6;
+  }
+}
+
+.animate-orbit {
+  animation: orbit-glow 8s linear infinite;
+}
+
+@keyframes typing-dots {
+  0%, 20% { opacity: 0; }
+  40% { opacity: 1; }
+  60%, 100% { opacity: 0; }
+}
+
+.typing-dot {
+  animation: typing-dots 1.4s ease-in-out infinite;
+}
+
+.typing-dot:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.typing-dot:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+/* ============================================
+   3D CARD ENTRANCE (stagger children)
+   ============================================ */
+@keyframes card-enter-3d {
+  0% {
+    opacity: 0;
+    transform: perspective(800px) rotateY(8deg) translateY(30px) scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: perspective(800px) rotateY(0deg) translateY(0) scale(1);
+  }
+}
+
+.card-enter-3d {
+  animation: card-enter-3d 0.7s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+}
+
+/* ============================================
+   HERO COVER 3D SHINE EFFECT
+   ============================================ */
+.cover-shine {
   position: relative;
-  border-radius: 12px;
   overflow: hidden;
-  background: hsl(var(--card));
-  border: 1px solid hsl(var(--border));
-  transition: all 0.3s ease;
 }
 
-.journal-card:hover {
-  border-color: hsl(var(--border));
-  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.08);
-  transform: translateY(-2px);
-}
-
-.dark .journal-card:hover {
-  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
-}
-
-/* Very subtle grid background for the hero */
-.bg-grid-pattern {
-  background-size: 40px 40px;
-  background-image: 
-    linear-gradient(to right, hsl(var(--foreground) / 0.03) 1px, transparent 1px),
-    linear-gradient(to bottom, hsl(var(--foreground) / 0.03) 1px, transparent 1px);
-}
-
-.dark .bg-grid-pattern {
-  background-image: 
-    linear-gradient(to right, hsl(var(--foreground) / 0.03) 1px, transparent 1px),
-    linear-gradient(to bottom, hsl(var(--foreground) / 0.03) 1px, transparent 1px);
-}
-
-/* Extremely minimal hero backgrounds */
-.bg-hero-light {
-  background-color: hsl(var(--background));
-}
-
-.bg-hero-dark {
-  background-color: hsl(var(--background));
-}
-
-/* Minimalist Book Cover Styling */
-.journal-page-fold {
+.cover-shine::after {
+  content: '';
   position: absolute;
   top: 0;
-  left: 0;
-  bottom: 0;
-  width: 100%;
-  pointer-events: none;
+  left: -100%;
+  width: 60%;
+  height: 100%;
   background: linear-gradient(
     90deg,
-    rgba(0, 0, 0, 0.1) 0%,
-    rgba(0, 0, 0, 0) 2%,
-    rgba(255, 255, 255, 0.05) 3%,
-    rgba(255, 255, 255, 0) 6%,
-    rgba(0, 0, 0, 0.03) 7%,
-    rgba(0, 0, 0, 0) 80%
+    transparent,
+    rgba(255, 255, 255, 0.08),
+    rgba(255, 255, 255, 0.15),
+    rgba(255, 255, 255, 0.08),
+    transparent
   );
-  z-index: 5;
+  transform: skewX(-20deg);
+  transition: left 0.8s ease;
+  z-index: 15;
+  pointer-events: none;
 }
 
-.journal-book-spine {
-  position: absolute;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  width: 4px;
-  background: rgba(0, 0, 0, 0.15);
-  box-shadow: 1px 0 2px rgba(0, 0, 0, 0.1);
-  z-index: 10;
-}
-
-/* Simple, elegant NEW badge */
-.journal-badge-new {
-  background: hsl(var(--primary));
-  color: hsl(var(--primary-foreground));
-  font-size: 0.65rem;
-  font-weight: 600;
-  padding: 0.2rem 0.5rem;
-  border-radius: 4px;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
+.cover-shine:hover::after {
+  left: 130%;
 }
 
 /* ============================================
-   MINIMALIST MODAL
+   MORPHING KEYFRAME (for glow blobs)
    ============================================ */
-.journal-modal-backdrop {
-  position: fixed;
-  inset: 0;
-  z-index: 50;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 1rem;
-  background: rgba(0, 0, 0, 0.4);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
-  animation: modal-bg-in 0.2s ease forwards;
-}
-
-@keyframes modal-bg-in {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-.journal-modal-content {
-  position: relative;
-  width: 100%;
-  max-width: 500px;
-  max-height: 90vh;
-  overflow-y: auto;
-  background: hsl(var(--card));
-  border: 1px solid hsl(var(--border));
-  border-radius: 1rem;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-  animation: modal-content-in 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-.dark .journal-modal-content {
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
-}
-
-@keyframes modal-content-in {
-  from {
-    opacity: 0;
-    transform: translateY(20px) scale(0.98);
+@keyframes morphing {
+  0% {
+    border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
   }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
+  50% {
+    border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%;
   }
+  100% {
+    border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
+  }
+}
+
+/* ============================================
+   SMOOTH PAGE TRANSITIONS
+   ============================================ */
+.page-transition-enter {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.page-transition-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+/* ============================================
+   INTERACTIVE HOVER SCALE
+   ============================================ */
+.hover-lift {
+  transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.4s ease;
+}
+
+.hover-lift:hover {
+  transform: translateY(-6px) scale(1.01);
+  box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.2);
+}
+
+/* ============================================
+   SHIMMER LOADING PLACEHOLDER
+   ============================================ */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.shimmer {
+  background: linear-gradient(90deg, 
+    hsl(var(--muted)) 25%, 
+    hsl(var(--border)) 50%, 
+    hsl(var(--muted)) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
 }
