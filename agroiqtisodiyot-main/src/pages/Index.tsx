@@ -1,5 +1,4 @@
 import { useEffect, useState, useRef, useCallback } from 'react';
-import { createPortal } from 'react-dom';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -16,60 +15,21 @@ import {
   ArrowRight, 
   Sparkles, 
   FileText, 
-  Download, 
   Activity, 
   Check, 
   Cpu, 
-  FolderOpen,
-  X,
-  Calendar,
-  Eye
+  FolderOpen
 } from 'lucide-react';
-import { supabase } from '@/integrations/supabase/client';
 import iscadLogo from '@/assets/iscad-logo.png';
 import heroBg from '@/assets/hero-agriculture.jpg';
 
-interface Journal {
-  id: string;
-  title: string;
-  description: string | null;
-  pdf_url: string;
-  cover_image_url: string | null;
-  created_at: string;
-}
-
 const Index = () => {
-  const [journals, setJournals] = useState<Journal[]>([]);
-  const [selectedJournal, setSelectedJournal] = useState<Journal | null>(null);
   const [scrollY, setScrollY] = useState(0);
   const navigate = useNavigate();
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const heroRef = useRef<HTMLDivElement>(null);
 
-  const formatDate = (dateString: string | null | undefined) => {
-    if (!dateString) return "";
-    try {
-      const d = new Date(dateString);
-      if (isNaN(d.getTime())) return "";
-      return d.toLocaleDateString('uz-UZ', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric'
-      });
-    } catch (e) {
-      console.error(e);
-      return "";
-    }
-  };
-
-  const handleJournalClick = (journal: Journal) => {
-    console.log("Index: selected journal set to", journal.title);
-    setSelectedJournal(journal);
-  };
-
   useEffect(() => {
-    fetchLatestJournals();
-    
     const handleScroll = () => {
       setScrollY(window.scrollY);
     };
@@ -92,36 +52,6 @@ const Index = () => {
   const handleMouseLeave = useCallback(() => {
     setMousePos({ x: 0, y: 0 });
   }, []);
-
-  // Lock body scroll when modal is open
-  useEffect(() => {
-    if (selectedJournal) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'unset';
-    }
-    return () => {
-      document.body.style.overflow = 'unset';
-    };
-  }, [selectedJournal]);
-
-  // Debug state changes
-  useEffect(() => {
-    console.log("Index: selectedJournal changed to", selectedJournal);
-  }, [selectedJournal]);
-
-  const fetchLatestJournals = async () => {
-    try {
-      const { data } = await supabase
-        .from('journals')
-        .select('*')
-        .order('created_at', { ascending: false })
-        .limit(6);
-      setJournals(data || []);
-    } catch (e) {
-      console.error(e);
-    }
-  };
 
   const features = [
     {
@@ -485,93 +415,10 @@ const Index = () => {
         </div>
       </section>
 
-      {/* ============ LATEST JOURNALS SECTION (3D cards with light hover) ============ */}
-      {journals.length > 0 && (
-        <section 
-          className="py-24 bg-background"
-          style={{ transform: `translateY(${Math.max(0, (scrollY - 1900) * -0.01)}px)` }}
-        >
-          <div className="container mx-auto px-6 max-w-6xl">
-            <ScrollReveal>
-              <div className="flex flex-col md:flex-row md:items-end md:justify-between mb-12">
-                <div>
-                  <h2 className="text-3xl md:text-4xl font-serif font-black">So'nggi Jurnallar</h2>
-                </div>
-                <Link to="/journals" className="mt-4 md:mt-0">
-                  <Button variant="ghost" className="text-muted-foreground hover:text-foreground font-bold -ml-4 md:ml-0 uppercase tracking-widest text-xs">
-                    Barchasi <ArrowRight className="ml-2 h-4 w-4 text-accent" />
-                  </Button>
-                </Link>
-              </div>
-            </ScrollReveal>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {journals.slice(0, 4).map((journal, i) => (
-                <ScrollReveal key={journal.id} delay={i * 0.1}>
-                  <div 
-                    className="group cursor-pointer" 
-                    onClick={() => handleJournalClick(journal)}
-                  >
-                    
-                    {/* 3D Realistic publication book container */}
-                    <div className="journal-cover-realistic cover-shine relative mb-5 border border-border/80 bg-slate-950 overflow-hidden">
-                      
-                      {journal.cover_image_url ? (
-                        <img 
-                          src={journal.cover_image_url} 
-                          alt={journal.title} 
-                          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" 
-                          loading="lazy"
-                        />
-                      ) : (
-                        <div className="w-full h-full bg-slate-900 p-6 flex flex-col justify-between text-left">
-                          <div className="flex justify-between items-start">
-                            <div className="px-2 py-0.5 border border-slate-700/50 bg-slate-800/30 rounded text-[8px] uppercase tracking-widest text-slate-400 font-bold">ISCAD</div>
-                            <BookOpen className="h-4 w-4 text-slate-500" />
-                          </div>
-                          <div className="space-y-2">
-                            <p className="text-[8px] text-accent tracking-widest uppercase font-bold">AGROIQTISODIYOT</p>
-                            <h4 className="text-white font-serif font-bold text-base leading-snug line-clamp-3">{journal.title}</h4>
-                          </div>
-                          <div className="h-1 bg-primary/30 w-full rounded-full" />
-                        </div>
-                      )}
-                      
-                      {/* Light Hover Overlay (not dark) */}
-                      <div 
-                        className="journal-hover-overlay"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleJournalClick(journal);
-                        }}
-                      >
-                        <span className="bg-white/95 dark:bg-slate-900/95 text-foreground dark:text-slate-100 text-[10px] font-bold uppercase tracking-wider px-4 py-2 rounded-full shadow-lg transition-all scale-90 group-hover:scale-100 flex items-center gap-2">
-                          <Eye className="h-3.5 w-3.5 text-primary" />
-                          Batafsil o'qish
-                        </span>
-                      </div>
-                    </div>
-
-                    <div className="text-left px-1">
-                      <div className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest mb-1">
-                        {new Date(journal.created_at).toLocaleDateString('uz-UZ', { year: 'numeric', month: 'long' })}
-                      </div>
-                      <h4 className="font-serif font-bold text-sm md:text-base text-foreground line-clamp-2 group-hover:text-primary transition-colors">
-                        {journal.title}
-                      </h4>
-                    </div>
-                  </div>
-                </ScrollReveal>
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
-
       {/* ============ CTA SECTION ============ */}
       <section 
         className="py-24 section-alt border-t border-border/60 text-center relative overflow-hidden"
-        style={{ transform: `translateY(${Math.max(0, (scrollY - 2400) * -0.01)}px)` }}
+        style={{ transform: `translateY(${Math.max(0, (scrollY - 1900) * -0.01)}px)` }}
       >
         <div className="mesh-gradient-glow bottom-[-200px] left-1/3 opacity-30" />
         <div className="container mx-auto px-6 z-10 relative">
@@ -588,102 +435,6 @@ const Index = () => {
           </ScrollReveal>
         </div>
       </section>
-
-      {/* ============ PREMIUM DETAIL MODAL (3D entrance) ============ */}
-      {selectedJournal && createPortal(
-        <div className="premium-modal-overlay" onClick={() => setSelectedJournal(null)}>
-          <div className="premium-modal-content max-w-[90vw] md:max-w-2xl lg:max-w-3xl bg-card border border-border" onClick={(e) => e.stopPropagation()}>
-            {/* Header decoration */}
-            <div className="h-1 bg-gradient-to-r from-primary to-accent" />
-
-            <div className="p-6 md:p-8 space-y-6 text-left relative">
-              {/* Close button */}
-              <button
-                onClick={() => setSelectedJournal(null)}
-                className="absolute top-6 right-6 p-2 rounded-full bg-secondary/80 hover:bg-secondary transition-colors text-muted-foreground hover:text-foreground border border-border/60 z-30"
-              >
-                <X className="h-4 w-4" />
-              </button>
-
-              <div className="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-8 items-start">
-                
-                {/* Left column: 3D realistic vertical book cover */}
-                <div className="md:col-span-5 flex justify-center">
-                  <div className="journal-cover-realistic cover-shine bg-slate-950 border border-slate-900 shadow-2xl relative w-full max-w-[200px] md:max-w-full aspect-[3/4.2] rounded-lg overflow-hidden">
-                    {selectedJournal.cover_image_url ? (
-                      <img 
-                        src={selectedJournal.cover_image_url} 
-                        alt={selectedJournal.title}
-                        className="absolute inset-0 w-full h-full object-cover"
-                      />
-                    ) : (
-                      <div className="absolute inset-0 flex flex-col justify-between p-4 text-slate-100 text-left bg-slate-900">
-                        <div className="flex justify-between items-start">
-                          <div className="px-1.5 py-0.5 border border-slate-700/50 bg-slate-800/30 rounded text-[7px] uppercase tracking-widest text-slate-400 font-bold">
-                            ISCAD
-                          </div>
-                          <BookOpen className="h-3.5 w-3.5 text-slate-500" />
-                        </div>
-                        <div className="space-y-1.5">
-                          <p className="text-[7px] text-accent tracking-widest uppercase font-bold">AGROIQTISODIYOT</p>
-                          <h4 className="text-xs font-serif font-black leading-tight text-white line-clamp-3">
-                            {selectedJournal.title}
-                          </h4>
-                        </div>
-                      </div>
-                    )}
-                    {/* Spine reflection and folding lines */}
-                    <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(0,0,0,0.15)_0%,rgba(0,0,0,0)_2%,rgba(255,255,255,0.05)_3%,rgba(255,255,255,0)_6%,rgba(0,0,0,0.03)_7%,rgba(0,0,0,0)_90%)] pointer-events-none z-10" />
-                    <div className="absolute top-0 bottom-0 left-0 w-[4px] bg-black/20 shadow-[1px_0_2px_rgba(0,0,0,0.1)] z-20" />
-                  </div>
-                </div>
-
-                {/* Right column: Info & actions */}
-                <div className="md:col-span-7 space-y-4">
-                  <div className="flex items-center gap-2">
-                    <div className="w-10 h-10 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center text-primary">
-                      <BookOpen className="h-5 w-5" />
-                    </div>
-                    <div>
-                      <p className="text-[8px] text-muted-foreground uppercase tracking-widest font-black">ILMIY NASHR</p>
-                      <h3 className="text-xs font-black text-foreground">AGROIQTISODIYOT</h3>
-                    </div>
-                  </div>
-
-                  <h2 className="font-serif font-black text-foreground text-lg md:text-xl leading-tight">
-                    {selectedJournal.title}
-                  </h2>
-
-                  <div className="flex flex-wrap items-center gap-3 text-[9px] font-black text-muted-foreground uppercase tracking-widest border-y border-border/60 py-2.5">
-                    <div className="flex items-center gap-1.5">
-                      <Calendar className="h-3.5 w-3.5 text-primary" />
-                      <span>{formatDate(selectedJournal.created_at)}</span>
-                    </div>
-                  </div>
-
-                  <p className="text-xs text-muted-foreground font-medium leading-relaxed max-h-[140px] overflow-y-auto pr-1">
-                    {selectedJournal.description ||
-                      "Ushbu nashrda agrosanoat kompleksi, barqaror qishloq xo'jaligi iqtisodiyoti va oziq-ovqat xavfsizligini ta'minlash yo'nalishlaridagi original ilmiy-tadqiqot ishlari taqdim etilgan."}
-                  </p>
-
-                  <div className="pt-4">
-                    <Button
-                      className="w-full rounded-full h-12 font-bold text-sm uppercase tracking-wider glow-button-primary bg-primary text-primary-foreground flex items-center justify-center"
-                      onClick={() => window.open(selectedJournal.pdf_url, '_blank')}
-                    >
-                      <Download className="h-4.5 w-4.5 mr-2" />
-                      Yuklab olish
-                    </Button>
-                  </div>
-                </div>
-
-              </div>
-
-            </div>
-          </div>
-        </div>,
-        document.body
-      )}
 
       <Footer />
       <BackToTop />
