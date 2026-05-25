@@ -3,8 +3,7 @@ import { Footer } from '@/components/Footer';
 import { ScrollReveal } from '@/components/ScrollReveal';
 import { BackToTop } from '@/components/BackToTop';
 import { Card, CardContent } from '@/components/ui/card';
-import { Users, GraduationCap, Building, Mail, Award } from 'lucide-react';
-import ChiefEditorImg from '@/assets/11.jpg'; // Path to chief editor image
+import { Users, GraduationCap, Building, Award, User } from 'lucide-react';
 
 const EditorialBoard = () => {
   const editors = [
@@ -62,12 +61,8 @@ const EditorialBoard = () => {
             <Card className="iscad-card overflow-hidden bg-background">
               <div className="grid grid-cols-1 md:grid-cols-12 gap-0">
                 <div className="md:col-span-5 relative">
-                  <div className="aspect-[4/5] md:aspect-auto md:h-full relative overflow-hidden bg-slate-100 dark:bg-slate-900">
-                    <img 
-                      src={ChiefEditorImg} 
-                      alt="Bosh muharrir" 
-                      className="absolute inset-0 w-full h-full object-cover filter grayscale hover:grayscale-0 transition-all duration-700" 
-                    />
+                  <div className="aspect-[4/5] md:aspect-auto md:h-full relative overflow-hidden bg-slate-100 dark:bg-slate-900 flex items-center justify-center">
+                    <User className="w-32 h-32 text-slate-300 dark:text-slate-700" />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent md:hidden" />
                   </div>
                 </div>

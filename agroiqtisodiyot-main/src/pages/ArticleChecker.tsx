@@ -19,14 +19,14 @@ import {
   Lightbulb,
   Cpu
 } from 'lucide-react';
-import { analyzeArticle, AnalysisResult } from '@/utils/articleAnalyzer';
+import { checkArticle, ArticleCheckResult } from '@/lib/ai-checker';
 
 const ArticleChecker = () => {
   const [text, setText] = useState('');
   const [file, setFile] = useState<File | null>(null);
   const [isChecking, setIsChecking] = useState(false);
   const [progress, setProgress] = useState(0);
-  const [result, setResult] = useState<AnalysisResult | null>(null);
+  const [result, setResult] = useState<ArticleCheckResult | null>(null);
 
   const handleCheck = async () => {
     if (!text && !file) return;
@@ -48,7 +48,7 @@ const ArticleChecker = () => {
 
     // Analyze text
     const textToAnalyze = file ? "Fayl mazmuni tahlil qilinmoqda... " + text : text;
-    const analysisResult = await analyzeArticle(textToAnalyze);
+    const analysisResult = await checkArticle(textToAnalyze);
 
     clearInterval(interval);
     setProgress(100);
@@ -216,9 +216,9 @@ const ArticleChecker = () => {
                                 <XCircle className="h-4 w-4 text-destructive flex-shrink-0 mt-0.5" />
                               )}
                               <div>
-                                <p className="text-sm font-medium text-foreground">{check.rule}</p>
+                                <p className="text-sm font-medium text-foreground">{check.name}</p>
                                 <p className={`text-xs mt-1 ${check.passed ? 'text-muted-foreground' : 'text-destructive/80'}`}>
-                                  {check.feedback}
+                                  {check.details}
                                 </p>
                               </div>
                             </div>
