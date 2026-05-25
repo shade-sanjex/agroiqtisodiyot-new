@@ -36,22 +36,22 @@ const About = () => {
       <Navbar />
 
       {/* ============ PREMIUM HERO BANNER ============ */}
-      <section className="relative h-[280px] md:h-[380px] flex items-center justify-center overflow-hidden bg-mesh-dark">
+      <section className="relative h-[280px] md:h-[380px] flex items-center justify-center overflow-hidden bg-mesh-light dark:bg-mesh-dark border-b border-border/40">
         <div 
-          className="absolute inset-0 bg-cover bg-center opacity-30 mix-blend-overlay scale-105" 
+          className="absolute inset-0 bg-cover bg-center opacity-10 dark:opacity-35 mix-blend-overlay scale-105 transition-opacity duration-300" 
           style={{ backgroundImage: `url(${centerBuilding})` }} 
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-background via-background/40 to-transparent" />
-        <div className="relative text-center text-white z-10 space-y-3 px-4">
+        <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/40 to-background/10 dark:from-background dark:via-background/40 dark:to-transparent" />
+        <div className="relative text-center z-10 space-y-3 px-4">
           <ScrollReveal>
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 text-xs font-semibold uppercase tracking-wider border border-emerald-500/30">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 dark:bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 text-xs font-semibold uppercase tracking-wider border border-emerald-500/20 dark:border-emerald-500/30">
               <Compass className="h-3.5 w-3.5" />
               BIZ HAQIMIZDA
             </span>
-            <h1 className="text-3xl md:text-5xl font-serif font-black mt-3 text-white drop-shadow-md">
+            <h1 className="text-3xl md:text-5xl font-serif font-black mt-3 text-foreground dark:text-white drop-shadow-sm">
               Markaz Faoliyati
             </h1>
-            <p className="text-white/70 text-xs md:text-sm max-w-xl mx-auto font-light leading-relaxed mt-2">
+            <p className="text-muted-foreground dark:text-white/70 text-xs md:text-sm max-w-xl mx-auto font-light leading-relaxed mt-2">
               O'zbekiston qishloq xo'jaligi va oziq-ovqat xavfsizligi rivojlanishining bosh strategik ilmiy markazi
             </p>
           </ScrollReveal>

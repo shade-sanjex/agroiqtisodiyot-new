@@ -94,8 +94,19 @@ const Index = () => {
       <Navbar />
 
       {/* ============ PREMIUM HERO SECTION ============ */}
-      <section className="relative min-h-[85vh] lg:min-h-[90vh] flex items-center justify-center overflow-hidden bg-mesh-dark pt-12 pb-20">
+      <section className="relative min-h-[85vh] lg:min-h-[90vh] flex items-center justify-center overflow-hidden bg-mesh-light dark:bg-mesh-dark border-b border-border/40 pt-12 pb-20">
         <ParticleBackground className="absolute inset-0 z-[1]" particleCount={40} />
+
+        {/* Background Image Watermark */}
+        <div 
+          className="absolute inset-0 opacity-[0.06] dark:opacity-[0.16] mix-blend-overlay pointer-events-none transition-opacity duration-300"
+          style={{ 
+            backgroundImage: `url(${heroImage})`,
+            backgroundPosition: 'center',
+            backgroundSize: 'cover',
+            backgroundRepeat: 'no-repeat'
+          }} 
+        />
 
         {/* Decorative dynamic shapes */}
         <div className="absolute top-20 right-10 w-96 h-96 rounded-full bg-emerald-500/10 blur-3xl animate-float-slow -z-10" />
@@ -107,19 +118,22 @@ const Index = () => {
             {/* Left Content Column */}
             <div className="lg:col-span-7 space-y-6 text-left">
               <ScrollReveal direction="left">
-                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 text-xs font-semibold uppercase tracking-wider mb-2">
-                  <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 text-emerald-600 dark:text-emerald-400 text-xs font-semibold uppercase tracking-wider mb-2">
+                  <span className="w-2 h-2 rounded-full bg-emerald-500 dark:bg-emerald-400 animate-pulse" />
                   Qishloq xo'jaligi vazirligi huzurida
                 </div>
                 
-                <h1 className="text-3xl md:text-5xl lg:text-6xl font-serif font-black leading-tight text-white drop-shadow-sm">
-                  Strategik Rivojlanish va <br />
-                  <span className="bg-gradient-to-r from-emerald-400 via-teal-300 to-amber-300 bg-clip-text text-transparent">
-                    Tadqiqotlar Xalqaro Markazi
+                <h1 className="text-5xl md:text-7xl lg:text-8xl font-serif font-black tracking-tight leading-none mb-4">
+                  <span className="bg-gradient-to-r from-primary via-emerald-600 to-secondary bg-clip-text text-transparent dark:from-emerald-400 dark:via-teal-300 dark:to-amber-300">
+                    ISCAD
                   </span>
                 </h1>
+                
+                <h2 className="text-lg md:text-xl lg:text-2xl font-serif font-bold text-foreground dark:text-emerald-300 leading-snug max-w-2xl mb-4">
+                  Oziq-ovqat va Qishloq Xo'jaligi Sohasida Strategik Rivojlanish va Tadqiqotlar Xalqaro Markazi
+                </h2>
 
-                <p className="text-sm md:text-base lg:text-lg text-white/70 font-light leading-relaxed max-w-xl mb-8">
+                <p className="text-sm md:text-base text-muted-foreground dark:text-white/70 font-light leading-relaxed max-w-xl mb-8">
                   ISCAD — O'zbekiston agrosanoat sektori va oziq-ovqat xavfsizligini ta'minlashda fundamental ilmiy innovatsiyalar, islohotlar va tahlillar olib boruvchi yetakchi davlat tashkilotidir.
                 </p>
 
@@ -132,26 +146,26 @@ const Index = () => {
                     </Button>
                   </Link>
                   <Link to="/article-checker">
-                    <Button size="lg" variant="outline" className="w-full sm:w-auto border-white/20 bg-white/5 hover:bg-white/10 hover:text-white backdrop-blur-md text-white rounded-full px-8 h-12">
-                      <Sparkles className="mr-2 h-4 w-4 text-amber-300 animate-pulse" />
+                    <Button size="lg" variant="outline" className="w-full sm:w-auto border-primary/20 dark:border-white/20 bg-primary/5 dark:bg-white/5 hover:bg-primary/10 dark:hover:bg-white/10 text-primary dark:text-white hover:text-primary-foreground dark:hover:text-white backdrop-blur-md rounded-full px-8 h-12">
+                      <Sparkles className="mr-2 h-4 w-4 text-amber-500 dark:text-amber-300 animate-pulse" />
                       AI Maqola Tekshirish
                     </Button>
                   </Link>
                 </div>
 
                 {/* Trust metrics */}
-                <div className="grid grid-cols-3 gap-6 pt-10 border-t border-white/10 mt-10 max-w-lg">
+                <div className="grid grid-cols-3 gap-6 pt-10 border-t border-border/50 dark:border-white/10 mt-10 max-w-lg">
                   <div>
-                    <div className="text-2xl lg:text-3xl font-bold text-white">500+</div>
-                    <div className="text-xs text-white/55 mt-1 font-medium">Ilmiy maqolalar</div>
+                    <div className="text-2xl lg:text-3xl font-bold text-foreground dark:text-white">500+</div>
+                    <div className="text-xs text-muted-foreground dark:text-white/55 mt-1 font-medium">Ilmiy maqolalar</div>
                   </div>
                   <div>
-                    <div className="text-2xl lg:text-3xl font-bold text-white">24+</div>
-                    <div className="text-xs text-white/55 mt-1 font-medium">Tahrir a'zolari</div>
+                    <div className="text-2xl lg:text-3xl font-bold text-foreground dark:text-white">24+</div>
+                    <div className="text-xs text-muted-foreground dark:text-white/55 mt-1 font-medium">Tahrir a'zolari</div>
                   </div>
                   <div>
-                    <div className="text-2xl lg:text-3xl font-bold text-white">7+</div>
-                    <div className="text-xs text-white/55 mt-1 font-medium">Yillik tajriba</div>
+                    <div className="text-2xl lg:text-3xl font-bold text-foreground dark:text-white">7+</div>
+                    <div className="text-xs text-muted-foreground dark:text-white/55 mt-1 font-medium">Yillik tajriba</div>
                   </div>
                 </div>
               </ScrollReveal>
@@ -201,22 +215,22 @@ const Index = () => {
                 </div>
 
                 {/* Floating Stat Card (Offset bottom-right) */}
-                <div className="absolute -bottom-6 -right-6 md:-right-8 bg-slate-950/95 backdrop-blur-xl border border-white/10 p-4 rounded-2xl shadow-2xl w-48 md:w-56 animate-float-fast z-20">
+                <div className="absolute -bottom-6 -right-6 md:-right-8 bg-card/95 dark:bg-slate-950/95 backdrop-blur-xl border border-border dark:border-white/10 p-4 rounded-2xl shadow-2xl w-48 md:w-56 animate-float-fast z-20">
                   <div className="flex items-center gap-3 mb-2">
-                    <div className="w-8 h-8 rounded-lg bg-emerald-500/10 flex items-center justify-center text-emerald-400">
+                    <div className="w-8 h-8 rounded-lg bg-emerald-500/10 flex items-center justify-center text-emerald-600 dark:text-emerald-400">
                       <Activity className="h-4 w-4" />
                     </div>
                     <div>
-                      <p className="text-[10px] text-white/50">Yuklab olishlar</p>
-                      <p className="text-xs font-bold text-white">+1,240 ta</p>
+                      <p className="text-[10px] text-muted-foreground dark:text-white/55">Yuklab olishlar</p>
+                      <p className="text-xs font-bold text-foreground dark:text-white">+1,240 ta</p>
                     </div>
                   </div>
                   {/* Mini Sparkline SVG */}
-                  <svg className="w-full h-8 text-emerald-400" viewBox="0 0 100 30" fill="none">
+                  <svg className="w-full h-8 text-emerald-600 dark:text-emerald-400" viewBox="0 0 100 30" fill="none">
                     <path d="M0,25 Q15,5 30,20 T60,5 T90,15 T100,10" stroke="currentColor" strokeWidth="2" fill="none" />
-                    <path d="M0,25 Q15,5 30,20 T60,5 T90,15 T100,10 L100,30 L0,30 Z" fill="url(#sparkline-grad)" opacity="0.1" />
+                    <path d="M0,25 Q15,5 30,20 T60,5 T90,15 T100,10 L100,30 L0,30 Z" fill="url(#sparkline-grad-card)" opacity="0.1" />
                     <defs>
-                      <linearGradient id="sparkline-grad" x1="0" y1="0" x2="0" y2="1">
+                      <linearGradient id="sparkline-grad-card" x1="0" y1="0" x2="0" y2="1">
                         <stop offset="0%" stopColor="currentColor" />
                         <stop offset="100%" stopColor="currentColor" stopOpacity="0" />
                       </linearGradient>
@@ -225,11 +239,11 @@ const Index = () => {
                 </div>
 
                 {/* Floating trust badge (Offset top-left) */}
-                <div className="absolute -top-6 -left-6 bg-slate-950/95 backdrop-blur-xl border border-white/10 py-2.5 px-4 rounded-xl shadow-2xl flex items-center gap-2 z-20">
-                  <div className="w-5 h-5 rounded-full bg-amber-500/20 flex items-center justify-center text-amber-400">
+                <div className="absolute -top-6 -left-6 bg-card/95 dark:bg-slate-950/95 backdrop-blur-xl border border-border dark:border-white/10 py-2.5 px-4 rounded-xl shadow-2xl flex items-center gap-2 z-20">
+                  <div className="w-5 h-5 rounded-full bg-amber-500/10 flex items-center justify-center text-amber-600 dark:text-amber-400">
                     <Sparkles className="h-3 w-3 animate-spin-slow" />
                   </div>
-                  <span className="text-[11px] font-bold text-white/95">AI Tahlil Faol</span>
+                  <span className="text-[11px] font-bold text-foreground dark:text-white/95">AI Tahlil Faol</span>
                 </div>
 
               </ScrollReveal>

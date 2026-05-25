@@ -63,17 +63,17 @@ function ArticleCheckerContent() {
       <Navbar />
 
       {/* Hero */}
-      <section className="gradient-hero text-white py-12 md:py-16 relative overflow-hidden">
-        <div className="absolute top-10 right-20 w-32 h-32 border border-white/5 rounded-full animate-spin-slow" />
+      <section className="relative bg-mesh-light dark:bg-mesh-dark border-b border-border/40 py-12 md:py-16 overflow-hidden">
+        <div className="absolute top-10 right-20 w-32 h-32 border border-primary/5 dark:border-white/5 rounded-full animate-spin-slow -z-10" />
         <div className="container mx-auto px-4 text-center relative z-10">
-          <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 rounded-full text-sm mb-4 backdrop-blur-sm">
-            <Sparkles className="h-4 w-4 text-amber-300" />
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-500/10 dark:bg-white/10 rounded-full text-emerald-700 dark:text-amber-300 text-sm mb-4 backdrop-blur-sm border border-emerald-500/20 dark:border-white/10 animate-float-slow">
+            <Sparkles className="h-4 w-4 text-amber-500 dark:text-amber-300" />
             Sun'iy Intellekt
           </div>
-          <h1 className="text-3xl md:text-4xl lg:text-5xl font-serif font-bold mb-4">
+          <h1 className="text-3xl md:text-4xl lg:text-5xl font-serif font-black mb-4 text-foreground dark:text-white">
             AI Maqola Tekshirish
           </h1>
-          <p className="text-white/70 max-w-2xl mx-auto">
+          <p className="text-muted-foreground dark:text-white/70 max-w-2xl mx-auto font-light">
             Maqolangizni imlo xatolari, grammatika va jurnal talablariga mosligi bo'yicha AI yordamida tekshiring
           </p>
         </div>

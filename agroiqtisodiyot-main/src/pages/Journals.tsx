@@ -87,16 +87,16 @@ const Journals = () => {
       <Navbar />
 
       {/* Hero */}
-      <section className="gradient-hero text-white py-12 md:py-16 relative overflow-hidden">
-        <div className="absolute bottom-10 right-10 w-40 h-40 border border-white/5 rounded-3xl rotate-12 animate-spin-slow" />
+      <section className="relative bg-mesh-light dark:bg-mesh-dark border-b border-border/40 py-12 md:py-16 overflow-hidden">
+        <div className="absolute bottom-10 right-10 w-40 h-40 border border-primary/5 dark:border-white/5 rounded-3xl rotate-12 animate-spin-slow" />
         <div className="container mx-auto px-4 text-center relative z-10">
-          <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-white/10 mb-4">
-            <BookOpen className="h-8 w-8" />
+          <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-emerald-500/10 dark:bg-white/10 mb-4 animate-float-slow">
+            <BookOpen className="h-8 w-8 text-primary dark:text-emerald-300" />
           </div>
-          <h1 className="text-3xl md:text-5xl font-serif font-bold mb-4 animate-fade-in-up">
+          <h1 className="text-3xl md:text-5xl font-serif font-black mb-4 text-foreground dark:text-white animate-fade-in-up">
             Ilmiy Jurnallar
           </h1>
-          <p className="text-white/70 max-w-lg mx-auto animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
+          <p className="text-muted-foreground dark:text-white/70 max-w-lg mx-auto animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
             "AGROIQTISODIYOT" ilmiy jurnalining barcha sonlarini ko'ring va yuklab oling
           </p>
         </div>

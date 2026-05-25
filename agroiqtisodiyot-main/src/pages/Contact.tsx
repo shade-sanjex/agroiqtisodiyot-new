@@ -56,20 +56,20 @@ const Contact = () => {
       <Navbar />
 
       {/* ============ PREMIUM HERO BANNER ============ */}
-      <section className="relative h-[250px] md:h-[320px] flex items-center justify-center overflow-hidden bg-mesh-dark">
-        <div className="absolute top-10 right-20 w-32 h-32 border border-white/5 rounded-full animate-spin-slow -z-10" />
+      <section className="relative h-[250px] md:h-[320px] flex items-center justify-center overflow-hidden bg-mesh-light dark:bg-mesh-dark border-b border-border/40">
+        <div className="absolute top-10 right-20 w-32 h-32 border border-primary/5 dark:border-white/5 rounded-full animate-spin-slow -z-10" />
         <div className="absolute bottom-10 left-20 w-40 h-40 rounded-full bg-emerald-500/5 blur-2xl animate-float-slow -z-10" />
         
-        <div className="relative text-center text-white z-10 space-y-3 px-4">
+        <div className="relative text-center z-10 space-y-3 px-4">
           <ScrollReveal>
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/20 text-emerald-300 text-xs font-semibold uppercase tracking-wider border border-emerald-500/30">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-emerald-500/10 dark:bg-emerald-500/20 text-emerald-700 dark:text-emerald-300 text-xs font-semibold uppercase tracking-wider border border-emerald-500/20 dark:border-emerald-500/30">
               <MessageCircle className="h-3.5 w-3.5" />
               BOG'LANISH
             </span>
-            <h1 className="text-3xl md:text-5xl font-serif font-black mt-3 text-white drop-shadow-md">
+            <h1 className="text-3xl md:text-5xl font-serif font-black mt-3 text-foreground dark:text-white drop-shadow-sm">
               Biz bilan bog'laning
             </h1>
-            <p className="text-white/70 text-xs md:text-sm max-w-xl mx-auto font-light leading-relaxed mt-2">
+            <p className="text-muted-foreground dark:text-white/70 text-xs md:text-sm max-w-xl mx-auto font-light leading-relaxed mt-2">
               Loyiha haqida savollaringiz, takliflaringiz yoki ilmiy hamkorlik g'oyalaringiz bormi?
             </p>
           </ScrollReveal>
