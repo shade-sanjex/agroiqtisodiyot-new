@@ -589,20 +589,6 @@
     repeating-linear-gradient(45deg, transparent, transparent 20px, rgba(255,255,255,0.03) 20px, rgba(255,255,255,0.03) 40px);
 }
 
-/* Featured (hero) journal card */
-.journal-card-featured {
-  grid-column: 1 / -1;
-}
-
-@media (min-width: 768px) {
-  .journal-card-featured {
-    grid-column: span 2;
-  }
-  .journal-card-featured .journal-card-cover {
-    aspect-ratio: 16 / 9;
-  }
-}
-
 /* "NEW" badge animation */
 @keyframes badge-shine {
   0% { background-position: -200% center; }
@@ -629,36 +615,6 @@
   letter-spacing: 0.08em;
   box-shadow: 0 2px 8px hsl(var(--secondary) / 0.4);
 }
-
-/* Stagger fade-in for grid children */
-@keyframes stagger-in {
-  0% {
-    opacity: 0;
-    transform: translateY(30px) scale(0.97);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-}
-
-.journal-grid-item {
-  animation: stagger-in 0.6s cubic-bezier(0.23, 1, 0.32, 1) both;
-}
-
-/* Generate delays for first 12 items */
-.journal-grid-item:nth-child(1) { animation-delay: 0.05s; }
-.journal-grid-item:nth-child(2) { animation-delay: 0.1s; }
-.journal-grid-item:nth-child(3) { animation-delay: 0.15s; }
-.journal-grid-item:nth-child(4) { animation-delay: 0.2s; }
-.journal-grid-item:nth-child(5) { animation-delay: 0.25s; }
-.journal-grid-item:nth-child(6) { animation-delay: 0.3s; }
-.journal-grid-item:nth-child(7) { animation-delay: 0.35s; }
-.journal-grid-item:nth-child(8) { animation-delay: 0.4s; }
-.journal-grid-item:nth-child(9) { animation-delay: 0.45s; }
-.journal-grid-item:nth-child(10) { animation-delay: 0.5s; }
-.journal-grid-item:nth-child(11) { animation-delay: 0.55s; }
-.journal-grid-item:nth-child(12) { animation-delay: 0.6s; }
 
 /* ============================================
    JOURNAL DETAIL MODAL — GLASSMORPHISM
