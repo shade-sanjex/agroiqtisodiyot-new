@@ -309,6 +309,36 @@ JSON formati:
   }
 }
 
+async function loadScript(src: string): Promise<void> {
+  return new Promise((resolve, reject) => {
+    if (typeof window !== 'undefined' && (window as any).mammoth) {
+      resolve();
+      return;
+    }
+    if (document.querySelector(`script[src="${src}"]`)) {
+      // Script is already loading/loaded, wait a bit or assume it is ready
+      setTimeout(resolve, 500);
+      return;
+    }
+    const script = document.createElement('script');
+    script.src = src;
+    script.onload = () => resolve();
+    script.onerror = () => reject(new Error('Kutubxonani yuklashda xatolik yuz berdi.'));
+    document.head.appendChild(script);
+  });
+}
+
+async function extractDocxText(file: File): Promise<string> {
+  try {
+    await loadScript('https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.8.0/mammoth.browser.min.js');
+    const arrayBuffer = await file.arrayBuffer();
+    const result = await (window as any).mammoth.extractRawText({ arrayBuffer });
+    return result.value;
+  } catch (err: any) {
+    throw new Error('Word (.docx) faylini o\'qishda xatolik: ' + err.message);
+  }
+}
+
 /**
  * Fayldan matn ajratib olish
  */
@@ -320,21 +350,21 @@ export async function extractTextFromFile(file: File): Promise<string> {
   }
 
   if (extension === 'pdf') {
-    // Use PDF.js to extract text from PDF
-    // Since we can't import pdfjs easily in Vite without config,
-    // we'll use a simple approach
     return await extractPDFText(file);
   }
 
-  if (extension === 'doc' || extension === 'docx') {
-    // For Word files, we'll try reading as text or ask user to paste
+  if (extension === 'docx') {
+    return await extractDocxText(file);
+  }
+
+  if (extension === 'doc') {
     throw new Error(
-      'Word (.doc/.docx) fayllarni to\'g\'ridan-to\'g\'ri o\'qish imkoni yo\'q. ' +
-      'Iltimos, matnni Word fayldan nusxalab, matn maydoniga qo\'ying.'
+      'Eski Word (.doc) formati qo\'llab-quvvatlanmaydi. ' +
+      'Iltimos, faylni Word dasturida ".docx" formatida saqlab, keyin yuklang yoki matnni nusxalab joylashtiring.'
     );
   }
 
-  throw new Error(`"${extension}" formati qo'llab-quvvatlanmaydi. .txt yoki .pdf fayllarni yuklang.`);
+  throw new Error(`"${extension}" formati qo'llab-quvvatlanmaydi. .docx, .pdf yoki .txt fayllarni yuklang.`);
 }
 
 async function extractPDFText(file: File): Promise<string> {

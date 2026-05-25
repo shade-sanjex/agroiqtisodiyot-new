@@ -111,11 +111,11 @@ function ArticleCheckerContent() {
                       <div className="border-2 border-dashed border-border rounded-xl p-8 text-center hover:border-primary/50 transition-colors">
                         <Upload className="h-10 w-10 text-muted-foreground mx-auto mb-3" />
                         <p className="text-sm text-muted-foreground mb-3">
-                          .txt yoki .pdf faylni tanlang
+                          .docx, .pdf yoki .txt faylni tanlang
                         </p>
                         <Input
                           type="file"
-                          accept=".txt,.pdf"
+                          accept=".docx,.doc,.pdf,.txt"
                           onChange={e => setFile(e.target.files?.[0] || null)}
                           className="max-w-xs mx-auto"
                         />
