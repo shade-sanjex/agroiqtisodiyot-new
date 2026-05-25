@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { useNavigate } from 'react-router-dom';
 import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
@@ -238,7 +239,7 @@ const Journals = () => {
       </section>
 
       {/* ============ PREMIUM DETAIL MODAL (3D entrance) ============ */}
-      {selectedJournal && (
+      {selectedJournal && createPortal(
         <div className="premium-modal-overlay" onClick={() => setSelectedJournal(null)}>
           <div className="premium-modal-content max-w-[90vw] md:max-w-2xl lg:max-w-3xl bg-card border border-border" onClick={(e) => e.stopPropagation()}>
             {/* Header decoration */}
@@ -332,7 +333,8 @@ const Journals = () => {
 
             </div>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
 
       <Footer />

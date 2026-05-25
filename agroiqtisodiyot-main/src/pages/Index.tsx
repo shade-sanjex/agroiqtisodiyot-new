@@ -1,4 +1,5 @@
 import { useEffect, useState, useRef, useCallback } from 'react';
+import { createPortal } from 'react-dom';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -63,7 +64,6 @@ const Index = () => {
 
   const handleJournalClick = (journal: Journal) => {
     console.log("Index: selected journal set to", journal.title);
-    alert("Index: Tanlangan jurnal: " + journal.title);
     setSelectedJournal(journal);
   };
 
@@ -590,7 +590,7 @@ const Index = () => {
       </section>
 
       {/* ============ PREMIUM DETAIL MODAL (3D entrance) ============ */}
-      {selectedJournal && (
+      {selectedJournal && createPortal(
         <div className="premium-modal-overlay" onClick={() => setSelectedJournal(null)}>
           <div className="premium-modal-content max-w-[90vw] md:max-w-2xl lg:max-w-3xl bg-card border border-border" onClick={(e) => e.stopPropagation()}>
             {/* Header decoration */}
@@ -681,7 +681,8 @@ const Index = () => {
 
             </div>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
 
       <Footer />
