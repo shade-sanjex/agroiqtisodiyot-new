@@ -3,6 +3,11 @@ const https = require('https');
 const fs = require('fs');
 const path = require('path');
 const { createClient } = require('@supabase/supabase-js');
+const multer = require('multer');
+
+// Configure multer for in-memory file handling
+const upload = multer({ limits: { fileSize: 50 * 1024 * 1024 } }); // Limit to 50MB
+
 
 // 1. Parse .env file
 const envPath = path.join(__dirname, '../.env');
@@ -183,6 +188,110 @@ app.get('/api/magazine/:id', async (req, res) => {
   } catch (err) {
     console.error("Internal Server Error in /api/magazine/:id:", err);
     res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+// Upload endpoint for Telegram Web App
+app.post('/api/upload-magazine', upload.fields([
+  { name: 'pdf', maxCount: 1 },
+  { name: 'cover', maxCount: 1 }
+]), async (req, res) => {
+  const { title, description, telegram_id } = req.body;
+  
+  if (!title || !req.files || !req.files['pdf']) {
+    return res.status(400).json({ error: "Sarlavha va PDF fayl yuborilishi shart." });
+  }
+
+  // Security Check: Verify if uploader is in the allowed whitelist (if whitelist is not empty)
+  if (allowedUsers.length > 0) {
+    if (!telegram_id || !allowedUsers.includes(String(telegram_id))) {
+      return res.status(403).json({ error: "Sizda jurnallarni yuklash uchun ruxsat yo'q!" });
+    }
+  }
+
+  try {
+    const pdfFile = req.files['pdf'][0];
+    const coverFile = req.files['cover'] ? req.files['cover'][0] : null;
+
+    // Determine target chat to upload to:
+    // 1. Specific channel/chat env 2. Uploader's telegram_id 3. First allowed user
+    const targetChatId = process.env.TELEGRAM_STORAGE_CHAT_ID || telegram_id || allowedUsers[0];
+    
+    if (!targetChatId) {
+      return res.status(500).json({ error: "Faylni saqlash uchun maqsadli Telegram Chat ID aniqlanmadi." });
+    }
+
+    console.log(`📤 Web App'dan yangi jurnal yuklanmoqda... Target Chat: ${targetChatId}`);
+
+    // 1. Upload PDF to Telegram Bot API
+    const pdfFormData = new FormData();
+    pdfFormData.append('chat_id', targetChatId);
+    
+    const pdfBlob = new Blob([pdfFile.buffer], { type: pdfFile.mimetype });
+    pdfFormData.append('document', pdfBlob, pdfFile.originalname);
+
+    const pdfTelegramRes = await fetch(`https://api.telegram.org/bot${token}/sendDocument`, {
+      method: 'POST',
+      body: pdfFormData
+    });
+    
+    const pdfUploadResult = await pdfTelegramRes.json();
+    if (!pdfUploadResult.ok) {
+      console.error("Telegram PDF upload failed:", pdfUploadResult);
+      return res.status(500).json({ error: `Telegram'ga PDF yuklashda xatolik: ${pdfUploadResult.description}` });
+    }
+
+    const pdfFileId = pdfUploadResult.result.document.file_id;
+
+    // 2. Upload Cover Image to Telegram Bot API (if present)
+    let coverFileId = null;
+    if (coverFile) {
+      const coverFormData = new FormData();
+      coverFormData.append('chat_id', targetChatId);
+      
+      const coverBlob = new Blob([coverFile.buffer], { type: coverFile.mimetype });
+      coverFormData.append('photo', coverBlob, coverFile.originalname);
+
+      const coverTelegramRes = await fetch(`https://api.telegram.org/bot${token}/sendPhoto`, {
+        method: 'POST',
+        body: coverFormData
+      });
+      
+      const coverUploadResult = await coverTelegramRes.json();
+      if (coverUploadResult.ok) {
+        const photos = coverUploadResult.result.photo;
+        coverFileId = photos[photos.length - 1].file_id; // highest resolution
+      } else {
+        console.error("Telegram Cover upload failed:", coverUploadResult);
+      }
+    }
+
+    // 3. Save entry to Supabase
+    const pdfPublicUrl = `${backendUrl}/api/file/${pdfFileId}`;
+    const coverPublicUrl = coverFileId ? `${backendUrl}/api/file/${coverFileId}` : null;
+
+    const { data: record, error: dbError } = await supabase
+      .from('journals')
+      .insert({
+        title: title,
+        description: description || null,
+        pdf_url: pdfPublicUrl,
+        cover_image_url: coverPublicUrl
+      })
+      .select()
+      .single();
+
+    if (dbError) {
+      console.error("Supabase insert error:", dbError);
+      return res.status(500).json({ error: `Ma'lumotlar bazasiga yozishda xatolik: ${dbError.message}` });
+    }
+
+    console.log(`✅ Jurnal muvaffaqiyatli saqlandi: ${title}`);
+    res.json({ success: true, journal: record });
+
+  } catch (err) {
+    console.error("Internal upload error:", err);
+    res.status(500).json({ error: "Server ichki xatoligi yuz berdi." });
   }
 });
 

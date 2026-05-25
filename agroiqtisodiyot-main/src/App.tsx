@@ -14,6 +14,7 @@ import Contact from "./pages/Contact";
 import Auth from "./pages/Auth";
 import Admin from "./pages/Admin";
 import ArticleChecker from "./pages/ArticleChecker";
+import TelegramApp from "./pages/TelegramApp";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -36,6 +37,7 @@ const App = () => (
               <Route path="/auth" element={<Auth />} />
               <Route path="/admin" element={<Admin />} />
               <Route path="/article-checker" element={<ArticleChecker />} />
+              <Route path="/tg-app" element={<TelegramApp />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </BrowserRouter>
