@@ -1,13 +1,12 @@
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
 import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
 import { ScrollReveal } from '@/components/ScrollReveal';
 import { AnimatedCounter } from '@/components/AnimatedCounter';
 import { ParticleBackground } from '@/components/ParticleBackground';
 import { BackToTop } from '@/components/BackToTop';
-import { BookOpen, Target, Users, TrendingUp, ArrowRight, Sparkles, FileText, Download, ChevronRight } from 'lucide-react';
+import { BookOpen, Target, Users, TrendingUp, ArrowRight, Sparkles, FileText, Download } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import heroImage from '@/assets/hero-agriculture.jpg';
@@ -236,42 +235,68 @@ const Index = () => {
             </ScrollReveal>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {journals.slice(0, 6).map((journal, i) => (
-                <ScrollReveal key={journal.id} delay={i * 0.1}>
-                  <Card className="card-lift overflow-hidden group border-0 shadow-glass h-full">
-                    {journal.cover_image_url && (
-                      <div className="aspect-[3/4] overflow-hidden bg-muted relative">
-                        <img
-                          src={journal.cover_image_url}
-                          alt={journal.title}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                      </div>
-                    )}
-                    <CardContent className="p-5">
-                      <h3 className="font-serif font-bold text-lg line-clamp-2 mb-2 group-hover:text-primary transition-colors">
-                        {journal.title}
-                      </h3>
-                      {journal.description && (
-                        <p className="text-sm text-muted-foreground line-clamp-2 mb-4">
-                          {journal.description}
-                        </p>
+              {journals.slice(0, 6).map((journal, i) => {
+                const isNewJournal = Date.now() - new Date(journal.created_at).getTime() < 30 * 24 * 60 * 60 * 1000;
+                return (
+                  <ScrollReveal key={journal.id} delay={i * 0.1}>
+                    <div className="journal-card group h-full">
+                      {journal.cover_image_url ? (
+                        <div className="journal-card-cover">
+                          <img
+                            src={journal.cover_image_url}
+                            alt={journal.title}
+                            loading="lazy"
+                          />
+                          {/* Badge */}
+                          {isNewJournal && (
+                            <div className="absolute top-3 left-3 z-10">
+                              <span className="journal-badge-new">Yangi</span>
+                            </div>
+                          )}
+                          {/* Info overlay */}
+                          <div className="journal-card-info">
+                            <h3 className="font-serif font-bold text-white text-sm md:text-base line-clamp-2 mb-1 drop-shadow-lg">
+                              {journal.title}
+                            </h3>
+                            <div className="journal-card-actions">
+                              <Button
+                                size="sm"
+                                className="rounded-full bg-white text-slate-900 hover:bg-white/90 text-xs h-8 px-4 shadow-lg"
+                                onClick={() => window.open(journal.pdf_url, '_blank')}
+                              >
+                                <Download className="h-3.5 w-3.5 mr-1.5" />
+                                Yuklab olish
+                              </Button>
+                            </div>
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="journal-card-placeholder bg-gradient-to-br from-blue-900 to-slate-900">
+                          <div className="relative z-10 space-y-3">
+                            <div className="w-12 h-12 rounded-2xl bg-white/10 flex items-center justify-center mx-auto">
+                              <BookOpen className="h-6 w-6 text-white/60" />
+                            </div>
+                            <p className="text-[8px] tracking-[0.25em] text-amber-300/60 font-bold uppercase">
+                              AGROIQTISODIYOT
+                            </p>
+                            <h3 className="font-serif font-bold text-white/90 text-sm line-clamp-3 leading-snug">
+                              {journal.title}
+                            </h3>
+                            <Button
+                              size="sm"
+                              className="rounded-full bg-white/20 hover:bg-white/30 backdrop-blur-md text-white border border-white/20 text-xs h-8 px-4"
+                              onClick={() => window.open(journal.pdf_url, '_blank')}
+                            >
+                              <Download className="h-3.5 w-3.5 mr-1.5" />
+                              Yuklab olish
+                            </Button>
+                          </div>
+                        </div>
                       )}
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        className="w-full group/btn rounded-full"
-                        onClick={() => window.open(journal.pdf_url, '_blank')}
-                      >
-                        <Download className="mr-2 h-4 w-4" />
-                        Yuklab olish
-                        <ChevronRight className="ml-auto h-4 w-4 group-hover/btn:translate-x-1 transition-transform" />
-                      </Button>
-                    </CardContent>
-                  </Card>
-                </ScrollReveal>
-              ))}
+                    </div>
+                  </ScrollReveal>
+                );
+              })}
             </div>
           </div>
         </section>
