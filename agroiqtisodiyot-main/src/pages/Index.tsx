@@ -82,8 +82,9 @@ const Index = () => {
 
       {/* ============ MINIMAL HERO SECTION ============ */}
       <section className="relative min-h-[85vh] lg:min-h-[90vh] flex items-center justify-center overflow-hidden bg-background pt-24 pb-20">
-        {/* Subtle grid pattern only */}
+        {/* Subtle grid pattern and elegant glow */}
         <div className="absolute inset-0 bg-grid-pattern pointer-events-none opacity-40" />
+        <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[800px] h-[500px] opacity-20 dark:opacity-10 bg-primary/30 blur-[120px] rounded-full pointer-events-none" />
 
         <div className="relative container mx-auto px-4 z-10">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">

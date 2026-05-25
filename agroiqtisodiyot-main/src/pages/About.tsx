@@ -51,7 +51,9 @@ const About = () => {
 
       {/* ============ MINIMAL HERO ============ */}
       <section className="relative pt-24 pb-16 lg:pt-32 lg:pb-24 border-b border-border overflow-hidden bg-background">
+        {/* Subtle grid pattern and elegant glow */}
         <div className="absolute inset-0 bg-grid-pattern opacity-40 pointer-events-none" />
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[400px] opacity-15 dark:opacity-5 bg-primary/30 blur-[100px] rounded-full pointer-events-none" />
         
         <div className="container mx-auto px-4 text-center relative z-10 max-w-4xl">
           <ScrollReveal>
