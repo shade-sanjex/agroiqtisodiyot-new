@@ -702,4 +702,113 @@
   box-shadow: 0 0 20px hsl(45 93% 58% / 0.25), 0 0 40px hsl(45 93% 58% / 0.1);
 }
 
+/* Premium Animations */
+@keyframes float-slow {
+  0%, 100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-15px) rotate(1deg);
+  }
+}
+
+@keyframes float-fast {
+  0%, 100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-8px) rotate(-1deg);
+  }
+}
+
+@keyframes scanline {
+  0% {
+    top: 0%;
+  }
+  50% {
+    top: 100%;
+  }
+  100% {
+    top: 0%;
+  }
+}
+
+.animate-float-slow {
+  animation: float-slow 8s ease-in-out infinite;
+}
+
+.animate-float-fast {
+  animation: float-fast 5s ease-in-out infinite;
+}
+
+.animate-scanline {
+  animation: scanline 4s linear infinite;
+}
+
+/* Mesh Gradients */
+.bg-mesh-dark {
+  background-color: hsl(220 25% 6%);
+  background-image: 
+    radial-gradient(at 0% 0%, hsl(215 65% 20% / 0.15) 0px, transparent 50%),
+    radial-gradient(at 100% 0%, hsl(142 50% 15% / 0.15) 0px, transparent 50%),
+    radial-gradient(at 50% 100%, hsl(220 25% 10% / 0.2) 0px, transparent 50%);
+}
+
+.bg-mesh-light {
+  background-color: hsl(220 20% 97%);
+  background-image: 
+    radial-gradient(at 0% 0%, hsl(215 65% 32% / 0.05) 0px, transparent 50%),
+    radial-gradient(at 100% 0%, hsl(142 50% 40% / 0.05) 0px, transparent 50%);
+}
+
+/* Book Cover Styling */
+.journal-page-fold {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0.2) 0%,
+    rgba(0, 0, 0, 0) 1.5%,
+    rgba(255, 255, 255, 0.1) 2%,
+    rgba(255, 255, 255, 0) 6%,
+    rgba(0, 0, 0, 0.06) 7%,
+    rgba(0, 0, 0, 0) 80%,
+    rgba(0, 0, 0, 0.05) 98%,
+    rgba(0, 0, 0, 0.15) 100%
+  );
+  z-index: 5;
+}
+
+.journal-cover-shine {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.15) 0%,
+    rgba(255, 255, 255, 0.05) 25%,
+    rgba(255, 255, 255, 0) 50%
+  );
+  z-index: 6;
+}
+
+.journal-book-spine {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 5px;
+  background: rgba(0, 0, 0, 0.35);
+  box-shadow: 1px 0 3px rgba(0, 0, 0, 0.2);
+  z-index: 10;
+}
+
+
 
