@@ -68,8 +68,12 @@ if (!token || !supabaseUrl || !supabaseKey) {
 // Initialize Supabase Client
 const supabase = createClient(supabaseUrl, supabaseKey);
 
-// Setup Admin Account automatically on boot
-setupAdminAccount();
+// Setup Admin Account automatically on boot only if service role key is present
+if (process.env.SUPABASE_SERVICE_ROLE_KEY) {
+  setupAdminAccount();
+} else {
+  console.log("ℹ️ SUPABASE_SERVICE_ROLE_KEY topilmadi, admin hisobini avtomatik sozlash o'tkazib yuborildi.");
+}
 
 async function setupAdminAccount() {
   const adminEmail = 'admin@gmail.com';

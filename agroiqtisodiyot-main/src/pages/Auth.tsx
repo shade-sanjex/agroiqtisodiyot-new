@@ -28,6 +28,7 @@ const Auth = () => {
   const [signupData, setSignupData] = useState({ email: '', password: '', fullName: '' });
   const [resetEmail, setResetEmail] = useState('');
   const [showReset, setShowReset] = useState(false);
+  const [activeTab, setActiveTab] = useState<'login' | 'signup'>('login');
 
   useEffect(() => {
     if (user) navigate('/');
@@ -112,7 +113,9 @@ const Auth = () => {
       </button>
 
       {/* Left decorative panel — hidden on mobile */}
-      <div className="hidden lg:flex lg:w-1/2 relative bg-gradient-forest text-left items-center justify-center overflow-hidden border-r border-border/10">
+      <div className={`hidden lg:flex lg:w-1/2 relative bg-gradient-forest text-left items-center justify-center overflow-hidden border-r border-border/10 auth-transition z-10 ${
+        activeTab === 'signup' ? 'lg:blur-md lg:opacity-30 lg:scale-[0.98] pointer-events-none' : 'lg:blur-none lg:opacity-100 lg:scale-100'
+      }`}>
         <ParticleBackground className="absolute inset-0 z-0" particleCount={30} />
         
         {/* Abstract glowing layers */}
@@ -153,7 +156,9 @@ const Auth = () => {
       </div>
 
       {/* Right form panel */}
-      <div className="flex-1 flex items-center justify-center p-6 md:p-12 relative">
+      <div className={`flex-1 lg:w-1/2 flex items-center justify-center p-6 md:p-12 relative auth-transition z-20 ${
+        activeTab === 'signup' ? 'lg:-translate-x-1/2' : 'lg:translate-x-0'
+      }`}>
         <div className="absolute inset-0 bg-grid-pattern pointer-events-none opacity-40" />
         <div className="mesh-gradient-glow top-0 right-0 opacity-40" />
         
@@ -193,7 +198,7 @@ const Auth = () => {
                   </form>
                 </div>
               ) : (
-                <Tabs defaultValue="login" className="w-full">
+                <Tabs value={activeTab} onValueChange={(val) => setActiveTab(val as 'login' | 'signup')} className="w-full">
                   <TabsList className="grid w-full grid-cols-2 mb-8 rounded-full bg-secondary p-1 h-12">
                     <TabsTrigger value="login" className="rounded-full text-xs font-bold uppercase tracking-wider">Kirish</TabsTrigger>
                     <TabsTrigger value="signup" className="rounded-full text-xs font-bold uppercase tracking-wider">Ro'yxatdan o'tish</TabsTrigger>

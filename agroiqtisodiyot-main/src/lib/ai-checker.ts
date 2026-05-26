@@ -216,25 +216,28 @@ Matn:
 ${text.substring(0, 15000)}
 """
 
-Quyidagi mezonlar bo'yicha tekshir:
+Quyidagi mezonlar bo'yicha juda qattiq tekshir:
 
-1. **Imlo xatolari**: O'zbek tilidagi imlo xatolarini top. Har bir xato uchun noto'g'ri so'z, to'g'ri variant va kontekst (xato atrofidagi gap) ko'rsat.
+1. **Ilmiy maqola ekanligi**: Kiritilgan matn haqiqatan ham ilmiy-akademik maqolami yoki shunchaki ixtiyoriy suhbat, chat xabari, tasodifiy gaplar yoki sher/badiiy matnmi? Agar matn ilmiy maqola bo'lmasa, "overallScore" (umumiy ball)ni darhol 35 balldan kam qilib belgilagin, "summary" qismida bu ilmiy maqola emasligini va tahririyat tomonidan qabul qilinmasligini tushuntir.
 
-2. **Grammatik muammolar**: Grammatik xatolar, tinish belgilari, gap tuzilishi muammolarini aniqla.
+2. **Mavzuga moslik ("AGROIQTISODIYOT" jurnali)**: Maqola mavzusi qishloq xo'jaligi, agrosanoat, agroiqtisodiyot, dehqonchilik yoki oziq-ovqat xavfsizligi masalalariga bog'liqmi? Agar bog'liq bo'lmasa, ballni kamaytir va "requirementChecks" ichida buni "Sohaga moslik (Agroiqtisodiyot)" nomi bilan rad et.
 
-3. **Jurnal talablariga moslik** ("AGROIQTISODIYOT" jurnali):
+3. **Imlo xatolari**: O'zbek tilidagi imlo xatolarini top. Har bir xato uchun noto'g'ri so'z, to'g'ri variant va kontekst (xato atrofidagi gap) ko'rsat.
+
+4. **Grammatik muammolar**: Grammatik xatolar, tinish belgilari, gap tuzilishi muammolarini aniqla.
+
+5. **Jurnal talablariga moslik**:
    - Matn kamida 8 betga yetarlimi (taxminan 3000+ so'z)?
-   - Annotatsiya bormi (kirish qismi)?
-   - Kalit so'zlar bormi?
-   - Adabiyotlar ro'yxati / havolalar bormi?
-   - Ilmiy uslubda yozilganmi?
-   - Mavzu qishloq xo'jaligi / iqtisodiyot bilan bog'liqmi?
+   - Annotatsiya (Abstract / kirish qismi) bormi?
+   - Kalit so'zlar (Keywords) bormi?
+   - Adabiyotlar ro'yxati (References / havolalar) bormi?
+   - Ilmiy-akademik uslubda yozilganmi?
 
-4. **Umumiy ball**: 0 dan 100 gacha umumiy sifat bali.
+6. **Umumiy ball**: 0 dan 100 gacha bo'lgan umumiy sifat bali (agar matn ilmiy bo'lmasa, 35 dan oshmasin).
 
-5. **Tavsiyalar**: Matnni yaxshilash bo'yicha 3-5 ta aniq tavsiya.
+7. **Tavsiyalar**: Matnni yaxshilash bo'yicha 3-5 ta ilmiy-amaliy tavsiya.
 
-6. **Xulosa**: 2-3 gaplik umumiy baho.
+8. **Xulosa**: 2-3 gaplik umumiy baho.
 
 JSON formati:
 {

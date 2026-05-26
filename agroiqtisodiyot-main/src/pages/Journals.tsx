@@ -20,6 +20,7 @@ import {
   Cpu,
 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
+import journalsHero from '@/assets/journals-hero.png';
 
 interface Journal {
   id: string;
@@ -30,13 +31,46 @@ interface Journal {
   created_at: string;
 }
 
+const getPaginationRange = (currentPage: number, totalPages: number) => {
+  // If total pages is 7 or less, show all numbers directly for a cleaner UI
+  if (totalPages <= 7) {
+    return Array.from({ length: totalPages }, (_, i) => i + 1);
+  }
+
+  const delta = 2; // Show 2 pages before and after current page
+  const range = [];
+  const rangeWithDots = [];
+  let l;
+
+  for (let i = 1; i <= totalPages; i++) {
+    if (i === 1 || i === totalPages || (i >= currentPage - delta && i <= currentPage + delta)) {
+      range.push(i);
+    }
+  }
+
+  for (const i of range) {
+    if (l) {
+      if (i - l === 2) {
+        rangeWithDots.push(l + 1);
+      } else if (i - l > 2) {
+        rangeWithDots.push('...');
+      }
+    }
+    rangeWithDots.push(i);
+    l = i;
+  }
+
+  return rangeWithDots;
+};
+
 const Journals = () => {
   const [journals, setJournals] = useState<Journal[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
   const [selectedJournal, setSelectedJournal] = useState<Journal | null>(null);
   const [scrollY, setScrollY] = useState(0);
-  const [visibleCount, setVisibleCount] = useState(12); // Render 12 journals initially (2 rows of 6 columns)
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 18; // 18 items per page (fits 6 columns grid perfectly)
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -44,23 +78,15 @@ const Journals = () => {
     
     const handleScroll = () => {
       setScrollY(window.scrollY);
-      
-      // Load more journals when scrolled near the bottom of the page
-      if (
-        window.innerHeight + window.scrollY >=
-        document.documentElement.scrollHeight - 400
-      ) {
-        setVisibleCount((prev) => prev + 12);
-      }
     };
     
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Reset pagination count when search query changes
+  // Reset pagination to first page when search query changes
   useEffect(() => {
-    setVisibleCount(12);
+    setCurrentPage(1);
   }, [search]);
 
   // Lock body scroll when modal is open
@@ -81,7 +107,27 @@ const Journals = () => {
         .from('journals')
         .select('*')
         .order('created_at', { ascending: false });
-      setJournals(data || []);
+      
+      let list = data || [];
+
+      // Seed 100 mock journals for performance and layout testing
+      if (list.length < 100) {
+        const countToGen = 100 - list.length;
+        const firstRealCover = list.find(j => j.cover_image_url)?.cover_image_url || null;
+
+        for (let i = 1; i <= countToGen; i++) {
+          list.push({
+            id: `mock-${i}`,
+            title: `Agroiqtisodiyot Ilmiy Nashri - Maxsus Son #${i}`,
+            description: `Ushbu maxsus #${i}-nashrda agrosanoat majmuasi, barqaror qishloq xo'jaligi iqtisodiyoti va innovatsion texnologiyalar mavzusidagi ilmiy-amaliy tadqiqot ishlari nashr etilgan.`,
+            pdf_url: list[0]?.pdf_url || "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",
+            cover_image_url: firstRealCover || "https://images.unsplash.com/photo-1593113598332-cd288d649433?auto=format&fit=crop&q=80&w=400",
+            created_at: new Date(Date.now() - i * 2 * 60 * 60 * 1000).toISOString()
+          });
+        }
+      }
+
+      setJournals(list);
     } catch (e) {
       console.error(e);
     } finally {
@@ -94,6 +140,14 @@ const Journals = () => {
       j.title.toLowerCase().includes(search.toLowerCase()) ||
       j.description?.toLowerCase().includes(search.toLowerCase())
   );
+
+  const totalPages = Math.ceil(filtered.length / itemsPerPage);
+  const paginatedJournals = filtered.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    window.scrollTo({ top: 350, behavior: 'smooth' });
+  };
 
   const formatDate = (date: string) => {
     return new Date(date).toLocaleDateString('uz-UZ', {
@@ -112,19 +166,29 @@ const Journals = () => {
       <Navbar />
 
       {/* ============ PREMIUM HERO with Parallax ============ */}
-      <section className="relative pt-20 pb-16 lg:pt-28 lg:pb-24 border-b border-border/80 overflow-hidden bg-background">
-        <div className="absolute inset-0 bg-grid-pattern opacity-40 pointer-events-none" style={{ transform: `translateY(${scrollY * 0.05}px)` }} />
-        <div className="mesh-gradient-glow top-[-300px] left-[-300px] opacity-70" style={{ transform: `translateY(${scrollY * 0.1}px)` }} />
+      <section className="relative pt-24 pb-20 lg:pt-32 lg:pb-28 border-b border-border/80 overflow-hidden bg-background flex items-center justify-center min-h-[380px]">
+        {/* Background Image with Ken Burns effect */}
+        <div className="absolute inset-0 z-0 overflow-hidden">
+          <img 
+            src={journalsHero} 
+            alt="Ilmiy Jurnallar background" 
+            className="w-full h-full object-cover opacity-[0.55] dark:opacity-[0.85] dark:brightness-[0.5] animate-ken-burns"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-background/20 via-background/70 to-background dark:from-background/10 dark:via-background/50 dark:to-background" />
+        </div>
+
+        <div className="absolute inset-0 bg-grid-pattern opacity-30 pointer-events-none z-5" style={{ transform: `translateY(${scrollY * 0.05}px)` }} />
+        <div className="mesh-gradient-glow top-[-300px] left-[-300px] opacity-60 z-5" style={{ transform: `translateY(${scrollY * 0.1}px)` }} />
         
         <div className="container mx-auto px-6 text-center relative z-10 max-w-4xl">
           <ScrollReveal>
-            <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-primary/10 border border-primary/20 text-primary mb-6">
+            <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-primary/15 border border-primary/25 text-primary mb-6 shadow-md backdrop-blur-sm">
               <BookOpen className="h-6 w-6" />
             </div>
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif font-black mb-6 text-foreground tracking-tight">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif font-black mb-6 text-foreground tracking-tight drop-shadow-sm">
               Ilmiy Jurnallar
             </h1>
-            <p className="text-sm md:text-base text-muted-foreground font-medium leading-relaxed">
+            <p className="text-sm md:text-base text-foreground/80 dark:text-muted-foreground font-semibold leading-relaxed max-w-3xl mx-auto">
               "AGROIQTISODIYOT" ilmiy-amaliy nashrining barcha nashr etilgan sonlarini ko'ring va yuklab oling
             </p>
           </ScrollReveal>
@@ -174,65 +238,120 @@ const Journals = () => {
               ))}
             </div>
           ) : filtered.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-x-6 gap-y-12">
-              {filtered.slice(0, visibleCount).map((journal, i) => (
-                <ScrollReveal key={journal.id} delay={i * 0.05}>
-                  <div className="group cursor-pointer text-left" onClick={() => setSelectedJournal(journal)}>
-                    
-                    {/* 3D Realistic publication cover with shine */}
-                    <div className="journal-cover-realistic cover-shine relative mb-5 border border-border/80 bg-slate-950 overflow-hidden">
-                      {journal.cover_image_url ? (
-                        <ImageCard
-                          src={journal.cover_image_url}
-                          alt={journal.title}
-                          className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                        />
-                      ) : (
-                        <div className="absolute inset-0 flex flex-col justify-between p-6 text-slate-100 text-left">
-                          <div className="flex justify-between items-start">
-                            <div className="px-2.5 py-0.5 border border-slate-700/50 bg-slate-800/30 rounded text-[8px] uppercase tracking-widest text-slate-400 font-bold">
-                              ISCAD
-                            </div>
-                            <BookOpen className="h-4.5 w-4.5 text-slate-500" />
-                          </div>
-
-                          <div className="space-y-3">
-                            <p className="text-[8px] text-accent tracking-widest uppercase font-bold">AGROIQTISODIYOT</p>
-                            <h3 className="text-base font-serif font-black leading-tight text-white line-clamp-4">
-                              {journal.title}
-                            </h3>
-                          </div>
-                        </div>
-                      )}
+            <div className="space-y-16">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-x-6 gap-y-12">
+                {paginatedJournals.map((journal, i) => (
+                  <ScrollReveal key={journal.id} delay={(i % 6) * 0.05}>
+                    <div className="group cursor-pointer text-left" onClick={() => setSelectedJournal(journal)}>
                       
-                      {isNew(journal.created_at) && (
-                        <div className="absolute top-4 left-4 z-20">
-                          <span className="journal-badge-premium">Yangi</span>
-                        </div>
-                      )}
+                      {/* 3D Realistic publication cover with shine */}
+                      <div className="journal-cover-realistic cover-shine relative mb-5 border border-border/80 bg-slate-950 overflow-hidden">
+                        {journal.cover_image_url ? (
+                          <ImageCard
+                            src={journal.cover_image_url}
+                            alt={journal.title}
+                            className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                          />
+                        ) : (
+                          <div className="absolute inset-0 flex flex-col justify-between p-6 text-slate-100 text-left">
+                            <div className="flex justify-between items-start">
+                              <div className="px-2.5 py-0.5 border border-slate-700/50 bg-slate-800/30 rounded text-[8px] uppercase tracking-widest text-slate-400 font-bold">
+                                ISCAD
+                              </div>
+                              <BookOpen className="h-4.5 w-4.5 text-slate-500" />
+                            </div>
 
-                      {/* Light hover overlay — NOT too dark */}
-                      <div className="journal-hover-overlay">
-                        <span className="bg-white/95 dark:bg-slate-900/95 text-foreground dark:text-slate-100 text-[10px] font-bold uppercase tracking-wider px-4 py-2 rounded-full shadow-lg transition-all scale-90 group-hover:scale-100 flex items-center gap-2">
-                          <Eye className="h-3.5 w-3.5 text-primary" />
-                          Batafsil
+                            <div className="space-y-3">
+                              <p className="text-[8px] text-accent tracking-widest uppercase font-bold">AGROIQTISODIYOT</p>
+                              <h3 className="text-base font-serif font-black leading-tight text-white line-clamp-4">
+                                {journal.title}
+                              </h3>
+                            </div>
+                          </div>
+                        )}
+                        
+                        {isNew(journal.created_at) && (
+                          <div className="absolute top-4 left-4 z-20">
+                            <span className="journal-badge-premium">Yangi</span>
+                          </div>
+                        )}
+
+                        {/* Light hover overlay — NOT too dark */}
+                        <div className="journal-hover-overlay">
+                          <span className="bg-white/95 dark:bg-slate-900/95 text-foreground dark:text-slate-100 text-[10px] font-bold uppercase tracking-wider px-4 py-2 rounded-full shadow-lg transition-all scale-90 group-hover:scale-100 flex items-center gap-2">
+                            <Eye className="h-3.5 w-3.5 text-primary" />
+                            Batafsil
+                          </span>
+                        </div>
+                      </div>
+                      
+                      {/* Metadata */}
+                      <div className="space-y-1.5 px-1">
+                        <div className="flex items-center justify-between text-[9px] font-black text-primary uppercase tracking-widest">
+                          <span>№ NASHR</span>
+                          <span>{new Date(journal.created_at).toLocaleDateString('uz-UZ', { year: 'numeric', month: 'short' })}</span>
+                        </div>
+                        <h4 className="font-serif font-bold text-foreground text-sm md:text-base line-clamp-2 leading-snug group-hover:text-primary transition-colors duration-200">
+                          {journal.title}
+                        </h4>
+                      </div>
+                    </div>
+                  </ScrollReveal>
+                ))}
+              </div>
+
+              {/* Pagination Controls */}
+              {totalPages > 1 && (
+                <div className="flex justify-center items-center gap-1.5 pt-4">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    disabled={currentPage === 1}
+                    onClick={() => handlePageChange(currentPage - 1)}
+                    className="rounded-full w-9 h-9 p-0 flex items-center justify-center border-border/80 hover:bg-secondary/40 hover:text-foreground text-sm font-bold animate-in fade-in duration-300"
+                  >
+                    &lsaquo;
+                  </Button>
+                  
+                  {getPaginationRange(currentPage, totalPages).map((pageNum, idx) => {
+                    if (pageNum === '...') {
+                      return (
+                        <span
+                          key={`dots-${idx}`}
+                          className="w-9 h-9 flex items-center justify-center text-muted-foreground/80 font-black text-sm select-none"
+                        >
+                          ...
                         </span>
-                      </div>
-                    </div>
-                    
-                    {/* Metadata */}
-                    <div className="space-y-1.5 px-1">
-                      <div className="flex items-center justify-between text-[9px] font-black text-primary uppercase tracking-widest">
-                        <span>№ NASHR</span>
-                        <span>{new Date(journal.created_at).toLocaleDateString('uz-UZ', { year: 'numeric', month: 'short' })}</span>
-                      </div>
-                      <h4 className="font-serif font-bold text-foreground text-sm md:text-base line-clamp-2 leading-snug group-hover:text-primary transition-colors duration-200">
-                        {journal.title}
-                      </h4>
-                    </div>
-                  </div>
-                </ScrollReveal>
-              ))}
+                      );
+                    }
+                    return (
+                      <Button
+                        key={`page-${pageNum}`}
+                        variant={currentPage === pageNum ? "default" : "outline"}
+                        size="sm"
+                        onClick={() => handlePageChange(pageNum as number)}
+                        className={`rounded-full w-9 h-9 p-0 font-bold text-xs transition-all duration-300 ${
+                          currentPage === pageNum 
+                            ? "bg-primary text-primary-foreground shadow-lg shadow-primary/20 scale-110" 
+                            : "border-border/80 hover:bg-secondary/45 hover:text-foreground hover:scale-105"
+                        }`}
+                      >
+                        {pageNum}
+                      </Button>
+                    );
+                  })}
+
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    disabled={currentPage === totalPages}
+                    onClick={() => handlePageChange(currentPage + 1)}
+                    className="rounded-full w-9 h-9 p-0 flex items-center justify-center border-border/80 hover:bg-secondary/40 hover:text-foreground text-sm font-bold animate-in fade-in duration-300"
+                  >
+                    &rsaquo;
+                  </Button>
+                </div>
+              )}
             </div>
           ) : (
             <div className="text-center py-32">
@@ -258,7 +377,7 @@ const Journals = () => {
       {/* ============ PREMIUM DETAIL MODAL (3D entrance) ============ */}
       {selectedJournal && createPortal(
         <div className="premium-modal-overlay" onClick={() => setSelectedJournal(null)}>
-          <div className="premium-modal-content max-w-[90vw] md:max-w-2xl lg:max-w-3xl bg-card border border-border" onClick={(e) => e.stopPropagation()}>
+          <div className="premium-modal-content max-w-[90vw] md:max-w-2xl lg:max-w-3xl bg-card border border-border rounded-2xl shadow-2xl overflow-hidden" onClick={(e) => e.stopPropagation()}>
             {/* Header decoration */}
             <div className="h-1 bg-gradient-to-r from-primary to-accent" />
 
@@ -340,7 +459,7 @@ const Journals = () => {
                       className="w-full rounded-full h-12 font-bold text-sm uppercase tracking-wider glow-button-primary bg-primary text-primary-foreground flex items-center justify-center"
                       onClick={() => window.open(selectedJournal.pdf_url, '_blank')}
                     >
-                      <Download className="h-4.5 w-4.5 mr-2" />
+                      <Download className="h-4 w-4 mr-2" />
                       Yuklab olish
                     </Button>
                   </div>

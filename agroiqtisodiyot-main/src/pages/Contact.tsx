@@ -11,6 +11,7 @@ import { MapPin, Phone, Mail, Clock, SendHorizontal, Loader2, MessageCircle } fr
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { z } from 'zod';
+import contactHero from '@/assets/contact-hero.png';
 
 const contactSchema = z.object({
   name: z.string().trim().min(2, "Ism kamida 2 ta belgidan iborat bo'lishi kerak").max(100),
@@ -56,19 +57,29 @@ const Contact = () => {
       <Navbar />
 
       {/* ============ PREMIUM HERO ============ */}
-      <section className="relative pt-20 pb-16 lg:pt-28 lg:pb-24 border-b border-border/80 overflow-hidden bg-background">
-        <div className="absolute inset-0 bg-grid-pattern opacity-40 pointer-events-none" />
-        <div className="mesh-gradient-glow top-[-300px] left-[-300px] opacity-70" />
+      <section className="relative pt-24 pb-20 lg:pt-32 lg:pb-28 border-b border-border/80 overflow-hidden bg-background flex items-center justify-center min-h-[380px]">
+        {/* Background Image with Ken Burns effect */}
+        <div className="absolute inset-0 z-0 overflow-hidden">
+          <img 
+            src={contactHero} 
+            alt="Biz Bilan Bog'laning background" 
+            className="w-full h-full object-cover opacity-[0.55] dark:opacity-[0.85] dark:brightness-[0.5] animate-ken-burns"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-background/20 via-background/70 to-background dark:from-background/10 dark:via-background/50 dark:to-background" />
+        </div>
+
+        <div className="absolute inset-0 bg-grid-pattern opacity-30 pointer-events-none z-5" />
+        <div className="mesh-gradient-glow top-[-300px] left-[-300px] opacity-60 z-5" />
         
         <div className="container mx-auto px-6 text-center relative z-10 max-w-4xl">
           <ScrollReveal>
-            <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-primary/10 border border-primary/20 text-primary mb-6">
+            <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-primary/15 border border-primary/25 text-primary mb-6 shadow-md backdrop-blur-sm">
               <MessageCircle className="h-6 w-6" />
             </div>
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif font-black mb-6 text-foreground tracking-tight">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif font-black mb-6 text-foreground tracking-tight drop-shadow-sm">
               Biz Bilan Bog'laning
             </h1>
-            <p className="text-sm md:text-base text-muted-foreground font-medium leading-relaxed">
+            <p className="text-sm md:text-base text-foreground/80 dark:text-muted-foreground font-semibold leading-relaxed max-w-3xl mx-auto">
               Loyiha haqida savollaringiz, takliflaringiz yoki ilmiy hamkorlik g'oyalaringiz bo'lsa, quyidagi vositalar orqali murojaat qiling.
             </p>
           </ScrollReveal>

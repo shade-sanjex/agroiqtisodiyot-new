@@ -286,8 +286,8 @@ export function Navbar() {
               : 'opacity-0 -translate-y-3 scale-95 pointer-events-none mt-0 h-0'
           }`}
         >
-          <div className="navbar-dropdown-glass rounded-2xl p-3 overflow-hidden">
-            <div className="grid grid-cols-4 gap-1.5">
+          <div className="navbar-dropdown-glass rounded-2xl p-2.5 overflow-hidden">
+            <div className="flex flex-wrap items-center justify-center gap-1.5 md:gap-2">
               {navLinks.map((link, i) => {
                 const isActive = location.pathname === link.to;
                 return (
@@ -295,14 +295,14 @@ export function Navbar() {
                     key={link.to}
                     to={link.to}
                     onClick={() => setDesktopMenuOpen(false)}
-                    className={`dropdown-link-item relative px-4 py-3 text-[11px] font-bold uppercase tracking-wide transition-all duration-300 rounded-xl text-center ${
+                    className={`dropdown-link-item relative px-3 py-2 text-[10px] xl:text-[11px] font-bold uppercase tracking-wide transition-all duration-300 rounded-xl text-center whitespace-nowrap ${
                       isActive
                         ? 'bg-primary text-primary-foreground shadow-sm'
                         : 'text-muted-foreground hover:text-foreground hover:bg-background/60 dark:hover:bg-white/5'
                     }`}
-                    style={{ animationDelay: `${i * 50}ms` }}
+                    style={{ animationDelay: `${i * 30}ms` }}
                   >
-                    <span className="flex items-center justify-center gap-1.5">
+                    <span className="flex items-center justify-center gap-1">
                       {link.label}
                       {link.badge && (
                         <span className={`inline-flex items-center gap-0.5 px-1 py-0.5 text-[7px] font-black rounded-full leading-none animate-pulse ${
@@ -319,28 +319,33 @@ export function Navbar() {
                 );
               })}
 
+              <div className="h-4 w-px bg-border/40 mx-1.5 hidden md:block" />
+
               {/* Auth action in dropdown */}
               {user ? (
-                <div className="flex items-center justify-center gap-2 px-4 py-3 rounded-xl">
-                  <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-secondary/60 dark:bg-secondary/30 border border-border/30 text-[10px] font-bold">
-                    <User className="h-3 w-3 text-primary" />
-                    <span className="max-w-[60px] truncate">{profile?.full_name || 'Muallif'}</span>
+                <div className="flex items-center justify-center gap-1.5">
+                  <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-secondary/80 dark:bg-secondary/40 border border-border/40 text-[10px] font-bold text-foreground/95">
+                    <User className="h-2.5 w-2.5 text-primary" />
+                    <span className="max-w-[70px] truncate">{profile?.full_name || 'Muallif'}</span>
                   </div>
                   {isAdmin && (
                     <Link to="/admin" onClick={() => setDesktopMenuOpen(false)}>
-                      <Button variant="outline" size="sm" className="rounded-lg text-[10px] h-6 px-2 font-bold">
+                      <Button variant="outline" size="sm" className="rounded-xl text-[10px] h-7 px-3 font-bold border-primary/20 hover:border-primary/50">
                         Admin
                       </Button>
                     </Link>
                   )}
+                  <Button variant="ghost" size="icon" onClick={signOut} className="rounded-full h-7 w-7 hover:bg-destructive/10 hover:text-destructive">
+                    <LogOut className="h-3.5 w-3.5" />
+                  </Button>
                 </div>
               ) : (
                 <Link
                   to="/auth"
                   onClick={() => setDesktopMenuOpen(false)}
-                  className="flex items-center justify-center px-4 py-3 rounded-xl"
+                  className="flex items-center justify-center px-1"
                 >
-                  <Button size="sm" className="rounded-xl px-5 h-7 text-[10px] font-bold glow-button-primary bg-primary text-primary-foreground">
+                  <Button size="sm" className="rounded-xl px-5 h-8 text-[10px] font-bold glow-button-primary bg-primary text-primary-foreground">
                     Kirish
                   </Button>
                 </Link>

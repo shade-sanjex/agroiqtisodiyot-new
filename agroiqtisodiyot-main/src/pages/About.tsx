@@ -12,28 +12,37 @@ import {
   Globe2,
   Leaf
 } from 'lucide-react';
+import heroAgriculture from '@/assets/hero-agriculture.jpg';
+import economicImg from '@/assets/economic-analysis.png';
+import innovationsImg from '@/assets/agri-innovations.png';
+import researchImg from '@/assets/scientific-research.png';
+import intlImg from '@/assets/intl-integration.png';
 
 const About = () => {
   const tasks = [
     {
       icon: LineChart,
       title: 'Iqtisodiy Tahlil',
-      desc: "Agrar sohadagi iqtisodiy jarayonlarni modellashtirish va prognozlashtirish."
+      desc: "Agrar sohadagi iqtisodiy jarayonlarni modellashtirish va prognozlashtirish.",
+      image: economicImg
     },
     {
       icon: Lightbulb,
       title: 'Innovatsiyalar',
-      desc: "Sohaga raqamli texnologiyalar va sun'iy intellekt yechimlarini joriy etish."
+      desc: "Sohaga raqamli texnologiyalar va sun'iy intellekt yechimlarini joriy etish.",
+      image: innovationsImg
     },
     {
       icon: Microscope,
-      title: 'Ilmiy Tadqiqot',
-      desc: "Oziq-ovqat xavfsizligi bo'yicha fundamental ilmiy izlanishlar olib borish."
+      title: 'Ilmiy Tadqiot',
+      desc: "Oziq-ovqat xavfsizligi bo'yicha fundamental ilmiy izlanishlar olib borish.",
+      image: researchImg
     },
     {
       icon: Globe2,
       title: 'Xalqaro Integratsiya',
-      desc: "Xorijiy tajribani o'rganish va O'zbekiston sharoitiga moslashtirish."
+      desc: "Xorijiy tajribani o'rganish va O'zbekiston sharoitiga moslashtirish.",
+      image: intlImg
     }
   ];
 
@@ -49,19 +58,29 @@ const About = () => {
       <Navbar />
 
       {/* ============ PREMIUM HERO ============ */}
-      <section className="relative pt-20 pb-16 lg:pt-28 lg:pb-24 border-b border-border/80 overflow-hidden bg-background">
-        <div className="absolute inset-0 bg-grid-pattern opacity-40 pointer-events-none" />
-        <div className="mesh-gradient-glow top-[-300px] left-[-300px] opacity-70" />
+      <section className="relative pt-24 pb-20 lg:pt-32 lg:pb-28 border-b border-border/80 overflow-hidden bg-background flex items-center justify-center min-h-[380px]">
+        {/* Background Image with Ken Burns effect */}
+        <div className="absolute inset-0 z-0 overflow-hidden">
+          <img 
+            src={heroAgriculture} 
+            alt="Agroiqtisodiyot background" 
+            className="w-full h-full object-cover opacity-[0.55] dark:opacity-[0.85] dark:brightness-[0.5] animate-ken-burns"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-background/20 via-background/70 to-background dark:from-background/10 dark:via-background/50 dark:to-background" />
+        </div>
+
+        <div className="absolute inset-0 bg-grid-pattern opacity-30 pointer-events-none z-5" />
+        <div className="mesh-gradient-glow top-[-300px] left-[-300px] opacity-60 z-5" />
         
         <div className="container mx-auto px-6 text-center relative z-10 max-w-4xl">
           <ScrollReveal>
-            <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-primary/10 border border-primary/20 text-primary mb-6">
+            <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-primary/15 border border-primary/25 text-primary mb-6 shadow-md backdrop-blur-sm">
               <Building2 className="h-6 w-6" />
             </div>
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif font-black mb-6 text-foreground tracking-tight">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif font-black mb-6 text-foreground tracking-tight drop-shadow-sm">
               Tashkilot Haqida
             </h1>
-            <p className="text-sm md:text-base text-muted-foreground font-medium leading-relaxed">
+            <p className="text-sm md:text-base text-foreground/80 dark:text-muted-foreground font-semibold leading-relaxed max-w-3xl mx-auto">
               O'zbekiston Respublikasi Qishloq xo'jaligi vazirligi huzuridagi Oziq-ovqat va qishloq xo'jaligi sohasida strategik rivojlanish va tadqiqotlar xalqaro markazi (ISCAD)
             </p>
           </ScrollReveal>
@@ -115,21 +134,36 @@ const About = () => {
             </div>
           </ScrollReveal>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-10">
             {tasks.map((task, i) => (
               <ScrollReveal key={i} delay={i * 0.1}>
-                <div className="group p-6 rounded-2xl border border-border/80 bg-card hover:border-primary/40 transition-all duration-300 flex gap-5 items-start relative overflow-hidden">
-                  <div className="absolute top-0 left-0 w-1.5 h-full bg-gradient-to-b from-primary to-accent opacity-0 group-hover:opacity-100 transition-opacity" />
-                  <div className="w-11 h-11 rounded-xl bg-secondary/50 flex items-center justify-center flex-shrink-0 group-hover:bg-primary/10 group-hover:text-primary transition-all">
-                    <task.icon className="h-5 w-5 text-muted-foreground group-hover:text-primary transition-colors" />
+                <Card className="glass-card border border-border/80 shadow-md h-full bg-card overflow-hidden group flex flex-col hover-lift">
+                  {/* Card Header Image */}
+                  <div className="relative h-48 overflow-hidden">
+                    <img 
+                      src={task.image} 
+                      alt={task.title} 
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-108"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-background/90 via-background/20 to-transparent" />
+                    
+                    {/* Floating Icon on top of the image */}
+                    <div className="absolute bottom-4 left-6 w-12 h-12 rounded-xl bg-primary/90 border border-primary/20 backdrop-blur-md flex items-center justify-center text-primary-foreground shadow-lg transition-transform duration-500 group-hover:scale-110">
+                      <task.icon className="h-5 w-5" />
+                    </div>
                   </div>
-                  <div>
-                    <h3 className="text-base font-bold mb-2 text-foreground tracking-tight">{task.title}</h3>
-                    <p className="text-xs md:text-sm text-muted-foreground font-medium leading-relaxed">
-                      {task.desc}
-                    </p>
-                  </div>
-                </div>
+                  
+                  <CardContent className="p-6 md:p-8 flex-1 flex flex-col justify-between text-left">
+                    <div className="space-y-3">
+                      <h3 className="text-lg font-serif font-black text-foreground tracking-tight group-hover:text-primary transition-colors">
+                        {task.title}
+                      </h3>
+                      <p className="text-xs md:text-sm text-muted-foreground font-medium leading-relaxed">
+                        {task.desc}
+                      </p>
+                    </div>
+                  </CardContent>
+                </Card>
               </ScrollReveal>
             ))}
           </div>

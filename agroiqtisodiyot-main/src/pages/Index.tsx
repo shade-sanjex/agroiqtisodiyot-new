@@ -87,6 +87,16 @@ const Index = () => {
 
       {/* ============ PREMIUM HERO SECTION ============ */}
       <section className="relative min-h-[85vh] lg:min-h-[90vh] flex items-center justify-center overflow-hidden bg-background pt-16 pb-20">
+        {/* Background Image with Ken Burns effect */}
+        <div className="absolute inset-0 z-0 overflow-hidden">
+          <img 
+            src={heroBg} 
+            alt="Agriculture background" 
+            className="w-full h-full object-cover opacity-[0.55] dark:opacity-[0.85] dark:brightness-[0.5] animate-ken-burns"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-background/20 via-background/70 to-background dark:from-background/10 dark:via-background/50 dark:to-background" />
+        </div>
+
         {/* Visual Background Effects with Parallax */}
         <div className="absolute inset-0 bg-grid-pattern pointer-events-none opacity-50 dark:opacity-30" style={{ transform: `translateY(${getParallax(0.05)}px)` }} />
         <div className="mesh-gradient-glow top-[-200px] left-[-200px] opacity-70" style={{ transform: `translateY(${getParallax(0.12)}px) scale(${1 + scrollY * 0.0002})` }} />

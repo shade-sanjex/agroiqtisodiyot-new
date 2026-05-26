@@ -4,6 +4,7 @@ import { ScrollReveal } from '@/components/ScrollReveal';
 import { BackToTop } from '@/components/BackToTop';
 import { Card, CardContent } from '@/components/ui/card';
 import { Users, GraduationCap, Building, Award, User } from 'lucide-react';
+import editorialHero from '@/assets/editorial-hero.png';
 
 const EditorialBoard = () => {
   const editors = [
@@ -35,19 +36,29 @@ const EditorialBoard = () => {
       <Navbar />
 
       {/* ============ PREMIUM HERO ============ */}
-      <section className="relative pt-20 pb-16 lg:pt-28 lg:pb-24 border-b border-border/80 overflow-hidden bg-background">
-        <div className="absolute inset-0 bg-grid-pattern opacity-40 pointer-events-none" />
-        <div className="mesh-gradient-glow top-[-300px] left-[-300px] opacity-70" />
+      <section className="relative pt-24 pb-20 lg:pt-32 lg:pb-28 border-b border-border/80 overflow-hidden bg-background flex items-center justify-center min-h-[380px]">
+        {/* Background Image with Ken Burns effect */}
+        <div className="absolute inset-0 z-0 overflow-hidden">
+          <img 
+            src={editorialHero} 
+            alt="Tahrir Hay'ati background" 
+            className="w-full h-full object-cover opacity-[0.55] dark:opacity-[0.85] dark:brightness-[0.5] animate-ken-burns"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-background/20 via-background/70 to-background dark:from-background/10 dark:via-background/50 dark:to-background" />
+        </div>
+
+        <div className="absolute inset-0 bg-grid-pattern opacity-30 pointer-events-none z-5" />
+        <div className="mesh-gradient-glow top-[-300px] left-[-300px] opacity-60 z-5" />
         
         <div className="container mx-auto px-6 text-center relative z-10 max-w-4xl">
           <ScrollReveal>
-            <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-primary/10 border border-primary/20 text-primary mb-6">
+            <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-primary/15 border border-primary/25 text-primary mb-6 shadow-md backdrop-blur-sm">
               <Users className="h-6 w-6" />
             </div>
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif font-black mb-6 text-foreground tracking-tight">
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif font-black mb-6 text-foreground tracking-tight drop-shadow-sm">
               Tahrir Hay'ati
             </h1>
-            <p className="text-sm md:text-base text-muted-foreground font-medium leading-relaxed">
+            <p className="text-sm md:text-base text-foreground/80 dark:text-muted-foreground font-semibold leading-relaxed max-w-3xl mx-auto">
               Jurnalning ilmiy yo'nalishi va tadqiqot sifatini ta'minlovchi mahalliy hamda xalqaro ekspertlar jamoasi
             </p>
           </ScrollReveal>
@@ -63,48 +74,17 @@ const EditorialBoard = () => {
                 
                 {/* Photo space */}
                 <div className="md:col-span-4 relative flex justify-center py-6">
-                  <div className="w-48 h-48 md:w-56 md:h-56 rounded-3xl overflow-hidden bg-gradient-to-br from-emerald-950 via-slate-900 to-slate-950 flex items-center justify-center border border-amber-500/20 shadow-[0_0_30px_rgba(245,158,11,0.05)] hover:shadow-[0_0_40px_rgba(245,158,11,0.12)] transition-all duration-500 group/emblem">
-                    <svg viewBox="0 0 100 100" className="w-full h-full p-4 transition-transform duration-700 ease-out group-hover/emblem:scale-105">
-                      <defs>
-                        <radialGradient id="gold-glow" cx="50%" cy="50%" r="50%">
-                          <stop offset="0%" stopColor="#fbbf24" stopOpacity="0.12" />
-                          <stop offset="100%" stopColor="#fbbf24" stopOpacity="0" />
-                        </radialGradient>
-                        <linearGradient id="gold-grad" x1="0%" y1="0%" x2="100%" y2="100%">
-                          <stop offset="0%" stopColor="#d97706" />
-                          <stop offset="35%" stopColor="#fbbf24" />
-                          <stop offset="65%" stopColor="#f59e0b" />
-                          <stop offset="100%" stopColor="#b45309" />
-                        </linearGradient>
-                      </defs>
-                      
-                      {/* Glow background */}
-                      <circle cx="50%" cy="50%" r="48" fill="url(#gold-glow)" />
-                      
-                      {/* Outer decorative ring */}
-                      <circle cx="50%" cy="50%" r="41" fill="none" stroke="url(#gold-grad)" strokeWidth="1.5" strokeDasharray="3 2" className="animate-spin" style={{ transformOrigin: 'center', animationDuration: '40s' }} />
-                      
-                      {/* Inner ring */}
-                      <circle cx="50%" cy="50%" r="36" fill="none" stroke="url(#gold-grad)" strokeWidth="1" opacity="0.4" />
-                      
-                      {/* Wheat/Laurel leaves decoration (left side of seal) */}
-                      <path d="M 32,58 C 30,48 37,38 42,33 C 40,39 36,45 36,51" fill="none" stroke="url(#gold-grad)" strokeWidth="1.2" strokeLinecap="round" />
-                      <path d="M 34,48 C 31,45 29,46 29,46 C 31,48 33,49 34,48" fill="none" stroke="url(#gold-grad)" strokeWidth="1" />
-                      <path d="M 36,41 C 33,38 31,40 31,40 C 33,42 35,43 36,41" fill="none" stroke="url(#gold-grad)" strokeWidth="1" />
-                      
-                      {/* Wheat/Laurel leaves decoration (right side of seal) */}
-                      <path d="M 68,58 C 70,48 63,38 58,33 C 60,39 64,45 64,51" fill="none" stroke="url(#gold-grad)" strokeWidth="1.2" strokeLinecap="round" />
-                      <path d="M 66,48 C 69,45 71,46 71,46 C 69,48 67,49 66,48" fill="none" stroke="url(#gold-grad)" strokeWidth="1" />
-                      <path d="M 64,41 C 67,38 69,40 69,40 C 67,42 65,43 64,41" fill="none" stroke="url(#gold-grad)" strokeWidth="1" />
-
-                      {/* Serif Monogram Initials in Center */}
-                      <text x="50%" y="54%" dominantBaseline="middle" textAnchor="middle" fill="url(#gold-grad)" fontSize="18" fontFamily="Playfair Display, Georgia, serif" fontWeight="900" letterSpacing="1">
-                        ST
-                      </text>
-                      
-                      {/* Bottom decorative academic star */}
-                      <polygon points="50,68 51.5,71 54.5,71 52,72.5 53,75.5 50,73.5 47,75.5 48,72.5 45.5,71 48.5,71" fill="url(#gold-grad)" />
-                    </svg>
+                  <div className="w-48 h-48 md:w-56 md:h-56 rounded-3xl bg-secondary/20 flex flex-col items-center justify-center border border-border relative overflow-hidden group/avatar transition-all duration-300">
+                    {/* Animated background glow */}
+                    <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover/avatar:opacity-100 transition-opacity duration-500" />
+                    
+                    {/* Academic Icon */}
+                    <GraduationCap className="w-20 h-20 text-primary transition-transform duration-500 group-hover/avatar:scale-110 group-hover/avatar:text-accent" />
+                    
+                    {/* Text badge */}
+                    <div className="absolute bottom-4 px-3 py-1 bg-background/80 backdrop-blur-md rounded-full border border-border text-[9px] uppercase tracking-wider font-bold text-muted-foreground group-hover/avatar:text-primary transition-colors">
+                      ISCAD
+                    </div>
                   </div>
                 </div>
                 
