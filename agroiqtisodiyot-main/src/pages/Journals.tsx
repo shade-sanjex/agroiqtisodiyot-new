@@ -5,6 +5,7 @@ import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
 import { ScrollReveal } from '@/components/ScrollReveal';
 import { BackToTop } from '@/components/BackToTop';
+import { ImageCard } from '@/components/ImageCard';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -164,11 +165,10 @@ const Journals = () => {
                     {/* 3D Realistic publication cover with shine */}
                     <div className="journal-cover-realistic cover-shine relative mb-5 border border-border/80 bg-slate-950 overflow-hidden">
                       {journal.cover_image_url ? (
-                        <img
+                        <ImageCard
                           src={journal.cover_image_url}
                           alt={journal.title}
                           className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                          loading="lazy"
                         />
                       ) : (
                         <div className="absolute inset-0 flex flex-col justify-between p-6 text-slate-100 text-left">
@@ -260,7 +260,7 @@ const Journals = () => {
                 <div className="md:col-span-5 flex justify-center">
                   <div className="journal-cover-realistic cover-shine bg-slate-950 border border-slate-900 shadow-2xl relative w-full max-w-[200px] md:max-w-full aspect-[3/4.2] rounded-lg overflow-hidden">
                     {selectedJournal.cover_image_url ? (
-                      <img 
+                      <ImageCard 
                         src={selectedJournal.cover_image_url} 
                         alt={selectedJournal.title}
                         className="absolute inset-0 w-full h-full object-cover"

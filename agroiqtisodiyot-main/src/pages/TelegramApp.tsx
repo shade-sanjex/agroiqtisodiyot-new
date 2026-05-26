@@ -13,6 +13,7 @@ import {
   ExternalLink
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { ImageCard } from '@/components/ImageCard';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent } from '@/components/ui/card';
@@ -312,11 +313,10 @@ export default function TelegramApp() {
                       {/* Cover Thumbnail */}
                       <div className="w-16 h-22 bg-slate-800/80 rounded-lg overflow-hidden flex-shrink-0 border border-slate-750 relative shadow-md">
                         {journal.cover_image_url ? (
-                          <img 
+                          <ImageCard 
                             src={journal.cover_image_url} 
                             alt={journal.title} 
                             className="w-full h-full object-cover"
-                            loading="lazy"
                           />
                         ) : (
                           <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-slate-900 to-slate-950 text-slate-600">

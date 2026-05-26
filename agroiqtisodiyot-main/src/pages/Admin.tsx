@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Navbar } from '@/components/Navbar';
 import { Footer } from '@/components/Footer';
 import { Button } from '@/components/ui/button';
+import { ImageCard } from '@/components/ImageCard';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -437,8 +438,8 @@ const Admin = () => {
                 {journals.map((journal) => (
                   <Card key={journal.id} className="overflow-hidden">
                     {journal.cover_image_url && (
-                      <div className="aspect-[3/4] overflow-hidden bg-muted">
-                        <img
+                      <div className="aspect-[3/4] overflow-hidden bg-muted relative">
+                        <ImageCard
                           src={journal.cover_image_url}
                           alt={journal.title}
                           className="w-full h-full object-cover"

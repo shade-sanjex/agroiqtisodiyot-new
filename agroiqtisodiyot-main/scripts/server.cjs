@@ -4,6 +4,34 @@ const fs = require('fs');
 const path = require('path');
 const { createClient } = require('@supabase/supabase-js');
 const multer = require('multer');
+const NodeCache = require('node-cache');
+const sharp = require('sharp');
+const { encode } = require('blurhash');
+
+// Initialize in-memory cache with 24 hours TTL (86400 seconds)
+const imageCache = new NodeCache({ stdTTL: 86400 });
+
+// Helper function to generate blurhash string from image buffer
+async function generateBlurhash(buffer) {
+  try {
+    const { data, info } = await sharp(buffer)
+      .raw()
+      .ensureAlpha()
+      .resize(32, 32, { fit: 'inside' })
+      .toBuffer({ resolveWithObject: true });
+
+    return encode(
+      new Uint8ClampedArray(data),
+      info.width,
+      info.height,
+      4,
+      4
+    );
+  } catch (err) {
+    console.error('Error generating blurhash:', err);
+    return null;
+  }
+}
 
 // Configure multer for in-memory file handling
 const upload = multer({ limits: { fileSize: 50 * 1024 * 1024 } }); // Limit to 50MB
@@ -159,7 +187,16 @@ app.get('/', (req, res) => {
 });
 
 // Helper to stream a file from Telegram Bot API using its fileId
+// Helper to stream a file from Telegram Bot API using its fileId
 function streamTelegramFile(fileId, res) {
+  // Check if we have this file optimized in cache first (if it's an image, it will be cached as image/webp)
+  const cachedImage = imageCache.get(`image:${fileId}`);
+  if (cachedImage) {
+    res.setHeader('Content-Type', 'image/webp');
+    res.setHeader('Cache-Control', 'public, max-age=86400'); // 24 hours browser cache
+    return res.send(cachedImage);
+  }
+
   const getFileUrl = `https://api.telegram.org/bot${token}/getFile?file_id=${fileId}`;
   
   https.get(getFileUrl, (telegramRes) => {
@@ -176,31 +213,73 @@ function streamTelegramFile(fileId, res) {
         const filePath = fileInfo.result.file_path;
         const downloadUrl = `https://api.telegram.org/file/bot${token}/${filePath}`;
 
-        // Determine content type based on file extension
-        let contentType = 'application/octet-stream';
-        if (filePath.endsWith('.pdf')) {
-          contentType = 'application/pdf';
-        } else if (filePath.endsWith('.jpg') || filePath.endsWith('.jpeg')) {
-          contentType = 'image/jpeg';
-        } else if (filePath.endsWith('.png')) {
-          contentType = 'image/png';
-        }
+        // Determine if it is an image
+        const isImage = filePath.endsWith('.jpg') || filePath.endsWith('.jpeg') || filePath.endsWith('.png');
 
-        // Stream file content from Telegram to frontend client
-        https.get(downloadUrl, (fileStream) => {
-          // Copy important headers from Telegram if they exist
-          if (fileStream.headers['content-length']) {
-            res.setHeader('Content-Length', fileStream.headers['content-length']);
+        if (isImage) {
+          // If it is an image, download the buffer, optimize it, cache, and serve
+          https.get(downloadUrl, (fileStream) => {
+            const chunks = [];
+            fileStream.on('data', (chunk) => chunks.push(chunk));
+            fileStream.on('end', async () => {
+              try {
+                const rawBuffer = Buffer.concat(chunks);
+
+                // 1. Optimize image (convert to WebP, shrink to max 400px width)
+                const optimizedBuffer = await sharp(rawBuffer)
+                  .resize({ width: 400, withoutEnlargement: true })
+                  .webp({ quality: 80 })
+                  .toBuffer();
+
+                // 2. Generate blurhash in background (does not block serving)
+                generateBlurhash(rawBuffer).then((blurhash) => {
+                  if (blurhash) {
+                    sharp(optimizedBuffer).metadata().then((meta) => {
+                      const width = meta.width || 400;
+                      const height = meta.height || 300;
+                      imageCache.set(`metadata:${fileId}`, { blurhash, width, height });
+                    });
+                  }
+                }).catch(err => console.error("Error generating blurhash:", err));
+
+                // 3. Cache the optimized WebP buffer
+                imageCache.set(`image:${fileId}`, optimizedBuffer);
+
+                // 4. Send response
+                res.setHeader('Content-Type', 'image/webp');
+                res.setHeader('Cache-Control', 'public, max-age=86400');
+                res.send(optimizedBuffer);
+              } catch (err) {
+                console.error("Error processing image with sharp:", err);
+                // Fallback to serving raw chunks if sharp fails
+                res.setHeader('Content-Type', 'image/jpeg');
+                res.send(Buffer.concat(chunks));
+              }
+            });
+          }).on('error', (streamErr) => {
+            console.error("Image download error:", streamErr);
+            res.status(500).json({ error: "Error downloading image from Telegram" });
+          });
+        } else {
+          // Determine content type for non-image files (like PDFs)
+          let contentType = 'application/octet-stream';
+          if (filePath.endsWith('.pdf')) {
+            contentType = 'application/pdf';
           }
-          res.setHeader('Content-Type', contentType);
-          res.setHeader('Content-Disposition', `inline; filename="${path.basename(filePath)}"`);
-          
-          // Pipe the raw stream directly to response
-          fileStream.pipe(res);
-        }).on('error', (streamErr) => {
-          console.error("Stream error:", streamErr);
-          res.status(500).json({ error: "Error streaming file content from Telegram" });
-        });
+
+          // Stream file content directly
+          https.get(downloadUrl, (fileStream) => {
+            if (fileStream.headers['content-length']) {
+              res.setHeader('Content-Length', fileStream.headers['content-length']);
+            }
+            res.setHeader('Content-Type', contentType);
+            res.setHeader('Content-Disposition', `inline; filename="${path.basename(filePath)}"`);
+            fileStream.pipe(res);
+          }).on('error', (streamErr) => {
+            console.error("Stream error:", streamErr);
+            res.status(500).json({ error: "Error streaming file content from Telegram" });
+          });
+        }
 
       } catch (parseErr) {
         console.error("JSON parse error:", parseErr);
@@ -212,6 +291,83 @@ function streamTelegramFile(fileId, res) {
     res.status(500).json({ error: "Failed to connect to Telegram Bot API" });
   });
 }
+
+// Endpoint to fetch metadata (blurhash, width, height) of an image cover
+app.get('/api/file/metadata/:fileId', async (req, res) => {
+  const { fileId } = req.params;
+
+  // 1. Check if metadata is in cache
+  const cachedMeta = imageCache.get(`metadata:${fileId}`);
+  if (cachedMeta) {
+    return res.json(cachedMeta);
+  }
+
+  // 2. If not, fetch and generate metadata
+  const getFileUrl = `https://api.telegram.org/bot${token}/getFile?file_id=${fileId}`;
+
+  https.get(getFileUrl, (telegramRes) => {
+    let data = '';
+    telegramRes.on('data', (chunk) => { data += chunk; });
+    telegramRes.on('end', () => {
+      try {
+        const fileInfo = JSON.parse(data);
+        if (!fileInfo.ok) {
+          return res.status(404).json({ error: "Telegram file not found" });
+        }
+
+        const filePath = fileInfo.result.file_path;
+        const isImage = filePath.endsWith('.jpg') || filePath.endsWith('.jpeg') || filePath.endsWith('.png');
+
+        if (!isImage) {
+          return res.status(400).json({ error: "Requested file is not an image" });
+        }
+
+        const downloadUrl = `https://api.telegram.org/file/bot${token}/${filePath}`;
+
+        https.get(downloadUrl, (fileStream) => {
+          const chunks = [];
+          fileStream.on('data', (chunk) => chunks.push(chunk));
+          fileStream.on('end', async () => {
+            try {
+              const rawBuffer = Buffer.concat(chunks);
+
+              // Optimize and get dimensions
+              const optimizedBuffer = await sharp(rawBuffer)
+                .resize({ width: 400, withoutEnlargement: true })
+                .webp({ quality: 80 })
+                .toBuffer();
+
+              const blurhash = await generateBlurhash(rawBuffer);
+              const meta = await sharp(optimizedBuffer).metadata();
+              
+              const metaData = {
+                blurhash: blurhash || "L6PZES9F00%M00WBq_?b00Rj~q_3", // default placeholder blurhash if failed
+                width: meta.width || 400,
+                height: meta.height || 300
+              };
+
+              // Cache both optimized image and metadata
+              imageCache.set(`image:${fileId}`, optimizedBuffer);
+              imageCache.set(`metadata:${fileId}`, metaData);
+
+              res.json(metaData);
+            } catch (err) {
+              console.error("Error generating image metadata:", err);
+              res.status(500).json({ error: "Error processing image metadata" });
+            }
+          });
+        }).on('error', (err) => {
+          res.status(500).json({ error: "Error downloading image from Telegram" });
+        });
+
+      } catch (err) {
+        res.status(500).json({ error: "Error parsing Telegram response" });
+      }
+    });
+  }).on('error', (err) => {
+    res.status(500).json({ error: "Failed to connect to Telegram Bot API" });
+  });
+});
 
 // Streaming proxy route by file ID directly
 app.get('/api/file/:fileId', (req, res) => {
