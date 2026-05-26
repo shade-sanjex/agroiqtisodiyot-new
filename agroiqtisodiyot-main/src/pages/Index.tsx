@@ -134,13 +134,13 @@ const Index = () => {
                 {/* Styled CTAs */}
                 <div className="flex flex-col sm:flex-row gap-4 items-stretch sm:items-center">
                   <Link to="/journals">
-                    <Button size="lg" className="w-full sm:w-auto font-bold rounded-full px-8 h-13 glow-button-primary bg-primary hover:bg-primary/95 text-primary-foreground text-sm uppercase tracking-wider">
+                    <Button size="lg" className="w-full sm:w-auto font-extrabold rounded-full px-8 h-14 glow-button-primary bg-primary hover:bg-primary/95 text-primary-foreground text-sm uppercase tracking-wider">
                       Ilmiy Nashrlar
                     </Button>
                   </Link>
                   <Link to="/article-checker">
-                    <Button size="lg" variant="outline" className="w-full sm:w-auto border-border/85 bg-background/50 hover:bg-secondary/40 text-foreground rounded-full px-8 h-13 text-sm uppercase tracking-wider font-bold">
-                      <Cpu className="mr-2 h-4 w-4 text-accent" />
+                    <Button size="lg" variant="outline" className="w-full sm:w-auto border-2 border-border/80 bg-background/50 hover:bg-secondary/40 text-foreground rounded-full px-8 h-14 text-sm uppercase tracking-wider font-extrabold">
+                      <Cpu className="mr-2 h-4.5 w-4.5 text-accent" />
                       AI Tahlil Tizimi
                     </Button>
                   </Link>
@@ -445,7 +445,7 @@ const Index = () => {
               Ilmiy hamkorlik, savollar yoki tahririyat takliflari uchun aloqaga chiqing.
             </p>
             <Link to="/contact">
-              <Button className="rounded-full px-10 h-13 font-bold glow-button-primary bg-primary text-primary-foreground uppercase tracking-wider text-xs">
+              <Button className="rounded-full px-10 h-14 font-extrabold glow-button-primary bg-primary text-primary-foreground uppercase tracking-wider text-xs">
                 Aloqa sahifasi
               </Button>
             </Link>
