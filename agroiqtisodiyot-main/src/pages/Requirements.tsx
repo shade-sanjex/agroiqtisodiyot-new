@@ -132,20 +132,20 @@ const Requirements = () => {
             <Accordion type="single" collapsible className="w-full space-y-4">
               <AccordionItem value="item-1" className="border border-border/80 bg-card rounded-2xl px-2">
                 <AccordionTrigger className="text-sm md:text-base font-bold px-4 py-4 hover:no-underline uppercase tracking-wide">
-                  1. Title, Abstract va Keywords
+                  1. Sarlavha, annotatsiya va kalit so'zlar
                 </AccordionTrigger>
                 <AccordionContent className="px-4 pb-4 text-left text-muted-foreground leading-relaxed text-xs md:text-sm font-medium">
                   <ul className="list-disc pl-5 space-y-2">
-                    <li><strong className="text-foreground">Sarlavha (Title):</strong> Qisqa, aniq va maqola mazmunini to'liq ochib beruvchi (ko'pi bilan 12 so'z).</li>
-                    <li><strong className="text-foreground">Annotatsiya (Abstract):</strong> Tadqiqot maqsadi, metodi, natijalari va xulosasini o'z ichiga olgan 150-250 so'zlik qisqa matn.</li>
-                    <li><strong className="text-foreground">Kalit so'zlar (Keywords):</strong> Maqola mazmunini yorituvchi 5-7 ta so'z.</li>
+                    <li><strong className="text-foreground">Sarlavha:</strong> Qisqa, aniq va maqola mazmunini to'liq ochib beruvchi (ko'pi bilan 12 so'z).</li>
+                    <li><strong className="text-foreground">Annotatsiya:</strong> Tadqiqot maqsadi, metodi, natijalari va xulosasini o'z ichiga olgan 150-250 so'zlik qisqa matn.</li>
+                    <li><strong className="text-foreground">Kalit so'zlar:</strong> Maqola mazmunini yorituvchi 5-7 ta so'z.</li>
                   </ul>
                 </AccordionContent>
               </AccordionItem>
 
               <AccordionItem value="item-2" className="border border-border/80 bg-card rounded-2xl px-2">
                 <AccordionTrigger className="text-sm md:text-base font-bold px-4 py-4 hover:no-underline uppercase tracking-wide">
-                  2. Introduction (Kirish)
+                  2. Kirish
                 </AccordionTrigger>
                 <AccordionContent className="px-4 pb-4 text-left text-muted-foreground leading-relaxed text-xs md:text-sm font-medium">
                   Tadqiqotning dolzarbligi, o'rganilayotgan muammoning qisqacha tavsifi, ilgari qilingan ishlarning qisqacha tahlili (adabiyotlar sharhi) va ushbu tadqiqotning maqsadi aniq yoritilishi kerak.
@@ -154,7 +154,7 @@ const Requirements = () => {
 
               <AccordionItem value="item-3" className="border border-border/80 bg-card rounded-2xl px-2">
                 <AccordionTrigger className="text-sm md:text-base font-bold px-4 py-4 hover:no-underline uppercase tracking-wide">
-                  3. Methods (Metodologiya)
+                  3. Metodologiya
                 </AccordionTrigger>
                 <AccordionContent className="px-4 pb-4 text-left text-muted-foreground leading-relaxed text-xs md:text-sm font-medium">
                   Tadqiqot qanday usullar yordamida o'tkazilganligi tushuntirilari. Ma'lumotlar qayerdan olinganligi, qanday statistik yoki iqtisodiy modellar qo'llanilgani batafsil yozilishi kerak.
@@ -163,16 +163,16 @@ const Requirements = () => {
 
               <AccordionItem value="item-4" className="border border-border/80 bg-card rounded-2xl px-2">
                 <AccordionTrigger className="text-sm md:text-base font-bold px-4 py-4 hover:no-underline uppercase tracking-wide">
-                  4. Results and Discussion (Natijalar va Muhokama)
+                  4. Natijalar va Muhokama
                 </AccordionTrigger>
                 <AccordionContent className="px-4 pb-4 text-left text-muted-foreground leading-relaxed text-xs md:text-sm font-medium">
-                  Olingan asosiy natijalar aniq, jadvallar va grafiklar bilan taqdim etiladi. Shu bilan birga, bu natijalarning amaliy va nazariy ahamiyati, boshqa tadqiqotchilar natijalari bilan taqqoslanishi (Discussion) keltiriladi.
+                  Olingan asosiy natijalar aniq, jadvallar va grafiklar bilan taqdim etiladi. Shu bilan birga, bu natijalarning amaliy va nazariy ahamiyati, boshqa tadqiqotchilar natijalari bilan taqqoslanishi va muhokama qilinishi keltiriladi.
                 </AccordionContent>
               </AccordionItem>
 
               <AccordionItem value="item-5" className="border border-border/80 bg-card rounded-2xl px-2">
                 <AccordionTrigger className="text-sm md:text-base font-bold px-4 py-4 hover:no-underline uppercase tracking-wide">
-                  5. Conclusion (Xulosa)
+                  5. Xulosa
                 </AccordionTrigger>
                 <AccordionContent className="px-4 pb-4 text-left text-muted-foreground leading-relaxed text-xs md:text-sm font-medium">
                   Tadqiqot Natijalari asosida qilingan qisqa, aniq xulosalar. Muammoni hal qilish bo'yicha amaliy taklif va tavsiyalar berilishi zarur.
@@ -181,7 +181,7 @@ const Requirements = () => {
 
               <AccordionItem value="item-6" className="border border-border/80 bg-card rounded-2xl px-2">
                 <AccordionTrigger className="text-sm md:text-base font-bold px-4 py-4 hover:no-underline uppercase tracking-wide">
-                  6. References (Foydalanilgan adabiyotlar)
+                  6. Foydalanilgan adabiyotlar
                 </AccordionTrigger>
                 <AccordionContent className="px-4 pb-4 text-left text-muted-foreground leading-relaxed text-xs md:text-sm font-medium">
                   Manbalar ro'yxati APA (American Psychological Association) uslubida shakllantirilishi lozim. Eng kamida 10-15 ta manba bo'lishi va ularning 50% dan ortig'i so'nggi 5 yilda nashr etilgan bo'lishi tavsiya qilinadi.
