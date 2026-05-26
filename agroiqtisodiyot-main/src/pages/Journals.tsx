@@ -36,15 +36,32 @@ const Journals = () => {
   const [search, setSearch] = useState('');
   const [selectedJournal, setSelectedJournal] = useState<Journal | null>(null);
   const [scrollY, setScrollY] = useState(0);
+  const [visibleCount, setVisibleCount] = useState(12); // Render 12 journals initially (2 rows of 6 columns)
   const navigate = useNavigate();
 
   useEffect(() => {
     fetchJournals();
     
-    const handleScroll = () => setScrollY(window.scrollY);
+    const handleScroll = () => {
+      setScrollY(window.scrollY);
+      
+      // Load more journals when scrolled near the bottom of the page
+      if (
+        window.innerHeight + window.scrollY >=
+        document.documentElement.scrollHeight - 400
+      ) {
+        setVisibleCount((prev) => prev + 12);
+      }
+    };
+    
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  // Reset pagination count when search query changes
+  useEffect(() => {
+    setVisibleCount(12);
+  }, [search]);
 
   // Lock body scroll when modal is open
   useEffect(() => {
@@ -157,8 +174,8 @@ const Journals = () => {
               ))}
             </div>
           ) : filtered.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-8 gap-y-16">
-              {filtered.map((journal, i) => (
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-x-6 gap-y-12">
+              {filtered.slice(0, visibleCount).map((journal, i) => (
                 <ScrollReveal key={journal.id} delay={i * 0.05}>
                   <div className="group cursor-pointer text-left" onClick={() => setSelectedJournal(journal)}>
                     

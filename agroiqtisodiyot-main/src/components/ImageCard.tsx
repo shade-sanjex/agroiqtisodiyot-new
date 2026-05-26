@@ -8,10 +8,6 @@ interface ImageCardProps {
 }
 
 export function ImageCard({ src, alt, className = '' }: ImageCardProps) {
-  const [metadata, setMetadata] = useState<{ blurhash: string; width: number; height: number } | null>(null);
-  const [imageLoaded, setImageLoaded] = useState(false);
-  const [metaLoading, setMetaLoading] = useState(false);
-
   // Extract Telegram fileId from the src URL
   const getFileId = (url: string | null) => {
     if (!url) return null;
@@ -23,6 +19,21 @@ export function ImageCard({ src, alt, className = '' }: ImageCardProps) {
   };
 
   const fileId = getFileId(src);
+
+  // Load from localStorage cache instantly for 0ms startup time
+  const getCachedMetadata = () => {
+    if (!fileId) return null;
+    try {
+      const cached = localStorage.getItem(`blurhash:${fileId}`);
+      return cached ? JSON.parse(cached) : null;
+    } catch (e) {
+      return null;
+    }
+  };
+
+  const [metadata, setMetadata] = useState<{ blurhash: string; width: number; height: number } | null>(getCachedMetadata);
+  const [imageLoaded, setImageLoaded] = useState(false);
+  const [metaLoading, setMetaLoading] = useState(false);
 
   // Determine backend base URL dynamically
   const getBackendUrl = () => {
@@ -37,6 +48,11 @@ export function ImageCard({ src, alt, className = '' }: ImageCardProps) {
       return;
     }
 
+    // If metadata is already cached in state, don't trigger fetch (saves network requests)
+    if (metadata && metadata.blurhash !== 'UDL=8;IBrXMx2sVqyFR+qE?sp0x^0gwEV?tT') {
+      return;
+    }
+
     const controller = new AbortController();
     const fetchMetadata = async () => {
       setMetaLoading(true);
@@ -48,10 +64,12 @@ export function ImageCard({ src, alt, className = '' }: ImageCardProps) {
         if (response.ok) {
           const data = await response.json();
           setMetadata(data);
+          // Cache in localStorage for subsequent visits
+          localStorage.setItem(`blurhash:${fileId}`, JSON.stringify(data));
         } else {
           // Fallback metadata if API fails
           setMetadata({
-            blurhash: 'L6PZES9F00%M00WBq_?b00Rj~q_3',
+            blurhash: 'UDL=8;IBrXMx2sVqyFR+qE?sp0x^0gwEV?tT',
             width: 400,
             height: 300,
           });
@@ -60,7 +78,7 @@ export function ImageCard({ src, alt, className = '' }: ImageCardProps) {
         if (err.name !== 'AbortError') {
           console.error('Error fetching image metadata:', err);
           setMetadata({
-            blurhash: 'L6PZES9F00%M00WBq_?b00Rj~q_3',
+            blurhash: 'UDL=8;IBrXMx2sVqyFR+qE?sp0x^0gwEV?tT',
             width: 400,
             height: 300,
           });
@@ -86,8 +104,8 @@ export function ImageCard({ src, alt, className = '' }: ImageCardProps) {
     );
   }
 
-  // Define default blurhash keying
-  const blurhashString = metadata?.blurhash || 'L6PZES9F00%M00WBq_?b00Rj~q_3';
+  // Define default blurhash keying (custom cover signature layout)
+  const blurhashString = metadata?.blurhash || 'UDL=8;IBrXMx2sVqyFR+qE?sp0x^0gwEV?tT';
 
   return (
     <div className="absolute inset-0 w-full h-full overflow-hidden bg-slate-950">
