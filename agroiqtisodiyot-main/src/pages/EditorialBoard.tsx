@@ -63,8 +63,48 @@ const EditorialBoard = () => {
                 
                 {/* Photo space */}
                 <div className="md:col-span-4 relative flex justify-center py-6">
-                  <div className="w-48 h-48 md:w-56 md:h-56 rounded-2xl overflow-hidden bg-secondary/80 flex items-center justify-center border border-border">
-                    <User className="w-24 h-24 text-muted-foreground/60" />
+                  <div className="w-48 h-48 md:w-56 md:h-56 rounded-3xl overflow-hidden bg-gradient-to-br from-emerald-950 via-slate-900 to-slate-950 flex items-center justify-center border border-amber-500/20 shadow-[0_0_30px_rgba(245,158,11,0.05)] hover:shadow-[0_0_40px_rgba(245,158,11,0.12)] transition-all duration-500 group/emblem">
+                    <svg viewBox="0 0 100 100" className="w-full h-full p-4 transition-transform duration-700 ease-out group-hover/emblem:scale-105">
+                      <defs>
+                        <radialGradient id="gold-glow" cx="50%" cy="50%" r="50%">
+                          <stop offset="0%" stopColor="#fbbf24" stopOpacity="0.12" />
+                          <stop offset="100%" stopColor="#fbbf24" stopOpacity="0" />
+                        </radialGradient>
+                        <linearGradient id="gold-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                          <stop offset="0%" stopColor="#d97706" />
+                          <stop offset="35%" stopColor="#fbbf24" />
+                          <stop offset="65%" stopColor="#f59e0b" />
+                          <stop offset="100%" stopColor="#b45309" />
+                        </linearGradient>
+                      </defs>
+                      
+                      {/* Glow background */}
+                      <circle cx="50%" cy="50%" r="48" fill="url(#gold-glow)" />
+                      
+                      {/* Outer decorative ring */}
+                      <circle cx="50%" cy="50%" r="41" fill="none" stroke="url(#gold-grad)" strokeWidth="1.5" strokeDasharray="3 2" className="animate-spin" style={{ transformOrigin: 'center', animationDuration: '40s' }} />
+                      
+                      {/* Inner ring */}
+                      <circle cx="50%" cy="50%" r="36" fill="none" stroke="url(#gold-grad)" strokeWidth="1" opacity="0.4" />
+                      
+                      {/* Wheat/Laurel leaves decoration (left side of seal) */}
+                      <path d="M 32,58 C 30,48 37,38 42,33 C 40,39 36,45 36,51" fill="none" stroke="url(#gold-grad)" strokeWidth="1.2" strokeLinecap="round" />
+                      <path d="M 34,48 C 31,45 29,46 29,46 C 31,48 33,49 34,48" fill="none" stroke="url(#gold-grad)" strokeWidth="1" />
+                      <path d="M 36,41 C 33,38 31,40 31,40 C 33,42 35,43 36,41" fill="none" stroke="url(#gold-grad)" strokeWidth="1" />
+                      
+                      {/* Wheat/Laurel leaves decoration (right side of seal) */}
+                      <path d="M 68,58 C 70,48 63,38 58,33 C 60,39 64,45 64,51" fill="none" stroke="url(#gold-grad)" strokeWidth="1.2" strokeLinecap="round" />
+                      <path d="M 66,48 C 69,45 71,46 71,46 C 69,48 67,49 66,48" fill="none" stroke="url(#gold-grad)" strokeWidth="1" />
+                      <path d="M 64,41 C 67,38 69,40 69,40 C 67,42 65,43 64,41" fill="none" stroke="url(#gold-grad)" strokeWidth="1" />
+
+                      {/* Serif Monogram Initials in Center */}
+                      <text x="50%" y="54%" dominantBaseline="middle" textAnchor="middle" fill="url(#gold-grad)" fontSize="18" fontFamily="Playfair Display, Georgia, serif" fontWeight="900" letterSpacing="1">
+                        ST
+                      </text>
+                      
+                      {/* Bottom decorative academic star */}
+                      <polygon points="50,68 51.5,71 54.5,71 52,72.5 53,75.5 50,73.5 47,75.5 48,72.5 45.5,71 48.5,71" fill="url(#gold-grad)" />
+                    </svg>
                   </div>
                 </div>
                 
