@@ -173,7 +173,7 @@ const About = () => {
       {/* ============ STATS ============ */}
       <section className="py-20 section-alt border-t border-border/80">
         <div className="container mx-auto px-6 max-w-5xl">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-8">
             {stats.map((stat, i) => (
               <ScrollReveal key={i} delay={i * 0.1} className="text-center">
                 <div className="text-3xl md:text-4xl lg:text-5xl font-serif font-black text-foreground mb-2 tracking-tight">

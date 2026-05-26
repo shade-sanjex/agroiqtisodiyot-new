@@ -191,11 +191,11 @@ export function Navbar() {
               <div className="lg:hidden">
                 <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>
                   <SheetTrigger asChild>
-                    <Button variant="outline" size="icon" className="rounded-xl h-8 w-8 border-border/80 bg-background/50">
-                      <Menu className="h-3.5 w-3.5" />
+                    <Button variant="outline" size="icon" className="rounded-xl h-10 w-10 border-border/80 bg-background/50 shadow-sm hover:bg-secondary/40">
+                      <Menu className="h-4.5 w-4.5" />
                     </Button>
                   </SheetTrigger>
-                  <SheetContent side="right" className="w-[310px] p-0 border-l border-border/80 bg-background/95 backdrop-blur-xl">
+                  <SheetContent side="right" className="w-[280px] sm:w-[310px] p-0 border-l border-border/80 bg-background/95 backdrop-blur-xl">
                     <div className="flex flex-col h-full">
                       {/* Drawer Header */}
                       <div className="p-6 border-b border-border/50 flex items-center justify-between">
@@ -356,7 +356,7 @@ export function Navbar() {
       </div>
 
       {/* Spacer to push page contents down */}
-      <div className="h-14 lg:h-16" />
+      <div className="h-16 lg:h-20" />
     </>
   );
 }

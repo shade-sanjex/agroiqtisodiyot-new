@@ -89,7 +89,7 @@ const Contact = () => {
       {/* ============ CONTACT CONTENT ============ */}
       <section className="py-20 bg-background">
         <div className="container mx-auto px-6 max-w-6xl">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-16 items-start">
             
             {/* Left Column Contact Details */}
             <div className="lg:col-span-5 space-y-6 text-left">

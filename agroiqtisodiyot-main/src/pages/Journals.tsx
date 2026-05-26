@@ -69,6 +69,7 @@ const Journals = () => {
   const [search, setSearch] = useState('');
   const [selectedJournal, setSelectedJournal] = useState<Journal | null>(null);
   const [scrollY, setScrollY] = useState(0);
+  const [isMobile, setIsMobile] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 18; // 18 items per page (fits 6 columns grid perfectly)
   const navigate = useNavigate();
@@ -76,12 +77,19 @@ const Journals = () => {
   useEffect(() => {
     fetchJournals();
     
+    const checkMobile = () => setIsMobile(window.innerWidth < 1024);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
     const handleScroll = () => {
       setScrollY(window.scrollY);
     };
     
     window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('resize', checkMobile);
+      window.removeEventListener('scroll', handleScroll);
+    };
   }, []);
 
   // Reset pagination to first page when search query changes
@@ -108,7 +116,7 @@ const Journals = () => {
         .select('*')
         .order('created_at', { ascending: false });
       
-      let list = data || [];
+      const list = data || [];
 
       // Seed 100 mock journals for performance and layout testing
       if (list.length < 100) {
@@ -177,8 +185,8 @@ const Journals = () => {
           <div className="absolute inset-0 bg-gradient-to-b from-background/20 via-background/70 to-background dark:from-background/10 dark:via-background/50 dark:to-background" />
         </div>
 
-        <div className="absolute inset-0 bg-grid-pattern opacity-30 pointer-events-none z-5" style={{ transform: `translateY(${scrollY * 0.05}px)` }} />
-        <div className="mesh-gradient-glow top-[-300px] left-[-300px] opacity-60 z-5" style={{ transform: `translateY(${scrollY * 0.1}px)` }} />
+        <div className="absolute inset-0 bg-grid-pattern opacity-30 pointer-events-none z-5" style={{ transform: isMobile ? 'none' : `translateY(${scrollY * 0.05}px)` }} />
+        <div className="mesh-gradient-glow top-[-300px] left-[-300px] opacity-60 z-5" style={{ transform: isMobile ? 'none' : `translateY(${scrollY * 0.1}px)` }} />
         
         <div className="container mx-auto px-6 text-center relative z-10 max-w-4xl">
           <ScrollReveal>
@@ -196,7 +204,7 @@ const Journals = () => {
       </section>
 
       {/* ============ SEARCH BAR ============ */}
-      <section className="py-5 border-b border-border/60 bg-background/80 backdrop-blur-lg sticky top-16 lg:top-20 z-30 shadow-sm">
+      <section className="py-5 border-b border-border/60 bg-background/80 backdrop-blur-lg sticky top-[56px] lg:top-[64px] z-30 shadow-sm">
         <div className="container mx-auto px-6">
           <div className="relative max-w-md mx-auto">
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-primary" />
@@ -226,7 +234,7 @@ const Journals = () => {
       {/* ============ MAIN CONTENT with 3D Cards ============ */}
       <section 
         className="py-16 md:py-24 flex-1 section-alt"
-        style={{ transform: `translateY(${Math.max(0, (scrollY - 300) * -0.01)}px)` }}
+        style={{ transform: isMobile ? 'none' : `translateY(${Math.max(0, (scrollY - 300) * -0.01)}px)` }}
       >
         <div className="container mx-auto px-6 max-w-7xl">
           {loading ? (
@@ -239,7 +247,7 @@ const Journals = () => {
             </div>
           ) : filtered.length > 0 ? (
             <div className="space-y-16">
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-x-6 gap-y-12">
+              <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-x-3 gap-y-8 sm:gap-x-6 sm:gap-y-12">
                 {paginatedJournals.map((journal, i) => (
                   <ScrollReveal key={journal.id} delay={(i % 6) * 0.05}>
                     <div className="group cursor-pointer text-left" onClick={() => setSelectedJournal(journal)}>
@@ -302,13 +310,13 @@ const Journals = () => {
 
               {/* Pagination Controls */}
               {totalPages > 1 && (
-                <div className="flex justify-center items-center gap-1.5 pt-4">
+                <div className="flex justify-center items-center gap-1 md:gap-1.5 pt-4">
                   <Button
                     variant="outline"
                     size="sm"
                     disabled={currentPage === 1}
                     onClick={() => handlePageChange(currentPage - 1)}
-                    className="rounded-full w-9 h-9 p-0 flex items-center justify-center border-border/80 hover:bg-secondary/40 hover:text-foreground text-sm font-bold animate-in fade-in duration-300"
+                    className="rounded-full w-8 h-8 md:w-9 md:h-9 p-0 flex items-center justify-center border-border/80 hover:bg-secondary/40 hover:text-foreground text-xs md:text-sm font-bold animate-in fade-in duration-300"
                   >
                     &lsaquo;
                   </Button>
@@ -330,7 +338,7 @@ const Journals = () => {
                         variant={currentPage === pageNum ? "default" : "outline"}
                         size="sm"
                         onClick={() => handlePageChange(pageNum as number)}
-                        className={`rounded-full w-9 h-9 p-0 font-bold text-xs transition-all duration-300 ${
+                        className={`rounded-full w-8 h-8 md:w-9 md:h-9 p-0 font-bold text-xs transition-all duration-300 ${
                           currentPage === pageNum 
                             ? "bg-primary text-primary-foreground shadow-lg shadow-primary/20 scale-110" 
                             : "border-border/80 hover:bg-secondary/45 hover:text-foreground hover:scale-105"
@@ -346,7 +354,7 @@ const Journals = () => {
                     size="sm"
                     disabled={currentPage === totalPages}
                     onClick={() => handlePageChange(currentPage + 1)}
-                    className="rounded-full w-9 h-9 p-0 flex items-center justify-center border-border/80 hover:bg-secondary/40 hover:text-foreground text-sm font-bold animate-in fade-in duration-300"
+                    className="rounded-full w-8 h-8 md:w-9 md:h-9 p-0 flex items-center justify-center border-border/80 hover:bg-secondary/40 hover:text-foreground text-xs md:text-sm font-bold animate-in fade-in duration-300"
                   >
                     &rsaquo;
                   </Button>
@@ -394,7 +402,7 @@ const Journals = () => {
                 
                 {/* Left column: 3D realistic vertical book cover */}
                 <div className="md:col-span-5 flex justify-center">
-                  <div className="journal-cover-realistic cover-shine bg-slate-950 border border-slate-900 shadow-2xl relative w-full max-w-[200px] md:max-w-full aspect-[3/4.2] rounded-lg overflow-hidden">
+                  <div className="journal-cover-realistic cover-shine bg-slate-950 border border-slate-900 shadow-2xl relative w-full max-w-[180px] md:max-w-full aspect-[3/4.2] rounded-lg overflow-hidden">
                     {selectedJournal.cover_image_url ? (
                       <ImageCard 
                         src={selectedJournal.cover_image_url} 
