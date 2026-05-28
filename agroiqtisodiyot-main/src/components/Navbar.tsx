@@ -198,11 +198,8 @@ export function Navbar() {
                   <SheetContent side="right" className="w-[280px] sm:w-[310px] p-0 border-l border-border/80 bg-background/95 backdrop-blur-xl">
                     <div className="flex flex-col h-full">
                       {/* Drawer Header */}
-                      <div className="p-6 border-b border-border/50 flex items-center justify-between">
+                      <div className="p-6 border-b border-border/50 flex items-center">
                         <img src={iscadLogo} alt="ISCAD" className="h-9 logo-adaptive" />
-                        <Button variant="ghost" size="icon" className="rounded-full h-8 w-8" onClick={() => setMobileOpen(false)}>
-                          <X className="h-4 w-4" />
-                        </Button>
                       </div>
 
                       {/* Nav Links */}
