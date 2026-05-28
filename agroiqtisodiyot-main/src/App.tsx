@@ -22,12 +22,12 @@ import { LoadingScreen } from "@/components/LoadingScreen";
 import { supabase } from "@/integrations/supabase/client";
 
 // Background assets for preloading
-import heroAgriculture from '@/assets/hero-agriculture.jpg';
-import editorialHero from '@/assets/editorial-hero.png';
-import journalsHero from '@/assets/journals-hero.png';
-import requirementsHero from '@/assets/requirements-hero.png';
-import checkerHero from '@/assets/checker-hero.png';
-import contactHero from '@/assets/contact-hero.png';
+import heroAgriculture from '@/assets/hero-agriculture.webp';
+import editorialHero from '@/assets/editorial-hero.webp';
+import journalsHero from '@/assets/journals-hero.webp';
+import requirementsHero from '@/assets/requirements-hero.webp';
+import checkerHero from '@/assets/checker-hero.webp';
+import contactHero from '@/assets/contact-hero.webp';
 
 const queryClient = new QueryClient();
 

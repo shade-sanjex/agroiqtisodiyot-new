@@ -4,7 +4,7 @@ import { ScrollReveal } from '@/components/ScrollReveal';
 import { BackToTop } from '@/components/BackToTop';
 import { Card, CardContent } from '@/components/ui/card';
 import { Users, GraduationCap, Building, Award, User } from 'lucide-react';
-import editorialHero from '@/assets/editorial-hero.png';
+import editorialHero from '@/assets/editorial-hero.webp';
 
 const EditorialBoard = () => {
   const editors = [

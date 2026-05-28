@@ -4,7 +4,7 @@ import { Footer } from '@/components/Footer';
 import { ScrollReveal } from '@/components/ScrollReveal';
 import { BackToTop } from '@/components/BackToTop';
 import { Card, CardContent } from '@/components/ui/card';
-import requirementsHero from '@/assets/requirements-hero.png';
+import requirementsHero from '@/assets/requirements-hero.webp';
 import {
   Accordion,
   AccordionContent,

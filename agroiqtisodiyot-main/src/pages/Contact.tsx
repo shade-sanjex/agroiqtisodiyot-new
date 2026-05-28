@@ -11,7 +11,7 @@ import { MapPin, Phone, Mail, Clock, SendHorizontal, Loader2, MessageCircle } fr
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
 import { z } from 'zod';
-import contactHero from '@/assets/contact-hero.png';
+import contactHero from '@/assets/contact-hero.webp';
 
 const contactSchema = z.object({
   name: z.string().trim().min(2, "Ism kamida 2 ta belgidan iborat bo'lishi kerak").max(100),

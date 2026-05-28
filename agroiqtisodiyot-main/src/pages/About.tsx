@@ -12,11 +12,11 @@ import {
   Globe2,
   Leaf
 } from 'lucide-react';
-import heroAgriculture from '@/assets/hero-agriculture.jpg';
-import economicImg from '@/assets/economic-analysis.png';
-import innovationsImg from '@/assets/agri-innovations.png';
-import researchImg from '@/assets/scientific-research.png';
-import intlImg from '@/assets/intl-integration.png';
+import heroAgriculture from '@/assets/hero-agriculture.webp';
+import economicImg from '@/assets/economic-analysis.webp';
+import innovationsImg from '@/assets/agri-innovations.webp';
+import researchImg from '@/assets/scientific-research.webp';
+import intlImg from '@/assets/intl-integration.webp';
 
 const About = () => {
   const tasks = [

@@ -22,7 +22,7 @@ import {
 import { checkArticle, extractTextFromFile, ArticleCheckResult } from '@/lib/ai-checker';
 import { useToast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
-import checkerHero from '@/assets/checker-hero.png';
+import checkerHero from '@/assets/checker-hero.webp';
 
 const ArticleChecker = () => {
   const { toast } = useToast();

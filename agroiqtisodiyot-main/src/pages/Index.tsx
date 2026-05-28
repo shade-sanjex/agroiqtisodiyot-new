@@ -21,7 +21,7 @@ import {
   FolderOpen
 } from 'lucide-react';
 import iscadLogo from '@/assets/iscad-logo.png';
-import heroBg from '@/assets/hero-agriculture.jpg';
+import heroBg from '@/assets/hero-agriculture.webp';
 
 const Index = () => {
   const [scrollY, setScrollY] = useState(0);
