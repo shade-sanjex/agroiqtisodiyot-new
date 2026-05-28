@@ -24,13 +24,6 @@ const EditorialBoard = () => {
     { name: "Nurmatov S.", role: "A'zo", degree: "i.f.d., (PhD)" }
   ];
 
-  const intEditors = [
-    { name: "Yuri N. Gachev", role: "Xalqaro a'zo", degree: "Professor", country: "Rossiya" },
-    { name: "Thomas C. B.", role: "Xalqaro a'zo", degree: "Professor", country: "AQSh" },
-    { name: "John S. Smith", role: "Xalqaro a'zo", degree: "Professor", country: "Buyuk Britaniya" },
-    { name: "Li Wei", role: "Xalqaro a'zo", degree: "Professor", country: "Xitoy" }
-  ];
-
   return (
     <div className="min-h-screen flex flex-col bg-background text-foreground transition-colors duration-300 overflow-x-hidden">
       <Navbar />
@@ -135,33 +128,6 @@ const EditorialBoard = () => {
                     <span className="text-foreground/80 font-bold">{editor.role}</span>
                     <span>{editor.degree}</span>
                   </div>
-                </div>
-              </ScrollReveal>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ============ INTERNATIONAL BOARD ============ */}
-      <section className="py-20 section-alt border-t border-border/80">
-        <div className="container mx-auto px-6 max-w-6xl">
-          <ScrollReveal>
-            <div className="text-center mb-16">
-              <h2 className="text-3xl font-serif font-black mb-4">Xalqaro Tahrir A'zolari</h2>
-              <div className="w-12 h-1 bg-primary/20 mx-auto rounded-full" />
-            </div>
-          </ScrollReveal>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {intEditors.map((editor, i) => (
-              <ScrollReveal key={i} delay={i * 0.1}>
-                <div className="p-6 rounded-2xl border border-border/80 bg-background hover:border-primary/40 transition-all duration-300 text-center">
-                  <div className="w-12 h-12 rounded-full bg-secondary/80 mx-auto mb-4 flex items-center justify-center text-xl">
-                    {editor.country === 'Rossiya' ? '🇷🇺' : editor.country === 'AQSh' ? '🇺🇸' : editor.country === 'Buyuk Britaniya' ? '🇬🇧' : '🇨🇳'}
-                  </div>
-                  <h3 className="font-bold text-foreground mb-1 tracking-tight">{editor.name}</h3>
-                  <p className="text-[10px] font-black text-primary uppercase tracking-wider mb-2">{editor.country}</p>
-                  <p className="text-xs md:text-sm font-medium text-muted-foreground">{editor.degree}</p>
                 </div>
               </ScrollReveal>
             ))}
