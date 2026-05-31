@@ -163,7 +163,7 @@ const App = () => {
   }, []);
 
   return (
-    <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false}>
+    <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
       <LoadingScreen isLoading={isLoading} progress={progress} statusText={statusText} />
       <QueryClientProvider client={queryClient}>
         <AuthProvider>

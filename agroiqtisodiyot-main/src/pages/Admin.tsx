@@ -1,18 +1,19 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Navbar } from '@/components/Navbar';
-import { Footer } from '@/components/Footer';
+import { PageShell } from '@/components/layout/PageShell';
+import { PageHero } from '@/components/ui-system/PageHero';
+import { GlassCard } from '@/components/ui-system/GlassCard';
+import { EmptyState } from '@/components/ui-system/EmptyState';
 import { Button } from '@/components/ui/button';
 import { ImageCard } from '@/components/ImageCard';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useAuth } from '@/contexts/AuthContext';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from 'sonner';
-import { Upload, Loader2, Trash2, Edit, Eye, Mail, Users, Plus } from 'lucide-react';
+import { Upload, Loader2, Trash2, Edit, Eye, Mail, Users, Plus, BookOpen, Shield, FileX } from 'lucide-react';
 import { z } from 'zod';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
@@ -123,7 +124,7 @@ const Admin = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!pdfFile) {
       toast.error('PDF fayl tanlash majburiy');
       return;
@@ -163,12 +164,12 @@ const Admin = () => {
       setPdfFile(null);
       setCoverFile(null);
       fetchJournals();
-    } catch (error: any) {
+    } catch (error) {
       console.error('Error uploading journal:', error);
       if (error instanceof z.ZodError) {
         error.errors.forEach(err => toast.error(err.message));
       } else {
-        toast.error(error.message || 'Jurnal yuklashda xatolik yuz berdi');
+        toast.error(error instanceof Error ? error.message : 'Jurnal yuklashda xatolik yuz berdi');
       }
     } finally {
       setLoading(false);
@@ -228,12 +229,12 @@ const Admin = () => {
       setEditingJournal(null);
       setEditDialogOpen(false);
       fetchJournals();
-    } catch (error: any) {
+    } catch (error) {
       console.error('Error updating journal:', error);
       if (error instanceof z.ZodError) {
         error.errors.forEach(err => toast.error(err.message));
       } else {
-        toast.error(error.message || 'Jurnal yangilashda xatolik yuz berdi');
+        toast.error(error instanceof Error ? error.message : 'Jurnal yangilashda xatolik yuz berdi');
       }
     } finally {
       setLoading(false);
@@ -328,7 +329,7 @@ const Admin = () => {
 
   const handleSaveMember = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!memberFormData.name.trim()) {
       toast.error('Ism kiritish majburiy');
       return;
@@ -351,7 +352,7 @@ const Admin = () => {
         toast.success('A\'zo muvaffaqiyatli yangilandi');
       } else {
         // Add new member
-        const maxOrder = boardMembers.length > 0 
+        const maxOrder = boardMembers.length > 0
           ? Math.max(...boardMembers.map(m => m.order_index))
           : 0;
 
@@ -397,7 +398,7 @@ const Admin = () => {
 
   if (authLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center bg-background">
         <Loader2 className="h-8 w-8 animate-spin text-primary" />
       </div>
     );
@@ -407,357 +408,367 @@ const Admin = () => {
     return null;
   }
 
-  return (
-    <div className="min-h-screen flex flex-col">
-      <Navbar />
+  const labelClass = 'block text-xs font-semibold uppercase tracking-wide text-muted-foreground mb-2';
+  const fieldClass = 'rounded-xl bg-secondary/30 border-border focus-visible:ring-1 focus-visible:ring-primary shadow-none text-sm';
 
-      <main className="flex-1 py-20">
-        <div className="container mx-auto px-4">
-          <h1 className="text-3xl font-bold mb-8 text-center">Admin Panel</h1>
-          
+  return (
+    <PageShell>
+      <PageHero
+        eyebrow="Boshqaruv markazi"
+        title="Admin Panel"
+        description="Jurnallar, foydalanuvchi xabarlari va tahrir hay'ati a'zolarini shu yerdan boshqaring."
+        icon={Shield}
+        size="sm"
+      />
+
+      <section className="py-16 md:py-20">
+        <div className="container mx-auto px-6 max-w-6xl">
           <Tabs defaultValue="journals" className="w-full">
-            <TabsList className="grid w-full grid-cols-3 mb-8">
-              <TabsTrigger value="journals">Jurnallar</TabsTrigger>
-              <TabsTrigger value="messages">Xabarlar</TabsTrigger>
-              <TabsTrigger value="board">Tahrir hay'ati</TabsTrigger>
+            <TabsList className="grid w-full grid-cols-3 mb-10 rounded-full bg-secondary p-1 h-12">
+              <TabsTrigger value="journals" className="rounded-full text-xs font-bold uppercase tracking-wider">Jurnallar</TabsTrigger>
+              <TabsTrigger value="messages" className="rounded-full text-xs font-bold uppercase tracking-wider">Xabarlar</TabsTrigger>
+              <TabsTrigger value="board" className="rounded-full text-xs font-bold uppercase tracking-wider">Tahrir hay'ati</TabsTrigger>
             </TabsList>
 
-            <TabsContent value="journals" className="space-y-12">
-          
-          {/* Existing Journals */}
-          <div className="mb-12">
-            <h2 className="text-2xl font-bold mb-6">Yuklangan Jurnallar</h2>
-            {journalsLoading ? (
-              <div className="text-center">
-                <Loader2 className="h-8 w-8 animate-spin text-primary mx-auto" />
-              </div>
-            ) : journals.length === 0 ? (
-              <p className="text-muted-foreground text-center">Hozircha jurnallar mavjud emas</p>
-            ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {journals.map((journal) => (
-                  <Card key={journal.id} className="overflow-hidden">
-                    {journal.cover_image_url && (
-                      <div className="aspect-[3/4] overflow-hidden bg-muted relative">
-                        <ImageCard
-                          src={journal.cover_image_url}
-                          alt={journal.title}
-                          className="w-full h-full object-cover"
-                        />
-                      </div>
-                    )}
-                    <CardHeader>
-                      <CardTitle className="line-clamp-2 text-lg">{journal.title}</CardTitle>
-                      {journal.description && (
-                        <CardDescription className="line-clamp-2 text-sm">
-                          {journal.description}
-                        </CardDescription>
-                      )}
-                    </CardHeader>
-                    <CardContent className="flex gap-2">
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => handleView(journal.pdf_url)}
-                        className="flex-1"
-                      >
-                        <Eye className="mr-1 h-4 w-4" />
-                        Ko'rish
-                      </Button>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => handleEdit(journal)}
-                        className="flex-1"
-                      >
-                        <Edit className="mr-1 h-4 w-4" />
-                        Tahrirlash
-                      </Button>
-                      <AlertDialog>
-                        <AlertDialogTrigger asChild>
-                          <Button variant="destructive" size="sm">
-                            <Trash2 className="h-4 w-4" />
-                          </Button>
-                        </AlertDialogTrigger>
-                        <AlertDialogContent>
-                          <AlertDialogHeader>
-                            <AlertDialogTitle>Ishonchingiz komilmi?</AlertDialogTitle>
-                            <AlertDialogDescription>
-                              Bu amalni qaytarib bo'lmaydi. Jurnal butunlay o'chiriladi.
-                            </AlertDialogDescription>
-                          </AlertDialogHeader>
-                          <AlertDialogFooter>
-                            <AlertDialogCancel>Bekor qilish</AlertDialogCancel>
-                            <AlertDialogAction onClick={() => handleDelete(journal.id)}>
-                              O'chirish
-                            </AlertDialogAction>
-                          </AlertDialogFooter>
-                        </AlertDialogContent>
-                      </AlertDialog>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            )}
-          </div>
-
-          {/* Upload New Journal */}
-          <div className="max-w-2xl mx-auto">
-            <h2 className="text-2xl font-bold mb-6">Yangi Jurnal Yuklash</h2>
-
-            <Card>
-              <CardHeader>
-                <CardTitle>Jurnal Ma'lumotlari</CardTitle>
-                <CardDescription>
-                  Jurnal haqida to'liq ma'lumot kiriting va fayllarni yuklang
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <form onSubmit={handleSubmit} className="space-y-6">
-                  <div>
-                    <label htmlFor="title" className="block text-sm font-medium mb-2">
-                      Jurnal Nomi *
-                    </label>
-                    <Input
-                      id="title"
-                      required
-                      value={formData.title}
-                      onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                      placeholder="Jurnal nomini kiriting"
-                      maxLength={200}
-                    />
+            {/* ========== JOURNALS TAB ========== */}
+            <TabsContent value="journals" className="space-y-14">
+              {/* Existing Journals */}
+              <div>
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="w-10 h-10 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center text-primary">
+                    <BookOpen className="h-5 w-5" />
                   </div>
-
-                  <div>
-                    <label htmlFor="description" className="block text-sm font-medium mb-2">
-                      Tavsif *
-                    </label>
-                    <Textarea
-                      id="description"
-                      required
-                      value={formData.description}
-                      onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                      placeholder="Jurnal haqida qisqacha ma'lumot..."
-                      rows={4}
-                      maxLength={1000}
-                    />
-                  </div>
-
-                  <div>
-                    <label htmlFor="pdf" className="block text-sm font-medium mb-2">
-                      PDF Fayl *
-                    </label>
-                    <Input
-                      id="pdf"
-                      type="file"
-                      accept="application/pdf"
-                      required
-                      onChange={(e) => setPdfFile(e.target.files?.[0] || null)}
-                    />
-                  </div>
-
-                  <div>
-                    <label htmlFor="cover" className="block text-sm font-medium mb-2">
-                      Muqova Rasmi (ixtiyoriy)
-                    </label>
-                    <Input
-                      id="cover"
-                      type="file"
-                      accept="image/*"
-                      onChange={(e) => setCoverFile(e.target.files?.[0] || null)}
-                    />
-                  </div>
-
-                  <Button type="submit" className="w-full" disabled={loading}>
-                    {loading ? (
-                      <>
-                        <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                        Yuklanmoqda...
-                      </>
-                    ) : (
-                      <>
-                        <Upload className="mr-2 h-4 w-4" />
-                        Jurnalni Yuklash
-                      </>
-                    )}
-                  </Button>
-                </form>
-              </CardContent>
-            </Card>
-          </div>
-            </TabsContent>
-
-            <TabsContent value="messages">
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Mail className="h-5 w-5" />
-                    Foydalanuvchilardan kelgan xabarlar
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  {messagesLoading ? (
-                    <div className="flex justify-center py-8">
-                      <Loader2 className="h-8 w-8 animate-spin text-primary" />
-                    </div>
-                  ) : messages.length === 0 ? (
-                    <p className="text-center text-muted-foreground py-8">
-                      Hozircha xabar yo'q
-                    </p>
-                  ) : (
-                    <div className="space-y-4">
-                      {messages.map((message) => (
-                        <Card key={message.id} className="border-2">
-                          <CardContent className="pt-6">
-                            <div className="space-y-3">
-                              <div className=" flex-col flex justify-between items-start" >
-                                <div>
-                                  <p className="font-semibold text-lg">
-                                    {message.name}
-                                  </p>
-                                  <a
-                                    href={`mailto:${message.email}`}
-                                    className="text-sm text-primary hover:underline"
-                                  >
-                                    {message.email}
-                                  </a>
-                                </div>
-                                <div className="flex items-center gap-2 justify-between" style={{width:"100%"}}>
-                                  <span className="text-xs text-muted-foreground">
-                                    {new Date(message.created_at).toLocaleString(
-                                      'uz-UZ',
-                                      {
-                                        year: 'numeric',
-                                        month: 'long',
-                                        day: 'numeric',
-                                        hour: '2-digit',
-                                        minute: '2-digit',
-                                      }
-                                    )}
-                                  </span>
-                                  <Button
-                                    variant="destructive"
-                                    size="sm"
-                                    onClick={() => setDeletingMessageId(message.id)}
-                                  >
-                                    <Trash2 className="h-4 w-4" />
-                                  </Button>
-                                </div>
-                              </div>
-                              <div className="bg-muted p-4 rounded-lg">
-                                <p className="text-sm whitespace-pre-wrap">
-                                  {message.message}
-                                </p>
-                              </div>
-                            </div>
-                          </CardContent>
-                        </Card>
-                      ))}
-                    </div>
-                  )}
-                </CardContent>
-              </Card>
-            </TabsContent>
-
-            <TabsContent value="board">
-              <div className="space-y-6">
-                <div className="flex justify-between items-center">
-                  <h2 className="text-2xl font-bold">Tahrir hay'ati boshqaruvi</h2>
-                  <Button onClick={handleAddMember}>
-                    <Plus className="mr-2 h-4 w-4" />
-                    Yangi a'zo qo'shish
-                  </Button>
+                  <h2 className="text-2xl font-serif font-black text-foreground">Yuklangan Jurnallar</h2>
                 </div>
 
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                      <Users className="h-5 w-5" />
-                      Tahrir hay'ati a'zolari
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    {boardLoading ? (
-                      <div className="flex justify-center py-8">
-                        <Loader2 className="h-8 w-8 animate-spin text-primary" />
-                      </div>
-                    ) : boardMembers.length === 0 ? (
-                      <p className="text-center text-muted-foreground py-8">
-                        Hozircha a'zolar yo'q
-                      </p>
-                    ) : (
-                      <div className="space-y-3">
-                        {boardMembers.map((member) => (
-                          <Card key={member.id} className="border-2">
-                            <CardContent className="pt-4">
-                              <div className="flex justify-between items-center">
-                                <div>
-                                  <p className="font-semibold text-lg">
-                                    {member.name}
-                                  </p>
-                                  <p className="text-sm text-muted-foreground">
-                                    {member.position}
-                                  </p>
-                                </div>
-                                <div className="flex gap-2">
-                                  <Button
-                                    variant="outline"
-                                    size="sm"
-                                    onClick={() => handleEditMember(member)}
-                                  >
-                                    <Edit className="h-4 w-4" />
-                                  </Button>
-                                  <AlertDialog>
-                                    <AlertDialogTrigger asChild>
-                                      <Button variant="destructive" size="sm">
-                                        <Trash2 className="h-4 w-4" />
-                                      </Button>
-                                    </AlertDialogTrigger>
-                                    <AlertDialogContent>
-                                      <AlertDialogHeader>
-                                        <AlertDialogTitle>A'zoni o'chirish</AlertDialogTitle>
-                                        <AlertDialogDescription>
-                                          Haqiqatan ham bu a'zoni o'chirmoqchimisiz? Bu amalni bekor qilib bo'lmaydi.
-                                        </AlertDialogDescription>
-                                      </AlertDialogHeader>
-                                      <AlertDialogFooter>
-                                        <AlertDialogCancel>Bekor qilish</AlertDialogCancel>
-                                        <AlertDialogAction
-                                          onClick={() => handleDeleteMember(member.id)}
-                                          className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-                                        >
-                                          O'chirish
-                                        </AlertDialogAction>
-                                      </AlertDialogFooter>
-                                    </AlertDialogContent>
-                                  </AlertDialog>
-                                </div>
-                              </div>
-                            </CardContent>
-                          </Card>
-                        ))}
-                      </div>
-                    )}
-                  </CardContent>
-                </Card>
+                {journalsLoading ? (
+                  <div className="flex justify-center py-16">
+                    <Loader2 className="h-8 w-8 animate-spin text-primary" />
+                  </div>
+                ) : journals.length === 0 ? (
+                  <EmptyState
+                    icon={FileX}
+                    title="Hozircha jurnallar mavjud emas"
+                    description="Quyidagi forma orqali birinchi nashringizni yuklang."
+                  />
+                ) : (
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {journals.map((journal) => (
+                      <GlassCard key={journal.id} variant="elevated" className="overflow-hidden flex flex-col">
+                        {journal.cover_image_url && (
+                          <div className="aspect-[3/4] overflow-hidden bg-secondary/40 relative">
+                            <ImageCard
+                              src={journal.cover_image_url}
+                              alt={journal.title}
+                              className="w-full h-full object-cover"
+                            />
+                          </div>
+                        )}
+                        <div className="p-5 flex flex-col flex-1">
+                          <h3 className="font-serif font-bold text-base text-foreground line-clamp-2 leading-snug">
+                            {journal.title}
+                          </h3>
+                          {journal.description && (
+                            <p className="mt-2 text-sm text-muted-foreground line-clamp-2 leading-relaxed">
+                              {journal.description}
+                            </p>
+                          )}
+                          <div className="flex gap-2 mt-5 pt-4 border-t border-border/60">
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => handleView(journal.pdf_url)}
+                              className="flex-1 rounded-full text-xs font-bold"
+                            >
+                              <Eye className="mr-1 h-4 w-4" />
+                              Ko'rish
+                            </Button>
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => handleEdit(journal)}
+                              className="flex-1 rounded-full text-xs font-bold"
+                            >
+                              <Edit className="mr-1 h-4 w-4" />
+                              Tahrirlash
+                            </Button>
+                            <AlertDialog>
+                              <AlertDialogTrigger asChild>
+                                <Button variant="destructive" size="sm" className="rounded-full" aria-label="Jurnalni o'chirish">
+                                  <Trash2 className="h-4 w-4" />
+                                </Button>
+                              </AlertDialogTrigger>
+                              <AlertDialogContent>
+                                <AlertDialogHeader>
+                                  <AlertDialogTitle>Ishonchingiz komilmi?</AlertDialogTitle>
+                                  <AlertDialogDescription>
+                                    Bu amalni qaytarib bo'lmaydi. Jurnal butunlay o'chiriladi.
+                                  </AlertDialogDescription>
+                                </AlertDialogHeader>
+                                <AlertDialogFooter>
+                                  <AlertDialogCancel>Bekor qilish</AlertDialogCancel>
+                                  <AlertDialogAction onClick={() => handleDelete(journal.id)}>
+                                    O'chirish
+                                  </AlertDialogAction>
+                                </AlertDialogFooter>
+                              </AlertDialogContent>
+                            </AlertDialog>
+                          </div>
+                        </div>
+                      </GlassCard>
+                    ))}
+                  </div>
+                )}
               </div>
+
+              {/* Upload New Journal */}
+              <div className="max-w-2xl mx-auto w-full">
+                <div className="flex items-center gap-3 mb-6">
+                  <div className="w-10 h-10 rounded-xl bg-accent/10 border border-accent/25 flex items-center justify-center text-accent">
+                    <Upload className="h-5 w-5" />
+                  </div>
+                  <h2 className="text-2xl font-serif font-black text-foreground">Yangi Jurnal Yuklash</h2>
+                </div>
+
+                <GlassCard variant="default" className="p-6 md:p-8">
+                  <p className="text-sm text-muted-foreground mb-6">
+                    Jurnal haqida to'liq ma'lumot kiriting va fayllarni yuklang.
+                  </p>
+                  <form onSubmit={handleSubmit} className="space-y-6">
+                    <div>
+                      <label htmlFor="title" className={labelClass}>
+                        Jurnal Nomi *
+                      </label>
+                      <Input
+                        id="title"
+                        required
+                        value={formData.title}
+                        onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+                        placeholder="Jurnal nomini kiriting"
+                        maxLength={200}
+                        className={fieldClass}
+                      />
+                    </div>
+
+                    <div>
+                      <label htmlFor="description" className={labelClass}>
+                        Tavsif *
+                      </label>
+                      <Textarea
+                        id="description"
+                        required
+                        value={formData.description}
+                        onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                        placeholder="Jurnal haqida qisqacha ma'lumot..."
+                        rows={4}
+                        maxLength={1000}
+                        className={`${fieldClass} resize-none p-4`}
+                      />
+                    </div>
+
+                    <div>
+                      <label htmlFor="pdf" className={labelClass}>
+                        PDF Fayl *
+                      </label>
+                      <Input
+                        id="pdf"
+                        type="file"
+                        accept="application/pdf"
+                        required
+                        onChange={(e) => setPdfFile(e.target.files?.[0] || null)}
+                        className={`${fieldClass} text-xs font-bold`}
+                      />
+                    </div>
+
+                    <div>
+                      <label htmlFor="cover" className={labelClass}>
+                        Muqova Rasmi (ixtiyoriy)
+                      </label>
+                      <Input
+                        id="cover"
+                        type="file"
+                        accept="image/*"
+                        onChange={(e) => setCoverFile(e.target.files?.[0] || null)}
+                        className={`${fieldClass} text-xs font-bold`}
+                      />
+                    </div>
+
+                    <Button type="submit" className="w-full rounded-full h-12 font-bold uppercase tracking-wider text-xs" disabled={loading}>
+                      {loading ? (
+                        <>
+                          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                          Yuklanmoqda...
+                        </>
+                      ) : (
+                        <>
+                          <Upload className="mr-2 h-4 w-4" />
+                          Jurnalni Yuklash
+                        </>
+                      )}
+                    </Button>
+                  </form>
+                </GlassCard>
+              </div>
+            </TabsContent>
+
+            {/* ========== MESSAGES TAB ========== */}
+            <TabsContent value="messages">
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-10 h-10 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center text-primary">
+                  <Mail className="h-5 w-5" />
+                </div>
+                <h2 className="text-2xl font-serif font-black text-foreground">Foydalanuvchilardan kelgan xabarlar</h2>
+              </div>
+
+              {messagesLoading ? (
+                <div className="flex justify-center py-16">
+                  <Loader2 className="h-8 w-8 animate-spin text-primary" />
+                </div>
+              ) : messages.length === 0 ? (
+                <EmptyState
+                  icon={Mail}
+                  title="Hozircha xabar yo'q"
+                  description="Foydalanuvchilar aloqa formasi orqali yuborgan xabarlar shu yerda ko'rinadi."
+                />
+              ) : (
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
+                  {messages.map((message) => (
+                    <GlassCard key={message.id} variant="default" className="p-6 text-left">
+                      <div className="flex items-start justify-between gap-4">
+                        <div className="min-w-0">
+                          <p className="font-serif font-bold text-lg text-foreground truncate">
+                            {message.name}
+                          </p>
+                          <a
+                            href={`mailto:${message.email}`}
+                            className="text-sm text-primary hover:underline break-all"
+                          >
+                            {message.email}
+                          </a>
+                        </div>
+                        <Button
+                          variant="destructive"
+                          size="sm"
+                          className="rounded-full flex-shrink-0"
+                          onClick={() => setDeletingMessageId(message.id)}
+                          aria-label="Xabarni o'chirish"
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </div>
+                      <p className="mt-3 text-xs text-muted-foreground uppercase tracking-wide font-semibold">
+                        {new Date(message.created_at).toLocaleString('uz-UZ', {
+                          year: 'numeric',
+                          month: 'long',
+                          day: 'numeric',
+                          hour: '2-digit',
+                          minute: '2-digit',
+                        })}
+                      </p>
+                      <div className="mt-4 bg-secondary/40 border border-border/60 p-4 rounded-xl">
+                        <p className="text-sm text-foreground/90 whitespace-pre-wrap leading-relaxed">
+                          {message.message}
+                        </p>
+                      </div>
+                    </GlassCard>
+                  ))}
+                </div>
+              )}
+            </TabsContent>
+
+            {/* ========== EDITORIAL BOARD TAB ========== */}
+            <TabsContent value="board">
+              <div className="flex flex-wrap items-center justify-between gap-4 mb-6">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center text-primary">
+                    <Users className="h-5 w-5" />
+                  </div>
+                  <h2 className="text-2xl font-serif font-black text-foreground">Tahrir hay'ati boshqaruvi</h2>
+                </div>
+                <Button onClick={handleAddMember} className="rounded-full font-bold text-xs uppercase tracking-wider">
+                  <Plus className="mr-2 h-4 w-4" />
+                  Yangi a'zo qo'shish
+                </Button>
+              </div>
+
+              {boardLoading ? (
+                <div className="flex justify-center py-16">
+                  <Loader2 className="h-8 w-8 animate-spin text-primary" />
+                </div>
+              ) : boardMembers.length === 0 ? (
+                <EmptyState
+                  icon={Users}
+                  title="Hozircha a'zolar yo'q"
+                  description="Yuqoridagi tugma orqali tahrir hay'ati a'zolarini qo'shing."
+                />
+              ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {boardMembers.map((member) => (
+                    <GlassCard key={member.id} variant="default" className="p-5 flex items-center justify-between gap-4">
+                      <div className="min-w-0">
+                        <p className="font-serif font-bold text-base text-foreground truncate">
+                          {member.name}
+                        </p>
+                        <p className="text-sm text-muted-foreground mt-0.5">
+                          {member.position}
+                        </p>
+                      </div>
+                      <div className="flex gap-2 flex-shrink-0">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="rounded-full"
+                          onClick={() => handleEditMember(member)}
+                          aria-label="A'zoni tahrirlash"
+                        >
+                          <Edit className="h-4 w-4" />
+                        </Button>
+                        <AlertDialog>
+                          <AlertDialogTrigger asChild>
+                            <Button variant="destructive" size="sm" className="rounded-full" aria-label="A'zoni o'chirish">
+                              <Trash2 className="h-4 w-4" />
+                            </Button>
+                          </AlertDialogTrigger>
+                          <AlertDialogContent>
+                            <AlertDialogHeader>
+                              <AlertDialogTitle>A'zoni o'chirish</AlertDialogTitle>
+                              <AlertDialogDescription>
+                                Haqiqatan ham bu a'zoni o'chirmoqchimisiz? Bu amalni bekor qilib bo'lmaydi.
+                              </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                              <AlertDialogCancel>Bekor qilish</AlertDialogCancel>
+                              <AlertDialogAction
+                                onClick={() => handleDeleteMember(member.id)}
+                                className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                              >
+                                O'chirish
+                              </AlertDialogAction>
+                            </AlertDialogFooter>
+                          </AlertDialogContent>
+                        </AlertDialog>
+                      </div>
+                    </GlassCard>
+                  ))}
+                </div>
+              )}
             </TabsContent>
           </Tabs>
         </div>
-      </main>
+      </section>
 
-      {/* Edit Dialog */}
+      {/* Edit Journal Dialog */}
       <Dialog open={editDialogOpen} onOpenChange={setEditDialogOpen}>
         <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle>Jurnalni Tahrirlash</DialogTitle>
+            <DialogTitle className="font-serif font-black">Jurnalni Tahrirlash</DialogTitle>
             <DialogDescription>
               Jurnal ma'lumotlarini yangilang. Yangi fayl tanlasangiz eski fayl almashtiriladi.
             </DialogDescription>
           </DialogHeader>
           <form onSubmit={handleUpdate} className="space-y-6">
             <div>
-              <label htmlFor="edit-title" className="block text-sm font-medium mb-2">
+              <label htmlFor="edit-title" className={labelClass}>
                 Jurnal Nomi *
               </label>
               <Input
@@ -767,11 +778,12 @@ const Admin = () => {
                 onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                 placeholder="Jurnal nomini kiriting"
                 maxLength={200}
+                className={fieldClass}
               />
             </div>
 
             <div>
-              <label htmlFor="edit-description" className="block text-sm font-medium mb-2">
+              <label htmlFor="edit-description" className={labelClass}>
                 Tavsif *
               </label>
               <Textarea
@@ -782,11 +794,12 @@ const Admin = () => {
                 placeholder="Jurnal haqida qisqacha ma'lumot..."
                 rows={4}
                 maxLength={1000}
+                className={`${fieldClass} resize-none p-4`}
               />
             </div>
 
             <div>
-              <label htmlFor="edit-pdf" className="block text-sm font-medium mb-2">
+              <label htmlFor="edit-pdf" className={labelClass}>
                 Yangi PDF Fayl (ixtiyoriy)
               </label>
               <Input
@@ -794,14 +807,15 @@ const Admin = () => {
                 type="file"
                 accept="application/pdf"
                 onChange={(e) => setPdfFile(e.target.files?.[0] || null)}
+                className={`${fieldClass} text-xs font-bold`}
               />
-              <p className="text-xs text-muted-foreground mt-1">
+              <p className="text-xs text-muted-foreground mt-1.5">
                 Agar yangi fayl tanlamasangiz, eski fayl saqlanadi
               </p>
             </div>
 
             <div>
-              <label htmlFor="edit-cover" className="block text-sm font-medium mb-2">
+              <label htmlFor="edit-cover" className={labelClass}>
                 Yangi Muqova Rasmi (ixtiyoriy)
               </label>
               <Input
@@ -809,8 +823,9 @@ const Admin = () => {
                 type="file"
                 accept="image/*"
                 onChange={(e) => setCoverFile(e.target.files?.[0] || null)}
+                className={`${fieldClass} text-xs font-bold`}
               />
-              <p className="text-xs text-muted-foreground mt-1">
+              <p className="text-xs text-muted-foreground mt-1.5">
                 Agar yangi rasm tanlamasangiz, eski rasm saqlanadi
               </p>
             </div>
@@ -819,7 +834,7 @@ const Admin = () => {
               <Button
                 type="button"
                 variant="outline"
-                className="flex-1"
+                className="flex-1 rounded-full font-bold"
                 onClick={() => {
                   setEditDialogOpen(false);
                   setEditingJournal(null);
@@ -830,7 +845,7 @@ const Admin = () => {
               >
                 Bekor qilish
               </Button>
-              <Button type="submit" className="flex-1" disabled={loading}>
+              <Button type="submit" className="flex-1 rounded-full font-bold" disabled={loading}>
                 {loading ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -845,6 +860,7 @@ const Admin = () => {
         </DialogContent>
       </Dialog>
 
+      {/* Delete Message Confirmation */}
       <AlertDialog
         open={!!deletingMessageId}
         onOpenChange={() => setDeletingMessageId(null)}
@@ -872,7 +888,7 @@ const Admin = () => {
       <Dialog open={memberDialogOpen} onOpenChange={setMemberDialogOpen}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>
+            <DialogTitle className="font-serif font-black">
               {editingMember ? 'A\'zoni tahrirlash' : 'Yangi a\'zo qo\'shish'}
             </DialogTitle>
             <DialogDescription>
@@ -881,7 +897,7 @@ const Admin = () => {
           </DialogHeader>
           <form onSubmit={handleSaveMember} className="space-y-4">
             <div>
-              <label htmlFor="member-name" className="block text-sm font-medium mb-2">
+              <label htmlFor="member-name" className={labelClass}>
                 Ism va Familiya *
               </label>
               <Input
@@ -890,11 +906,12 @@ const Admin = () => {
                 value={memberFormData.name}
                 onChange={(e) => setMemberFormData({ ...memberFormData, name: e.target.value })}
                 placeholder="To'liq ism va familiya"
+                className={fieldClass}
               />
             </div>
 
             <div>
-              <label htmlFor="member-position" className="block text-sm font-medium mb-2">
+              <label htmlFor="member-position" className={labelClass}>
                 Lavozim *
               </label>
               <select
@@ -902,7 +919,7 @@ const Admin = () => {
                 required
                 value={memberFormData.position}
                 onChange={(e) => setMemberFormData({ ...memberFormData, position: e.target.value })}
-                className="w-full px-3 py-2 border border-input bg-background rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+                className="w-full px-3 py-2 border border-input bg-secondary/30 rounded-xl text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
               >
                 <option value="Bosh Muharrir">Bosh Muharrir</option>
                 <option value="Tahrir hay'ati a'zosi">Tahrir hay'ati a'zosi</option>
@@ -913,7 +930,7 @@ const Admin = () => {
               <Button
                 type="button"
                 variant="outline"
-                className="flex-1"
+                className="flex-1 rounded-full font-bold"
                 onClick={() => {
                   setMemberDialogOpen(false);
                   setMemberFormData({ name: '', position: 'Tahrir hay\'ati a\'zosi' });
@@ -921,7 +938,7 @@ const Admin = () => {
               >
                 Bekor qilish
               </Button>
-              <Button type="submit" className="flex-1" disabled={loading}>
+              <Button type="submit" className="flex-1 rounded-full font-bold" disabled={loading}>
                 {loading ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -935,9 +952,7 @@ const Admin = () => {
           </form>
         </DialogContent>
       </Dialog>
-
-      <Footer />
-    </div>
+    </PageShell>
   );
 };
 

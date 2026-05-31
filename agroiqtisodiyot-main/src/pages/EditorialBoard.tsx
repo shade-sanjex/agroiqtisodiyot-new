@@ -1,10 +1,20 @@
-import { Navbar } from '@/components/Navbar';
-import { Footer } from '@/components/Footer';
+import { PageShell } from '@/components/layout/PageShell';
+import { PageHero } from '@/components/ui-system/PageHero';
+import { SectionHeading } from '@/components/ui-system/SectionHeading';
+import { GlassCard } from '@/components/ui-system/GlassCard';
 import { ScrollReveal } from '@/components/ScrollReveal';
-import { BackToTop } from '@/components/BackToTop';
-import { Card, CardContent } from '@/components/ui/card';
-import { Users, GraduationCap, Building, Award, User } from 'lucide-react';
+import { Users, GraduationCap, Building, Award } from 'lucide-react';
 import editorialHero from '@/assets/editorial-hero.webp';
+
+/** Ismdan initsiallarni (eng ko'pi 2 ta harf) ajratib oladi — initial-avatar uchun. */
+const getInitials = (name: string): string => {
+  const parts = name
+    .split(/[\s.]+/)
+    .map((p) => p.trim())
+    .filter(Boolean);
+  const letters = parts.map((p) => p[0]?.toUpperCase() ?? '').join('');
+  return letters.slice(0, 2) || '?';
+};
 
 const EditorialBoard = () => {
   const editors = [
@@ -25,73 +35,56 @@ const EditorialBoard = () => {
   ];
 
   return (
-    <div className="min-h-screen flex flex-col bg-background text-foreground transition-colors duration-300 overflow-x-hidden">
-      <Navbar />
-
-      {/* ============ PREMIUM HERO ============ */}
-      <section className="relative pt-24 pb-20 lg:pt-32 lg:pb-28 border-b border-border/80 overflow-hidden bg-background flex items-center justify-center min-h-[380px]">
-        {/* Background Image with Ken Burns effect */}
-        <div className="absolute inset-0 z-0 overflow-hidden">
-          <img 
-            src={editorialHero} 
-            alt="Tahrir Hay'ati background" 
-            className="w-full h-full object-cover opacity-[0.55] dark:opacity-[0.85] dark:brightness-[0.5] animate-ken-burns"
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-background/20 via-background/70 to-background dark:from-background/10 dark:via-background/50 dark:to-background" />
-        </div>
-
-        <div className="absolute inset-0 bg-grid-pattern opacity-30 pointer-events-none z-5" />
-        <div className="mesh-gradient-glow top-[-300px] left-[-300px] opacity-60 z-5" />
-        
-        <div className="container mx-auto px-6 text-center relative z-10 max-w-4xl">
-          <ScrollReveal>
-            <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-primary/15 border border-primary/25 text-primary mb-6 shadow-md backdrop-blur-sm">
-              <Users className="h-6 w-6" />
-            </div>
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif font-black mb-6 text-foreground tracking-tight drop-shadow-sm">
-              Tahrir Hay'ati
-            </h1>
-            <p className="text-sm md:text-base text-foreground/80 dark:text-muted-foreground font-semibold leading-relaxed max-w-3xl mx-auto">
-              Jurnalning ilmiy yo'nalishi va tadqiqot sifatini ta'minlovchi mahalliy hamda xalqaro ekspertlar jamoasi
-            </p>
-          </ScrollReveal>
-        </div>
-      </section>
+    <PageShell>
+      {/* ============ HERO ============ */}
+      <PageHero
+        eyebrow="ISCAD Tahririyati"
+        title="Tahrir Hay'ati"
+        description="Jurnalning ilmiy yo'nalishi va tadqiqot sifatini ta'minlovchi mahalliy hamda xalqaro ekspertlar jamoasi"
+        backgroundImage={editorialHero}
+        icon={Users}
+      />
 
       {/* ============ CHIEF EDITOR ============ */}
       <section className="py-20 section-alt">
         <div className="container mx-auto px-6 max-w-5xl">
           <ScrollReveal>
-            <Card className="glass-card overflow-hidden bg-background border border-border/80 p-1">
+            <GlassCard
+              interactive
+              variant="elevated"
+              className="overflow-hidden p-1 group"
+            >
               <div className="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
-                
-                {/* Photo space */}
+
+                {/* Initial-avatar */}
                 <div className="md:col-span-4 relative flex justify-center py-6">
-                  <div className="w-48 h-48 md:w-56 md:h-56 rounded-3xl bg-secondary/20 flex flex-col items-center justify-center border border-border relative overflow-hidden group/avatar transition-all duration-300">
-                    {/* Animated background glow */}
-                    <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover/avatar:opacity-100 transition-opacity duration-500" />
-                    
-                    {/* Academic Icon */}
-                    <GraduationCap className="w-20 h-20 text-primary transition-transform duration-500 group-hover/avatar:scale-110 group-hover/avatar:text-accent" />
-                    
-                    {/* Text badge */}
-                    <div className="absolute bottom-4 px-3 py-1 bg-background/80 backdrop-blur-md rounded-full border border-border text-[9px] uppercase tracking-wider font-bold text-muted-foreground group-hover/avatar:text-primary transition-colors">
+                  <div className="w-48 h-48 md:w-56 md:h-56 rounded-3xl bg-secondary/30 flex flex-col items-center justify-center border border-border/80 relative overflow-hidden transition-all duration-500 group-hover:border-primary/40">
+                    {/* Nozik glow */}
+                    <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
+                    {/* Initsiallar */}
+                    <span className="font-serif font-black text-5xl md:text-6xl text-primary tracking-tight transition-transform duration-500 group-hover:scale-105">
+                      {getInitials("Shuxrat Teshayev")}
+                    </span>
+
+                    {/* Brend yorlig'i */}
+                    <div className="absolute bottom-4 px-3 py-1 bg-background/80 backdrop-blur-md rounded-full border border-border/80 text-xs uppercase tracking-wider font-bold text-muted-foreground group-hover:text-primary transition-colors">
                       ISCAD
                     </div>
                   </div>
                 </div>
-                
-                {/* Chief info */}
+
+                {/* Bosh muharrir ma'lumoti */}
                 <div className="md:col-span-8 p-6 md:p-10 flex flex-col justify-center text-left">
-                  <div className="inline-flex items-center gap-2 px-3.5 py-1 bg-accent/15 border border-accent/25 rounded-full text-accent text-[10px] font-black uppercase tracking-wider mb-6 w-fit">
+                  <div className="inline-flex items-center gap-2 px-3.5 py-1 bg-accent/15 border border-accent/25 rounded-full text-accent text-xs font-black uppercase tracking-wider mb-6 w-fit">
                     <Award className="h-3.5 w-3.5" /> Bosh Muharrir
                   </div>
-                  
-                  <h2 className="text-3xl md:text-4xl font-serif font-black text-foreground mb-4 leading-tight">
+
+                  <h2 className="text-3xl md:text-4xl font-serif font-black text-foreground mb-4 leading-tight tracking-tight transition-colors group-hover:text-primary">
                     Shuxrat Teshayev
                   </h2>
-                  
-                  <div className="space-y-4 text-sm font-medium text-muted-foreground">
+
+                  <div className="space-y-4 text-xs md:text-sm font-medium text-muted-foreground">
                     <div className="flex items-start gap-3">
                       <GraduationCap className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
                       <span>Qishloq xo'jaligi fanlari doktori, professor</span>
@@ -103,7 +96,7 @@ const EditorialBoard = () => {
                   </div>
                 </div>
               </div>
-            </Card>
+            </GlassCard>
           </ScrollReveal>
         </div>
       </section>
@@ -112,32 +105,46 @@ const EditorialBoard = () => {
       <section className="py-20 bg-background">
         <div className="container mx-auto px-6 max-w-6xl">
           <ScrollReveal>
-            <div className="text-center mb-16">
-              <h2 className="text-3xl font-serif font-black mb-4">Mahalliy Tahrir A'zolari</h2>
-              <div className="w-12 h-1 bg-primary/20 mx-auto rounded-full" />
-            </div>
+            <SectionHeading
+              align="center"
+              eyebrow="Ekspertlar Jamoasi"
+              title="Mahalliy Tahrir A'zolari"
+              className="mb-16"
+            />
           </ScrollReveal>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {editors.map((editor, i) => (
               <ScrollReveal key={i} delay={i * 0.05}>
-                <div className="p-6 rounded-2xl border border-border/80 bg-card hover:border-primary/40 hover:shadow-sm transition-all duration-300 group text-left relative overflow-hidden">
-                  <div className="absolute top-0 left-0 w-1.5 h-full bg-primary opacity-0 group-hover:opacity-100 transition-opacity" />
-                  <h3 className="font-bold text-foreground mb-3 text-base tracking-tight group-hover:text-primary transition-colors">{editor.name}</h3>
-                  <div className="text-xs md:text-sm font-medium text-muted-foreground flex flex-col gap-1">
-                    <span className="text-foreground/80 font-bold">{editor.role}</span>
-                    <span>{editor.degree}</span>
+                <GlassCard
+                  interactive
+                  className="h-full p-6 flex items-start gap-4 text-left group"
+                >
+                  {/* Initial-avatar */}
+                  <div className="flex-shrink-0 w-12 h-12 rounded-2xl bg-primary/10 border border-primary/20 flex items-center justify-center text-primary font-serif font-black text-base tracking-tight transition-colors group-hover:bg-primary/15 group-hover:border-primary/40">
+                    {getInitials(editor.name)}
                   </div>
-                </div>
+
+                  {/* Ism + lavozim + ilmiy daraja */}
+                  <div className="min-w-0 flex-1">
+                    <h3 className="font-bold text-foreground text-base leading-snug tracking-tight transition-colors group-hover:text-primary">
+                      {editor.name}
+                    </h3>
+                    <p className="mt-2 text-xs font-bold uppercase tracking-wider text-accent">
+                      {editor.role}
+                    </p>
+                    <p className="mt-1 flex items-center gap-1.5 text-xs font-medium text-muted-foreground">
+                      <GraduationCap className="h-3.5 w-3.5 flex-shrink-0 text-primary/70" />
+                      {editor.degree}
+                    </p>
+                  </div>
+                </GlassCard>
               </ScrollReveal>
             ))}
           </div>
         </div>
       </section>
-
-      <Footer />
-      <BackToTop />
-    </div>
+    </PageShell>
   );
 };
 

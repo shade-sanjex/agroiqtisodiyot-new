@@ -13,6 +13,25 @@
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="uz_UZ" />
 
+    <!-- Anti-FOUC: apply theme before React mounts -->
+    <script>
+      (function () {
+        try {
+          var stored = localStorage.getItem('theme');
+          var systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+          var useDark = stored ? stored === 'dark' : systemDark;
+          document.documentElement.classList.toggle('dark', useDark);
+        } catch (e) {
+          try {
+            document.documentElement.classList.toggle(
+              'dark',
+              window.matchMedia('(prefers-color-scheme: dark)').matches
+            );
+          } catch (_) {}
+        }
+      })();
+    </script>
+
     <!-- Google Fonts: Plus Jakarta Sans (body) + Playfair Display (headings) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />

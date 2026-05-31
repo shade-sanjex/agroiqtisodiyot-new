@@ -14,7 +14,7 @@ export default {
     },
     extend: {
       fontFamily: {
-        sans: ['Inter', 'system-ui', '-apple-system', 'sans-serif'],
+        sans: ['"Plus Jakarta Sans"', 'system-ui', '-apple-system', 'sans-serif'],
         serif: ['Playfair Display', 'Georgia', 'serif'],
         display: ['Playfair Display', 'Georgia', 'serif'],
       },
@@ -66,24 +66,6 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
-        // Explicit brand colors for direct use
-        navy: {
-          50: '#e8eef6',
-          100: '#c5d4e8',
-          200: '#9fb7d8',
-          300: '#789ac8',
-          400: '#5b84bc',
-          500: '#3e6eb0',
-          600: '#3562a0',
-          700: '#2a5189',
-          800: '#1f4173',
-          900: '#0d2a4d',
-        },
-        iscad: {
-          green: '#4CAF50',
-          'green-light': '#66BB6A',
-          'green-dark': '#388E3C',
-        },
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -91,12 +73,12 @@ export default {
         sm: "calc(var(--radius) - 4px)",
       },
       boxShadow: {
-        'glass': '0 8px 32px rgba(0, 0, 0, 0.08)',
-        'glass-lg': '0 16px 48px rgba(0, 0, 0, 0.12)',
-        'card-hover': '0 20px 40px -15px rgba(0, 0, 0, 0.15), 0 0 0 1px rgba(27, 79, 138, 0.1)',
-        'glow': '0 0 15px hsl(215 65% 32% / 0.3), 0 0 40px hsl(215 65% 32% / 0.1)',
-        'glow-green': '0 0 15px hsl(142 50% 40% / 0.3), 0 0 40px hsl(142 50% 40% / 0.1)',
-        'glow-gold': '0 0 15px hsl(45 93% 58% / 0.3), 0 0 40px hsl(45 93% 58% / 0.1)',
+        'glass': '0 8px 32px hsl(190 30% 4% / 0.08)',
+        'glass-lg': '0 16px 48px hsl(190 30% 4% / 0.12)',
+        'card-hover': '0 20px 40px -15px hsl(190 30% 4% / 0.15), 0 0 0 1px hsl(var(--primary) / 0.1)',
+        'glow': '0 0 0 1px hsl(var(--primary) / 0.18), 0 8px 30px hsl(var(--primary) / 0.22)',
+        'glow-green': '0 0 15px hsl(var(--primary) / 0.3), 0 0 40px hsl(var(--primary) / 0.12)',
+        'glow-gold': '0 0 15px hsl(var(--accent) / 0.3), 0 0 40px hsl(var(--accent) / 0.12)',
       },
       keyframes: {
         "accordion-down": {

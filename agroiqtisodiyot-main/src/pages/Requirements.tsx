@@ -1,9 +1,9 @@
 import { Link } from 'react-router-dom';
-import { Navbar } from '@/components/Navbar';
-import { Footer } from '@/components/Footer';
+import { PageShell } from '@/components/layout/PageShell';
+import { PageHero } from '@/components/ui-system/PageHero';
+import { SectionHeading } from '@/components/ui-system/SectionHeading';
+import { GlassCard } from '@/components/ui-system/GlassCard';
 import { ScrollReveal } from '@/components/ScrollReveal';
-import { BackToTop } from '@/components/BackToTop';
-import { Card, CardContent } from '@/components/ui/card';
 import requirementsHero from '@/assets/requirements-hero.webp';
 import {
   Accordion,
@@ -39,56 +39,39 @@ const Requirements = () => {
   ];
 
   return (
-    <div className="min-h-screen flex flex-col bg-background text-foreground transition-colors duration-300 overflow-x-hidden">
-      <Navbar />
-
-      {/* ============ PREMIUM HERO ============ */}
-      <section className="relative pt-24 pb-20 lg:pt-32 lg:pb-28 border-b border-border/80 overflow-hidden bg-background flex items-center justify-center min-h-[380px]">
-        {/* Background Image with Ken Burns effect */}
-        <div className="absolute inset-0 z-0 overflow-hidden">
-          <img 
-            src={requirementsHero} 
-            alt="Nashr Talablari background" 
-            className="w-full h-full object-cover opacity-[0.55] dark:opacity-[0.85] dark:brightness-[0.5] animate-ken-burns"
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-background/20 via-background/70 to-background dark:from-background/10 dark:via-background/50 dark:to-background" />
-        </div>
-
-        <div className="absolute inset-0 bg-grid-pattern opacity-30 pointer-events-none z-5" />
-        <div className="mesh-gradient-glow top-[-300px] left-[-300px] opacity-60 z-5" />
-        
-        <div className="container mx-auto px-6 text-center relative z-10 max-w-4xl">
-          <ScrollReveal>
-            <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-primary/15 border border-primary/25 text-primary mb-6 shadow-md backdrop-blur-sm">
-              <ListChecks className="h-6 w-6" />
-            </div>
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif font-black mb-6 text-foreground tracking-tight drop-shadow-sm">
-              Nashr Talablari
-            </h1>
-            <p className="text-sm md:text-base text-foreground/80 dark:text-muted-foreground font-semibold leading-relaxed max-w-3xl mx-auto">
-              "Agroiqtisodiyot" jurnalida maqola chop etish uchun mualliflarga qo'yiladigan asosiy talablar va qoidalar
-            </p>
-          </ScrollReveal>
-        </div>
-      </section>
+    <PageShell>
+      {/* ============ HERO ============ */}
+      <PageHero
+        eyebrow="Mualliflar uchun"
+        title="Nashr Talablari"
+        description={'"Agroiqtisodiyot" jurnalida maqola chop etish uchun mualliflarga qo\'yiladigan asosiy talablar va qoidalar'}
+        backgroundImage={requirementsHero}
+        icon={ListChecks}
+      />
 
       {/* ============ GENERAL RULES & FORMATTING ============ */}
       <section className="py-20 bg-background">
         <div className="container mx-auto px-6 max-w-5xl">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-            
+
             {/* General Rules */}
             <ScrollReveal direction="left">
               <div className="space-y-6 text-left">
-                <h2 className="text-2xl font-serif font-black text-foreground">
-                  Umumiy Qoidalar
-                </h2>
+                <SectionHeading
+                  eyebrow="Asosiy shartlar"
+                  title="Umumiy Qoidalar"
+                  as="h2"
+                />
                 <div className="space-y-4">
                   {generalRules.map((rule, i) => (
-                    <div key={i} className="flex gap-4 p-4 rounded-2xl border border-border/85 bg-card items-start hover:border-primary/25 transition-all">
-                      <CheckCircle2 className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" />
+                    <GlassCard
+                      key={i}
+                      interactive
+                      className="flex gap-4 p-4 items-start"
+                    >
+                      <CheckCircle2 className="h-5 w-5 text-primary flex-shrink-0 mt-0.5" aria-hidden="true" />
                       <p className="text-xs md:text-sm font-medium text-foreground/90 leading-relaxed">{rule}</p>
-                    </div>
+                    </GlassCard>
                   ))}
                 </div>
               </div>
@@ -97,20 +80,26 @@ const Requirements = () => {
             {/* Formatting */}
             <ScrollReveal direction="right" delay={0.2}>
               <div className="space-y-6 text-left">
-                <h2 className="text-2xl font-serif font-black text-foreground">
-                  Matnni Rasmiylashtirish
-                </h2>
+                <SectionHeading
+                  eyebrow="Texnik parametrlar"
+                  title="Matnni Rasmiylashtirish"
+                  as="h2"
+                />
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   {formattingRules.map((rule, i) => (
-                    <div key={i} className="p-5 rounded-2xl border border-border/80 bg-card flex flex-col gap-4 hover:border-primary/25 transition-all">
+                    <GlassCard
+                      key={i}
+                      interactive
+                      className="p-5 flex flex-col gap-4"
+                    >
                       <div className="w-9 h-9 rounded-xl bg-primary/10 border border-primary/20 flex items-center justify-center text-primary">
-                        <rule.icon className="h-4.5 w-4.5" />
+                        <rule.icon className="h-4 w-4" aria-hidden="true" />
                       </div>
                       <div>
                         <h4 className="font-bold text-foreground text-sm mb-1.5 tracking-tight">{rule.title}</h4>
                         <p className="text-xs text-muted-foreground font-medium leading-relaxed">{rule.desc}</p>
                       </div>
-                    </div>
+                    </GlassCard>
                   ))}
                 </div>
               </div>
@@ -124,11 +113,15 @@ const Requirements = () => {
       <section className="py-20 section-alt border-y border-border/80">
         <div className="container mx-auto px-6 max-w-4xl">
           <ScrollReveal>
-            <div className="text-center mb-12">
-              <h2 className="text-3xl font-serif font-black mb-4">Maqola Tuzilishi (IMRAD)</h2>
-              <p className="text-muted-foreground text-xs md:text-sm font-medium">Jahon standartlari asosida maqolalar quyidagi tartibda yozilishi talab etiladi</p>
-            </div>
-            
+            <SectionHeading
+              align="center"
+              eyebrow="IMRAD standarti"
+              title="Maqola Tuzilishi (IMRAD)"
+              description="Jahon standartlari asosida maqolalar quyidagi tartibda yozilishi talab etiladi"
+              as="h2"
+              className="mb-12"
+            />
+
             <Accordion type="single" collapsible className="w-full space-y-4">
               <AccordionItem value="item-1" className="border border-border/80 bg-card rounded-2xl px-2">
                 <AccordionTrigger className="text-sm md:text-base font-bold px-4 py-4 hover:no-underline uppercase tracking-wide">
@@ -192,38 +185,33 @@ const Requirements = () => {
         </div>
       </section>
 
-      {/* ============ PREMIUM AI CHECKER PROMO ============ */}
+      {/* ============ AI CHECKER PROMO ============ */}
       <section className="py-20 bg-background">
         <div className="container mx-auto px-6 max-w-4xl">
           <ScrollReveal>
-            <Card className="glass-card border-primary/30 bg-primary/5 p-2 rounded-2xl">
-              <CardContent className="p-8 md:p-12 text-center space-y-6">
-                <div className="w-16 h-16 rounded-2xl bg-background border border-border/80 flex items-center justify-center mx-auto shadow-sm text-primary">
-                  <Cpu className="h-8 w-8" />
-                </div>
-                <h3 className="text-2xl md:text-3xl font-serif font-black">
-                  Maqolangiz talablarga mosligini tekshiring
-                </h3>
-                <p className="text-muted-foreground max-w-xl mx-auto text-xs md:text-sm font-medium leading-relaxed">
-                  Bizning Sun'iy Intellekt tizimimiz maqolangizni qabul qilishdan oldin avtomatik ravishda barcha tahririyat talablariga mosligini, imlo xatolarini va plagiat elementlarini tekshirib beradi.
-                </p>
-                <div className="pt-2">
+            <GlassCard variant="elevated" className="border-primary/30 bg-primary/5 p-8 md:p-12 text-center space-y-6">
+              <div className="w-16 h-16 rounded-2xl bg-background border border-border/80 flex items-center justify-center mx-auto shadow-sm text-primary">
+                <Cpu className="h-8 w-8" aria-hidden="true" />
+              </div>
+              <h3 className="text-2xl md:text-3xl font-serif font-black tracking-tight">
+                Maqolangiz talablarga mosligini tekshiring
+              </h3>
+              <p className="text-muted-foreground max-w-xl mx-auto text-xs md:text-sm font-medium leading-relaxed">
+                Bizning Sun'iy Intellekt tizimimiz maqolangizni qabul qilishdan oldin avtomatik ravishda barcha tahririyat talablariga mosligini, imlo xatolarini va plagiat elementlarini tekshirib beradi.
+              </p>
+              <div className="pt-2">
+                <Button asChild variant="primary" size="lg" className="rounded-full px-8 h-12 font-bold uppercase tracking-wider text-xs">
                   <Link to="/article-checker">
-                    <Button size="lg" className="rounded-full px-8 h-12 font-bold glow-button-primary bg-primary text-primary-foreground uppercase tracking-wider text-xs">
-                      AI Tekshiruvdan O'tkazish
-                      <ArrowRight className="ml-2 h-4 w-4" />
-                    </Button>
+                    AI Tekshiruvdan O'tkazish
+                    <ArrowRight className="ml-2 h-4 w-4" aria-hidden="true" />
                   </Link>
-                </div>
-              </CardContent>
-            </Card>
+                </Button>
+              </div>
+            </GlassCard>
           </ScrollReveal>
         </div>
       </section>
-
-      <Footer />
-      <BackToTop />
-    </div>
+    </PageShell>
   );
 };
 

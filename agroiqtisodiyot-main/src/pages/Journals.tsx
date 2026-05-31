@@ -1,14 +1,13 @@
 import { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { useNavigate } from 'react-router-dom';
-import { Navbar } from '@/components/Navbar';
-import { Footer } from '@/components/Footer';
+import { PageShell } from '@/components/layout/PageShell';
+import { PageHero } from '@/components/ui-system/PageHero';
+import { EmptyState } from '@/components/ui-system/EmptyState';
+import { SkeletonGrid } from '@/components/ui-system/SkeletonGrid';
 import { ScrollReveal } from '@/components/ScrollReveal';
-import { BackToTop } from '@/components/BackToTop';
 import { ImageCard } from '@/components/ImageCard';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Skeleton } from '@/components/ui/skeleton';
 import {
   BookOpen,
   Download,
@@ -17,7 +16,6 @@ import {
   X,
   Calendar,
   Eye,
-  Cpu,
 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import journalsHero from '@/assets/journals-hero.webp';
@@ -68,28 +66,11 @@ const Journals = () => {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
   const [selectedJournal, setSelectedJournal] = useState<Journal | null>(null);
-  const [scrollY, setScrollY] = useState(0);
-  const [isMobile, setIsMobile] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 18; // 18 items per page (fits 6 columns grid perfectly)
-  const navigate = useNavigate();
 
   useEffect(() => {
     fetchJournals();
-    
-    const checkMobile = () => setIsMobile(window.innerWidth < 1024);
-    checkMobile();
-    window.addEventListener('resize', checkMobile);
-    
-    const handleScroll = () => {
-      setScrollY(window.scrollY);
-    };
-    
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => {
-      window.removeEventListener('resize', checkMobile);
-      window.removeEventListener('scroll', handleScroll);
-    };
   }, []);
 
   // Reset pagination to first page when search query changes
@@ -115,29 +96,11 @@ const Journals = () => {
         .from('journals')
         .select('*')
         .order('created_at', { ascending: false });
-      
-      const list = data || [];
 
-      // Seed 100 mock journals for performance and layout testing
-      if (list.length < 100) {
-        const countToGen = 100 - list.length;
-        const firstRealCover = list.find(j => j.cover_image_url)?.cover_image_url || null;
-
-        for (let i = 1; i <= countToGen; i++) {
-          list.push({
-            id: `mock-${i}`,
-            title: `Agroiqtisodiyot Ilmiy Nashri - Maxsus Son #${i}`,
-            description: `Ushbu maxsus #${i}-nashrda agrosanoat majmuasi, barqaror qishloq xo'jaligi iqtisodiyoti va innovatsion texnologiyalar mavzusidagi ilmiy-amaliy tadqiqot ishlari nashr etilgan.`,
-            pdf_url: list[0]?.pdf_url || "https://www.w3.org/WAI/ER/tests/xhtml/testfiles/resources/pdf/dummy.pdf",
-            cover_image_url: firstRealCover || "https://images.unsplash.com/photo-1593113598332-cd288d649433?auto=format&fit=crop&q=80&w=400",
-            created_at: new Date(Date.now() - i * 2 * 60 * 60 * 1000).toISOString()
-          });
-        }
-      }
-
-      setJournals(list);
+      setJournals(data || []);
     } catch (e) {
       console.error(e);
+      setJournals([]);
     } finally {
       setLoading(false);
     }
@@ -170,41 +133,20 @@ const Journals = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-background text-foreground transition-colors duration-300 overflow-x-hidden">
-      <Navbar />
+    <PageShell>
+      {/* ============ PAGE HERO ============ */}
+      <PageHero
+        eyebrow="ISCAD Nashrlari"
+        title="Ilmiy Jurnallar"
+        description={
+          "\"AGROIQTISODIYOT\" ilmiy-amaliy nashrining barcha nashr etilgan sonlarini ko'ring va yuklab oling"
+        }
+        backgroundImage={journalsHero}
+        icon={BookOpen}
+      />
 
-      {/* ============ PREMIUM HERO with Parallax ============ */}
-      <section className="relative pt-24 pb-20 lg:pt-32 lg:pb-28 border-b border-border/80 overflow-hidden bg-background flex items-center justify-center min-h-[380px]">
-        {/* Background Image with Ken Burns effect */}
-        <div className="absolute inset-0 z-0 overflow-hidden">
-          <img 
-            src={journalsHero} 
-            alt="Ilmiy Jurnallar background" 
-            className="w-full h-full object-cover opacity-[0.55] dark:opacity-[0.85] dark:brightness-[0.5] animate-ken-burns"
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-background/20 via-background/70 to-background dark:from-background/10 dark:via-background/50 dark:to-background" />
-        </div>
-
-        <div className="absolute inset-0 bg-grid-pattern opacity-30 pointer-events-none z-5" style={{ transform: isMobile ? 'none' : `translateY(${scrollY * 0.05}px)` }} />
-        <div className="mesh-gradient-glow top-[-300px] left-[-300px] opacity-60 z-5" style={{ transform: isMobile ? 'none' : `translateY(${scrollY * 0.1}px)` }} />
-        
-        <div className="container mx-auto px-6 text-center relative z-10 max-w-4xl">
-          <ScrollReveal>
-            <div className="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-primary/15 border border-primary/25 text-primary mb-6 shadow-md backdrop-blur-sm">
-              <BookOpen className="h-6 w-6" />
-            </div>
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-serif font-black mb-6 text-foreground tracking-tight drop-shadow-sm">
-              Ilmiy Jurnallar
-            </h1>
-            <p className="text-sm md:text-base text-foreground/80 dark:text-muted-foreground font-semibold leading-relaxed max-w-3xl mx-auto">
-              "AGROIQTISODIYOT" ilmiy-amaliy nashrining barcha nashr etilgan sonlarini ko'ring va yuklab oling
-            </p>
-          </ScrollReveal>
-        </div>
-      </section>
-
-      {/* ============ SEARCH BAR ============ */}
-      <section className="py-5 border-b border-border/60 bg-background/80 backdrop-blur-lg sticky top-[56px] lg:top-[64px] z-30 shadow-sm">
+      {/* ============ STICKY SEARCH BAR (token-bound offset) ============ */}
+      <section className="py-5 border-b border-border/60 bg-background/80 backdrop-blur-lg sticky top-[var(--nav-height-mobile)] lg:top-[var(--nav-height-desktop)] z-30 shadow-sm">
         <div className="container mx-auto px-6">
           <div className="relative max-w-md mx-auto">
             <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-primary" />
@@ -216,43 +158,40 @@ const Journals = () => {
             />
             {search && (
               <button
+                type="button"
+                aria-label="Qidiruvni tozalash"
                 onClick={() => setSearch('')}
-                className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
               >
                 <X className="h-4 w-4" />
               </button>
             )}
           </div>
           {!loading && (
-            <p className="text-center text-[10px] uppercase tracking-widest text-muted-foreground mt-3.5 font-bold">
+            <p className="text-center text-xs uppercase tracking-widest text-muted-foreground mt-3.5 font-bold">
               {filtered.length} ta nashr topildi
             </p>
           )}
         </div>
       </section>
 
-      {/* ============ MAIN CONTENT with 3D Cards ============ */}
-      <section 
-        className="py-16 md:py-24 flex-1 section-alt"
-        style={{ transform: isMobile ? 'none' : `translateY(${Math.max(0, (scrollY - 300) * -0.01)}px)` }}
-      >
+      {/* ============ MAIN CONTENT ============ */}
+      <section className="py-16 md:py-24 section-alt">
         <div className="container mx-auto px-6 max-w-7xl">
           {loading ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-              {Array.from({ length: 8 }).map((_, i) => (
-                <div key={i} className="rounded-2xl overflow-hidden bg-card border border-border p-2">
-                  <Skeleton className="aspect-[3/4.2] w-full rounded-xl shimmer" />
-                </div>
-              ))}
-            </div>
+            <SkeletonGrid count={12} aspect="3/4.2" columns={{ base: 2, sm: 2, md: 3, lg: 4 }} />
           ) : filtered.length > 0 ? (
             <div className="space-y-16">
               <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-x-3 gap-y-8 sm:gap-x-6 sm:gap-y-12">
                 {paginatedJournals.map((journal, i) => (
                   <ScrollReveal key={journal.id} delay={(i % 6) * 0.05}>
-                    <div className="group cursor-pointer text-left" onClick={() => setSelectedJournal(journal)}>
-                      
-                      {/* 3D Realistic publication cover with shine */}
+                    <button
+                      type="button"
+                      onClick={() => setSelectedJournal(journal)}
+                      className="group cursor-pointer text-left w-full rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+                    >
+
+                      {/* 3D realistic publication cover with shine (softened) */}
                       <div className="journal-cover-realistic cover-shine relative mb-5 border border-border/80 bg-slate-950 overflow-hidden">
                         {journal.cover_image_url ? (
                           <ImageCard
@@ -263,21 +202,21 @@ const Journals = () => {
                         ) : (
                           <div className="absolute inset-0 flex flex-col justify-between p-6 text-slate-100 text-left">
                             <div className="flex justify-between items-start">
-                              <div className="px-2.5 py-0.5 border border-slate-700/50 bg-slate-800/30 rounded text-[8px] uppercase tracking-widest text-slate-400 font-bold">
+                              <div className="px-2.5 py-0.5 border border-slate-700/50 bg-slate-800/30 rounded text-xs uppercase tracking-widest text-slate-400 font-bold">
                                 ISCAD
                               </div>
                               <BookOpen className="h-4.5 w-4.5 text-slate-500" />
                             </div>
 
                             <div className="space-y-3">
-                              <p className="text-[8px] text-accent tracking-widest uppercase font-bold">AGROIQTISODIYOT</p>
+                              <p className="text-xs text-accent tracking-widest uppercase font-bold">AGROIQTISODIYOT</p>
                               <h3 className="text-base font-serif font-black leading-tight text-white line-clamp-4">
                                 {journal.title}
                               </h3>
                             </div>
                           </div>
                         )}
-                        
+
                         {isNew(journal.created_at) && (
                           <div className="absolute top-4 left-4 z-20">
                             <span className="journal-badge-premium">Yangi</span>
@@ -286,16 +225,16 @@ const Journals = () => {
 
                         {/* Light hover overlay — NOT too dark */}
                         <div className="journal-hover-overlay">
-                          <span className="bg-white/95 dark:bg-slate-900/95 text-foreground dark:text-slate-100 text-[10px] font-bold uppercase tracking-wider px-4 py-2 rounded-full shadow-lg transition-all scale-90 group-hover:scale-100 flex items-center gap-2">
+                          <span className="bg-white/95 dark:bg-slate-900/95 text-foreground dark:text-slate-100 text-xs font-bold uppercase tracking-wider px-4 py-2 rounded-full shadow-lg transition-all scale-90 group-hover:scale-100 flex items-center gap-2">
                             <Eye className="h-3.5 w-3.5 text-primary" />
                             Batafsil
                           </span>
                         </div>
                       </div>
-                      
+
                       {/* Metadata */}
                       <div className="space-y-1.5 px-1">
-                        <div className="flex items-center justify-between text-[9px] font-black text-primary uppercase tracking-widest">
+                        <div className="flex items-center justify-between text-xs font-black text-primary uppercase tracking-widest">
                           <span>№ NASHR</span>
                           <span>{new Date(journal.created_at).toLocaleDateString('uz-UZ', { year: 'numeric', month: 'short' })}</span>
                         </div>
@@ -303,7 +242,7 @@ const Journals = () => {
                           {journal.title}
                         </h4>
                       </div>
-                    </div>
+                    </button>
                   </ScrollReveal>
                 ))}
               </div>
@@ -320,7 +259,7 @@ const Journals = () => {
                   >
                     &lsaquo;
                   </Button>
-                  
+
                   {getPaginationRange(currentPage, totalPages).map((pageNum, idx) => {
                     if (pageNum === '...') {
                       return (
@@ -339,8 +278,8 @@ const Journals = () => {
                         size="sm"
                         onClick={() => handlePageChange(pageNum as number)}
                         className={`rounded-full w-8 h-8 md:w-9 md:h-9 p-0 font-bold text-xs transition-all duration-300 ${
-                          currentPage === pageNum 
-                            ? "bg-primary text-primary-foreground shadow-lg shadow-primary/20 scale-110" 
+                          currentPage === pageNum
+                            ? "bg-primary text-primary-foreground shadow-lg shadow-primary/20 scale-110"
                             : "border-border/80 hover:bg-secondary/45 hover:text-foreground hover:scale-105"
                         }`}
                       >
@@ -362,22 +301,26 @@ const Journals = () => {
               )}
             </div>
           ) : (
-            <div className="text-center py-32">
-              <div className="w-16 h-16 rounded-full bg-secondary/80 flex items-center justify-center mx-auto mb-6 border border-border">
-                <FileX className="h-6 w-6 text-muted-foreground" />
-              </div>
-              <h3 className="font-serif font-black text-xl mb-2">
-                {search ? 'Natija topilmadi' : 'Hozircha jurnallar mavjud emas'}
-              </h3>
-              <p className="text-muted-foreground text-xs md:text-sm font-medium">
-                {search ? "Boshqa so'z bilan qidirib ko'ring" : "Tez orada yangi jurnallar qo'shiladi"}
-              </p>
-              {search && (
-                <Button variant="outline" className="mt-6 rounded-full font-bold text-xs uppercase tracking-wider" onClick={() => setSearch('')}>
-                  Qidiruvni tozalash
-                </Button>
-              )}
-            </div>
+            <EmptyState
+              icon={FileX}
+              title={search ? 'Natija topilmadi' : 'Hozircha jurnallar mavjud emas'}
+              description={
+                search
+                  ? "Boshqa so'z bilan qidirib ko'ring"
+                  : "Tez orada yangi jurnallar qo'shiladi"
+              }
+              action={
+                search ? (
+                  <Button
+                    variant="outline"
+                    className="rounded-full font-bold text-xs uppercase tracking-wider"
+                    onClick={() => setSearch('')}
+                  >
+                    Qidiruvni tozalash
+                  </Button>
+                ) : undefined
+              }
+            />
           )}
         </div>
       </section>
@@ -392,33 +335,35 @@ const Journals = () => {
             <div className="p-6 md:p-8 space-y-6 text-left relative">
               {/* Close button */}
               <button
+                type="button"
+                aria-label="Yopish"
                 onClick={() => setSelectedJournal(null)}
-                className="absolute top-6 right-6 p-2 rounded-full bg-secondary/80 hover:bg-secondary transition-colors text-muted-foreground hover:text-foreground border border-border/60 z-30"
+                className="absolute top-6 right-6 p-2 rounded-full bg-secondary/80 hover:bg-secondary transition-colors text-muted-foreground hover:text-foreground border border-border/60 z-30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
               >
                 <X className="h-4 w-4" />
               </button>
 
               <div className="grid grid-cols-1 md:grid-cols-12 gap-6 md:gap-8 items-start">
-                
+
                 {/* Left column: 3D realistic vertical book cover */}
                 <div className="md:col-span-5 flex justify-center">
                   <div className="journal-cover-realistic cover-shine bg-slate-950 border border-slate-900 shadow-2xl relative w-full max-w-[180px] md:max-w-full aspect-[3/4.2] rounded-lg overflow-hidden">
                     {selectedJournal.cover_image_url ? (
-                      <ImageCard 
-                        src={selectedJournal.cover_image_url} 
+                      <ImageCard
+                        src={selectedJournal.cover_image_url}
                         alt={selectedJournal.title}
                         className="absolute inset-0 w-full h-full object-cover"
                       />
                     ) : (
                       <div className="absolute inset-0 flex flex-col justify-between p-4 text-slate-100 text-left bg-slate-900">
                         <div className="flex justify-between items-start">
-                          <div className="px-1.5 py-0.5 border border-slate-700/50 bg-slate-800/30 rounded text-[7px] uppercase tracking-widest text-slate-400 font-bold">
+                          <div className="px-1.5 py-0.5 border border-slate-700/50 bg-slate-800/30 rounded text-xs uppercase tracking-widest text-slate-400 font-bold">
                             ISCAD
                           </div>
                           <BookOpen className="h-3.5 w-3.5 text-slate-500" />
                         </div>
                         <div className="space-y-1.5">
-                          <p className="text-[7px] text-accent tracking-widest uppercase font-bold">AGROIQTISODIYOT</p>
+                          <p className="text-xs text-accent tracking-widest uppercase font-bold">AGROIQTISODIYOT</p>
                           <h4 className="text-xs font-serif font-black leading-tight text-white line-clamp-3">
                             {selectedJournal.title}
                           </h4>
@@ -438,7 +383,7 @@ const Journals = () => {
                       <BookOpen className="h-5 w-5" />
                     </div>
                     <div>
-                      <p className="text-[8px] text-muted-foreground uppercase tracking-widest font-black">ILMIY NASHR</p>
+                      <p className="text-xs text-muted-foreground uppercase tracking-widest font-black">ILMIY NASHR</p>
                       <h3 className="text-xs font-black text-foreground">AGROIQTISODIYOT</h3>
                     </div>
                   </div>
@@ -447,13 +392,13 @@ const Journals = () => {
                     {selectedJournal.title}
                   </h2>
 
-                  <div className="flex flex-wrap items-center gap-3 text-[9px] font-black text-muted-foreground uppercase tracking-widest border-y border-border/60 py-2.5">
+                  <div className="flex flex-wrap items-center gap-3 text-xs font-black text-muted-foreground uppercase tracking-widest border-y border-border/60 py-2.5">
                     <div className="flex items-center gap-1.5">
                       <Calendar className="h-3.5 w-3.5 text-primary" />
                       <span>{formatDate(selectedJournal.created_at)}</span>
                     </div>
                     {isNew(selectedJournal.created_at) && (
-                      <span className="text-accent bg-accent/10 border border-accent/25 px-2 py-0.5 rounded-full text-[8px]">Yangi nashr</span>
+                      <span className="text-accent bg-accent/10 border border-accent/25 px-2 py-0.5 rounded-full text-xs">Yangi nashr</span>
                     )}
                   </div>
 
@@ -480,10 +425,7 @@ const Journals = () => {
         </div>,
         document.body
       )}
-
-      <Footer />
-      <BackToTop />
-    </div>
+    </PageShell>
   );
 };
 

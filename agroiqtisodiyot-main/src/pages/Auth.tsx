@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Card, CardContent } from '@/components/ui/card';
+import { GlassCard } from '@/components/ui-system/GlassCard';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useAuth } from '@/contexts/AuthContext';
 import { toast } from 'sonner';
@@ -103,37 +103,41 @@ const Auth = () => {
 
   return (
     <div className="min-h-screen flex bg-background text-foreground overflow-x-hidden">
-      
-      {/* Decorative floating Home button */}
-      <button 
-        onClick={() => navigate('/')} 
-        className="absolute top-6 left-6 z-50 flex items-center gap-2 px-4 py-2 rounded-full border border-border/80 bg-background/80 hover:bg-secondary/40 text-xs font-bold uppercase tracking-wider backdrop-blur-md"
+
+      {/* Bosh sahifa havolasi */}
+      <button
+        onClick={() => navigate('/')}
+        className="absolute top-6 left-6 z-50 inline-flex items-center gap-2 px-4 py-2 rounded-full border border-border/70 bg-card/70 hover:bg-secondary/50 text-xs font-semibold uppercase tracking-[0.15em] backdrop-blur-md transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
       >
         <ArrowLeft className="h-4 w-4" /> Bosh sahifa
       </button>
 
-      {/* Left decorative panel — hidden on mobile */}
-      <div className={`hidden lg:flex lg:w-1/2 relative bg-gradient-forest text-left items-center justify-center overflow-hidden border-r border-border/10 auth-transition z-10 ${
-        activeTab === 'signup' ? 'lg:blur-md lg:opacity-30 lg:scale-[0.98] pointer-events-none' : 'lg:blur-none lg:opacity-100 lg:scale-100'
-      }`}>
+      {/* Chap dekorativ brand panel — mobil ko'rinishda yashirin */}
+      <div
+        className={`hidden lg:flex lg:w-1/2 relative bg-gradient-forest items-center justify-center overflow-hidden border-r border-border/10 auth-transition z-10 ${
+          activeTab === 'signup'
+            ? 'lg:blur-md lg:opacity-30 lg:scale-[0.98] pointer-events-none'
+            : 'lg:blur-none lg:opacity-100 lg:scale-100'
+        }`}
+      >
         <ParticleBackground className="absolute inset-0 z-0" particleCount={30} />
-        
-        {/* Abstract glowing layers */}
+
+        {/* Nozik dekorativ qatlamlar */}
         <div className="absolute top-20 right-20 w-32 h-32 border border-white/5 rounded-3xl rotate-45 animate-spin-slow" />
         <div className="absolute bottom-32 left-16 w-24 h-24 border border-white/5 rounded-full animate-float" />
 
-        <div className="relative z-10 text-slate-100 px-16 max-w-xl space-y-8">
+        <div className="relative z-10 px-16 max-w-xl space-y-8">
           <img
             src={iscadLogo}
             alt="ISCAD"
             className="h-16 w-auto drop-shadow-2xl filter brightness-0 invert"
           />
-          
+
           <div className="space-y-3">
-            <h2 className="text-3xl font-serif font-black leading-tight text-white">
+            <h2 className="text-3xl font-serif font-bold leading-tight text-white">
               ISCAD Platformasi
             </h2>
-            <p className="text-white/50 text-xs md:text-sm font-medium leading-relaxed">
+            <p className="text-white/60 text-sm font-medium leading-relaxed">
               Oziq-ovqat va Qishloq Xo'jaligi Sohasida Strategik Rivojlanish va Tadqiqotlar Xalqaro Markazi
             </p>
           </div>
@@ -144,200 +148,200 @@ const Auth = () => {
               { icon: BookOpen, text: "Ilmiy jurnallarning elektron arxivini o'qish" },
               { icon: Shield, text: "Xavfsiz va ishonchli foydalanuvchi kabineti" },
             ].map((item, i) => (
-              <div key={i} className="flex items-center gap-4 bg-white/5 rounded-2xl p-4 border border-white/10 backdrop-blur-sm">
-                <div className="w-9 h-9 rounded-xl bg-primary/20 flex items-center justify-center text-primary-foreground border border-primary/20 flex-shrink-0">
-                  <item.icon className="h-4.5 w-4.5 text-accent" />
+              <div key={i} className="flex items-center gap-4 rounded-2xl p-4 bg-white/5 border border-white/10 backdrop-blur-sm">
+                <div className="w-10 h-10 rounded-xl bg-white/10 border border-white/15 flex items-center justify-center flex-shrink-0">
+                  <item.icon className="h-5 w-5 text-accent" />
                 </div>
-                <span className="text-white/80 text-xs md:text-sm font-bold">{item.text}</span>
+                <span className="text-white/85 text-sm font-semibold">{item.text}</span>
               </div>
             ))}
           </div>
         </div>
       </div>
 
-      {/* Right form panel */}
-      <div className={`flex-1 lg:w-1/2 flex items-center justify-center p-6 md:p-12 relative auth-transition z-20 ${
-        activeTab === 'signup' ? 'lg:-translate-x-1/2' : 'lg:translate-x-0'
-      }`}>
-        <div className="absolute inset-0 bg-grid-pattern pointer-events-none opacity-40" />
-        <div className="mesh-gradient-glow top-0 right-0 opacity-40" />
-        
+      {/* O'ng forma paneli */}
+      <div
+        className={`flex-1 lg:w-1/2 flex items-center justify-center p-6 md:p-12 relative auth-transition z-20 ${
+          activeTab === 'signup' ? 'lg:-translate-x-1/2' : 'lg:translate-x-0'
+        }`}
+      >
+        <div className="absolute inset-0 bg-grid-pattern pointer-events-none opacity-30" />
+        <div className="mesh-gradient-glow top-0 right-0 opacity-30" />
+
         <div className="w-full max-w-md z-10">
-          
-          {/* Mobile brand header */}
+
+          {/* Mobil brand sarlavhasi */}
           <div className="lg:hidden text-center mb-8">
             <img src={iscadLogo} alt="ISCAD" className="h-14 w-auto mx-auto mb-3 logo-adaptive" />
-            <p className="text-xs font-bold text-muted-foreground uppercase tracking-widest">Tizimga kirish</p>
+            <p className="text-xs font-semibold text-muted-foreground uppercase tracking-[0.2em]">Tizimga kirish</p>
           </div>
 
-          <Card className="glass-card border border-border/80 shadow-glass-lg p-1 bg-card/90">
-            <CardContent className="p-6 md:p-8 text-left">
-              {showReset ? (
-                /* Password Reset Form */
-                <div className="space-y-6">
-                  <div>
-                    <h3 className="text-xl font-serif font-black mb-1.5">Parolni tiklash</h3>
-                    <p className="text-xs text-muted-foreground font-medium">Email manzilingizga parolni tiklash uchun havola yuboramiz</p>
-                  </div>
-                  <form onSubmit={handleReset} className="space-y-4">
-                    <Input
-                      type="email"
-                      required
-                      placeholder="Email manzilingiz"
-                      value={resetEmail}
-                      onChange={e => setResetEmail(e.target.value)}
-                      className="rounded-xl h-11 bg-secondary/35 border-border focus-visible:ring-1 focus-visible:ring-primary shadow-none text-xs md:text-sm font-semibold"
-                    />
-                    <Button type="submit" className="w-full rounded-full h-11 font-bold glow-button-primary bg-primary text-primary-foreground uppercase tracking-wider text-xs" disabled={loading}>
+          <GlassCard variant="elevated" className="p-6 md:p-8 text-left">
+            {showReset ? (
+              /* Parolni tiklash formasi */
+              <div className="space-y-6">
+                <div>
+                  <h3 className="text-xl font-serif font-bold mb-1.5">Parolni tiklash</h3>
+                  <p className="text-xs text-muted-foreground font-medium">Email manzilingizga parolni tiklash uchun havola yuboramiz</p>
+                </div>
+                <form onSubmit={handleReset} className="space-y-4">
+                  <Input
+                    type="email"
+                    required
+                    placeholder="Email manzilingiz"
+                    value={resetEmail}
+                    onChange={e => setResetEmail(e.target.value)}
+                    className="rounded-xl h-11 bg-secondary/35 border-border focus-visible:ring-2 focus-visible:ring-ring shadow-none text-sm font-medium"
+                  />
+                  <Button type="submit" variant="primary" className="w-full rounded-full h-11 font-semibold uppercase tracking-[0.15em] text-xs" disabled={loading}>
+                    {loading ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : null}
+                    Yuborish
+                  </Button>
+                  <Button type="button" variant="ghost" className="w-full rounded-full font-semibold text-xs uppercase tracking-[0.15em] h-11" onClick={() => setShowReset(false)}>
+                    Orqaga qaytish
+                  </Button>
+                </form>
+              </div>
+            ) : (
+              <Tabs value={activeTab} onValueChange={(val) => setActiveTab(val as 'login' | 'signup')} className="w-full">
+                <TabsList className="grid w-full grid-cols-2 mb-8 rounded-full bg-secondary p-1 h-12">
+                  <TabsTrigger value="login" className="rounded-full text-xs font-semibold uppercase tracking-[0.15em]">Kirish</TabsTrigger>
+                  <TabsTrigger value="signup" className="rounded-full text-xs font-semibold uppercase tracking-[0.15em]">Ro'yxatdan o'tish</TabsTrigger>
+                </TabsList>
+
+                {/* Kirish tabi */}
+                <TabsContent value="login" className="space-y-5">
+                  <form onSubmit={handleLogin} className="space-y-4">
+                    <div className="space-y-2">
+                      <label className="block text-xs font-semibold text-muted-foreground uppercase tracking-[0.15em]">Email</label>
+                      <Input
+                        type="email"
+                        required
+                        value={loginData.email}
+                        onChange={e => setLoginData({ ...loginData, email: e.target.value })}
+                        placeholder="email@example.com"
+                        className="rounded-xl h-11 bg-secondary/30 border-border focus-visible:ring-2 focus-visible:ring-ring shadow-none text-sm font-medium"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <div className="flex items-center justify-between">
+                        <label className="block text-xs font-semibold text-muted-foreground uppercase tracking-[0.15em]">Parol</label>
+                        <button
+                          type="button"
+                          onClick={() => setShowReset(true)}
+                          className="text-xs font-semibold text-primary hover:underline uppercase tracking-wide focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 rounded"
+                        >
+                          Parolni unutdingizmi?
+                        </button>
+                      </div>
+                      <Input
+                        type="password"
+                        required
+                        value={loginData.password}
+                        onChange={e => setLoginData({ ...loginData, password: e.target.value })}
+                        placeholder="••••••"
+                        className="rounded-xl h-11 bg-secondary/30 border-border focus-visible:ring-2 focus-visible:ring-ring shadow-none text-sm font-medium"
+                      />
+                    </div>
+                    <Button type="submit" variant="primary" className="w-full rounded-full h-11 font-semibold uppercase tracking-[0.15em] text-xs mt-2" disabled={loading}>
                       {loading ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : null}
-                      Yuborish
-                    </Button>
-                    <Button type="button" variant="ghost" className="w-full rounded-full font-bold text-xs uppercase tracking-wider h-11" onClick={() => setShowReset(false)}>
-                      Orqaga qaytish
+                      Kirish
                     </Button>
                   </form>
-                </div>
-              ) : (
-                <Tabs value={activeTab} onValueChange={(val) => setActiveTab(val as 'login' | 'signup')} className="w-full">
-                  <TabsList className="grid w-full grid-cols-2 mb-8 rounded-full bg-secondary p-1 h-12">
-                    <TabsTrigger value="login" className="rounded-full text-xs font-bold uppercase tracking-wider">Kirish</TabsTrigger>
-                    <TabsTrigger value="signup" className="rounded-full text-xs font-bold uppercase tracking-wider">Ro'yxatdan o'tish</TabsTrigger>
-                  </TabsList>
 
-                  {/* Login Tab */}
-                  <TabsContent value="login" className="space-y-5">
-                    <form onSubmit={handleLogin} className="space-y-4">
-                      <div className="space-y-2">
-                        <label className="block text-[10px] font-bold text-muted-foreground uppercase tracking-widest">Email</label>
-                        <Input
-                          type="email"
-                          required
-                          value={loginData.email}
-                          onChange={e => setLoginData({ ...loginData, email: e.target.value })}
-                          placeholder="email@example.com"
-                          className="rounded-xl h-11 bg-secondary/30 border-border focus-visible:ring-1 focus-visible:ring-primary shadow-none text-xs md:text-sm font-semibold"
-                        />
-                      </div>
-                      <div className="space-y-2">
-                        <div className="flex items-center justify-between">
-                          <label className="block text-[10px] font-bold text-muted-foreground uppercase tracking-widest">Parol</label>
-                          <button
-                            type="button"
-                            onClick={() => setShowReset(true)}
-                            className="text-[10px] font-bold text-primary hover:underline uppercase tracking-wide"
-                          >
-                            Parolni unutdingizmi?
-                          </button>
-                        </div>
-                        <Input
-                          type="password"
-                          required
-                          value={loginData.password}
-                          onChange={e => setLoginData({ ...loginData, password: e.target.value })}
-                          placeholder="••••••"
-                          className="rounded-xl h-11 bg-secondary/30 border-border focus-visible:ring-1 focus-visible:ring-primary shadow-none text-xs md:text-sm font-semibold"
-                        />
-                      </div>
-                      <Button type="submit" className="w-full rounded-full h-11 font-bold glow-button-primary bg-primary text-primary-foreground uppercase tracking-wider text-xs mt-2" disabled={loading}>
-                        {loading ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : null}
-                        Kirish
-                      </Button>
-                    </form>
-
-                    {/* Divider */}
-                    <div className="relative my-6">
-                      <div className="absolute inset-0 flex items-center">
-                        <span className="w-full border-t border-border" />
-                      </div>
-                      <div className="relative flex justify-center text-[10px] font-black uppercase tracking-widest">
-                        <span className="bg-card px-3 text-muted-foreground">yoki</span>
-                      </div>
+                  {/* Ajratuvchi */}
+                  <div className="relative my-6">
+                    <div className="absolute inset-0 flex items-center">
+                      <span className="w-full border-t border-border" />
                     </div>
-
-                    {/* Google Sign In */}
-                    <Button
-                      type="button"
-                      variant="outline"
-                      onClick={handleGoogle}
-                      className="w-full rounded-full h-11 border-border bg-background hover:bg-secondary/40 font-bold text-xs uppercase tracking-wider"
-                      disabled={loading}
-                    >
-                      <GoogleIcon />
-                      Google orqali kirish
-                    </Button>
-                  </TabsContent>
-
-                  {/* Signup Tab */}
-                  <TabsContent value="signup" className="space-y-5">
-                    <form onSubmit={handleSignup} className="space-y-4">
-                      <div className="space-y-2">
-                        <label className="block text-[10px] font-bold text-muted-foreground uppercase tracking-widest">To'liq ism</label>
-                        <Input
-                          type="text"
-                          required
-                          value={signupData.fullName}
-                          onChange={e => setSignupData({ ...signupData, fullName: e.target.value })}
-                          placeholder="Ismingiz"
-                          maxLength={100}
-                          className="rounded-xl h-11 bg-secondary/30 border-border focus-visible:ring-1 focus-visible:ring-primary shadow-none text-xs md:text-sm font-semibold"
-                        />
-                      </div>
-                      <div className="space-y-2">
-                        <label className="block text-[10px] font-bold text-muted-foreground uppercase tracking-widest">Email</label>
-                        <Input
-                          type="email"
-                          required
-                          value={signupData.email}
-                          onChange={e => setSignupData({ ...signupData, email: e.target.value })}
-                          placeholder="email@example.com"
-                          className="rounded-xl h-11 bg-secondary/30 border-border focus-visible:ring-1 focus-visible:ring-primary shadow-none text-xs md:text-sm font-semibold"
-                        />
-                      </div>
-                      <div className="space-y-2">
-                        <label className="block text-[10px] font-bold text-muted-foreground uppercase tracking-widest">Parol</label>
-                        <Input
-                          type="password"
-                          required
-                          value={signupData.password}
-                          onChange={e => setSignupData({ ...signupData, password: e.target.value })}
-                          placeholder="Kamida 6 ta belgi"
-                          minLength={6}
-                          className="rounded-xl h-11 bg-secondary/30 border-border focus-visible:ring-1 focus-visible:ring-primary shadow-none text-xs md:text-sm font-semibold"
-                        />
-                      </div>
-                      <Button type="submit" className="w-full rounded-full h-11 font-bold glow-button-primary bg-primary text-primary-foreground uppercase tracking-wider text-xs mt-2" disabled={loading}>
-                        {loading ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : null}
-                        Ro'yxatdan o'tish
-                      </Button>
-                      <p className="text-[10px] font-bold text-center text-muted-foreground uppercase tracking-wider">
-                        Email manzilingizga tasdiqlash xabari yuboriladi
-                      </p>
-                    </form>
-
-                    <div className="relative my-6">
-                      <div className="absolute inset-0 flex items-center">
-                        <span className="w-full border-t border-border" />
-                      </div>
-                      <div className="relative flex justify-center text-[10px] font-black uppercase tracking-widest">
-                        <span className="bg-card px-3 text-muted-foreground">yoki</span>
-                      </div>
+                    <div className="relative flex justify-center text-xs font-semibold uppercase tracking-[0.2em]">
+                      <span className="bg-card px-3 text-muted-foreground">yoki</span>
                     </div>
+                  </div>
 
-                    <Button
-                      type="button"
-                      variant="outline"
-                      onClick={handleGoogle}
-                      className="w-full rounded-full h-11 border-border bg-background hover:bg-secondary/40 font-bold text-xs uppercase tracking-wider"
-                      disabled={loading}
-                    >
-                      <GoogleIcon />
-                      Google orqali ro'yxatdan o'tish
+                  {/* Google orqali kirish */}
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={handleGoogle}
+                    className="w-full rounded-full h-11 border-border bg-background hover:bg-secondary/40 font-semibold text-xs uppercase tracking-[0.15em]"
+                    disabled={loading}
+                  >
+                    <GoogleIcon />
+                    Google orqali kirish
+                  </Button>
+                </TabsContent>
+
+                {/* Ro'yxatdan o'tish tabi */}
+                <TabsContent value="signup" className="space-y-5">
+                  <form onSubmit={handleSignup} className="space-y-4">
+                    <div className="space-y-2">
+                      <label className="block text-xs font-semibold text-muted-foreground uppercase tracking-[0.15em]">To'liq ism</label>
+                      <Input
+                        type="text"
+                        required
+                        value={signupData.fullName}
+                        onChange={e => setSignupData({ ...signupData, fullName: e.target.value })}
+                        placeholder="Ismingiz"
+                        maxLength={100}
+                        className="rounded-xl h-11 bg-secondary/30 border-border focus-visible:ring-2 focus-visible:ring-ring shadow-none text-sm font-medium"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="block text-xs font-semibold text-muted-foreground uppercase tracking-[0.15em]">Email</label>
+                      <Input
+                        type="email"
+                        required
+                        value={signupData.email}
+                        onChange={e => setSignupData({ ...signupData, email: e.target.value })}
+                        placeholder="email@example.com"
+                        className="rounded-xl h-11 bg-secondary/30 border-border focus-visible:ring-2 focus-visible:ring-ring shadow-none text-sm font-medium"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <label className="block text-xs font-semibold text-muted-foreground uppercase tracking-[0.15em]">Parol</label>
+                      <Input
+                        type="password"
+                        required
+                        value={signupData.password}
+                        onChange={e => setSignupData({ ...signupData, password: e.target.value })}
+                        placeholder="Kamida 6 ta belgi"
+                        minLength={6}
+                        className="rounded-xl h-11 bg-secondary/30 border-border focus-visible:ring-2 focus-visible:ring-ring shadow-none text-sm font-medium"
+                      />
+                    </div>
+                    <Button type="submit" variant="primary" className="w-full rounded-full h-11 font-semibold uppercase tracking-[0.15em] text-xs mt-2" disabled={loading}>
+                      {loading ? <Loader2 className="h-4 w-4 animate-spin mr-2" /> : null}
+                      Ro'yxatdan o'tish
                     </Button>
-                  </TabsContent>
-                </Tabs>
-              )}
-            </CardContent>
-          </Card>
+                    <p className="text-xs font-medium text-center text-muted-foreground">
+                      Email manzilingizga tasdiqlash xabari yuboriladi
+                    </p>
+                  </form>
+
+                  <div className="relative my-6">
+                    <div className="absolute inset-0 flex items-center">
+                      <span className="w-full border-t border-border" />
+                    </div>
+                    <div className="relative flex justify-center text-xs font-semibold uppercase tracking-[0.2em]">
+                      <span className="bg-card px-3 text-muted-foreground">yoki</span>
+                    </div>
+                  </div>
+
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={handleGoogle}
+                    className="w-full rounded-full h-11 border-border bg-background hover:bg-secondary/40 font-semibold text-xs uppercase tracking-[0.15em]"
+                    disabled={loading}
+                  >
+                    <GoogleIcon />
+                    Google orqali ro'yxatdan o'tish
+                  </Button>
+                </TabsContent>
+              </Tabs>
+            )}
+          </GlassCard>
         </div>
       </div>
     </div>
