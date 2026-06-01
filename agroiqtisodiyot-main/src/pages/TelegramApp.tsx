@@ -201,6 +201,18 @@ export default function TelegramApp() {
     }
   };
 
+  const getPdfViewUrl = (pdfUrl: string, title: string) => {
+    try {
+      if (pdfUrl.includes('/api/file/') && !pdfUrl.split('/api/file/')[1].includes('/')) {
+        const parts = pdfUrl.split('/api/file/');
+        const fileId = parts[1].split('?')[0];
+        const safeTitle = title.replace(/[^a-zA-Z0-9_а-яА-ЯёЁўЎқҚғҒҳҲоʻоʻгʻгʻ-]/g, '_') || 'journal';
+        return `${parts[0]}/api/file/${fileId}/${encodeURIComponent(safeTitle)}.pdf`;
+      }
+    } catch (e) {}
+    return pdfUrl;
+  };
+
   const filteredJournals = journals.filter(j => 
     j.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
     (j.description && j.description.toLowerCase().includes(searchQuery.toLowerCase()))
@@ -343,7 +355,7 @@ export default function TelegramApp() {
                             {new Date(journal.created_at).toLocaleDateString('uz-UZ')}
                           </span>
                           <a 
-                            href={journal.pdf_url} 
+                            href={getPdfViewUrl(journal.pdf_url, journal.title)} 
                             target="_blank" 
                             rel="noopener noreferrer"
                             className="inline-flex items-center gap-1 text-xs font-bold text-primary hover:text-primary/80 transition-colors uppercase tracking-wider"

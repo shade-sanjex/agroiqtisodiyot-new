@@ -410,7 +410,31 @@ const Journals = () => {
                   <div className="pt-4">
                     <Button
                       className="w-full rounded-full h-12 font-bold text-sm uppercase tracking-wider glow-button-primary bg-primary text-primary-foreground flex items-center justify-center"
-                      onClick={() => window.open(selectedJournal.pdf_url, '_blank')}
+                      onClick={() => {
+                        try {
+                          let pdfUrl = selectedJournal.pdf_url;
+                          if (pdfUrl.includes('/api/file/') && !pdfUrl.split('/api/file/')[1].includes('/')) {
+                            const parts = pdfUrl.split('/api/file/');
+                            const fileId = parts[1].split('?')[0];
+                            const safeTitle = selectedJournal.title.replace(/[^a-zA-Z0-9_а-яА-ЯёЁўЎқҚғҒҳҲоʻоʻгʻгʻ-]/g, '_') || 'journal';
+                            pdfUrl = `${parts[0]}/api/file/${fileId}/${encodeURIComponent(safeTitle)}.pdf`;
+                          }
+                          
+                          const url = new URL(pdfUrl);
+                          url.searchParams.set('download', 'true');
+                          window.open(url.toString(), '_blank');
+                        } catch (e) {
+                          let pdfUrl = selectedJournal.pdf_url;
+                          if (pdfUrl.includes('/api/file/') && !pdfUrl.split('/api/file/')[1].includes('/')) {
+                            const parts = pdfUrl.split('/api/file/');
+                            const fileId = parts[1].split('?')[0];
+                            const safeTitle = selectedJournal.title.replace(/[^a-zA-Z0-9_а-яА-ЯёЁўЎқҚғҒҳҲоʻоʻгʻгʻ-]/g, '_') || 'journal';
+                            pdfUrl = `${parts[0]}/api/file/${fileId}/${encodeURIComponent(safeTitle)}.pdf`;
+                          }
+                          const separator = pdfUrl.includes('?') ? '&' : '?';
+                          window.open(`${pdfUrl}${separator}download=true`, '_blank');
+                        }
+                      }}
                     >
                       <Download className="h-4 w-4 mr-2" />
                       Yuklab olish

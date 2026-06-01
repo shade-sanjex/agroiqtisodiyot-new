@@ -258,8 +258,19 @@ const Admin = () => {
     }
   };
 
-  const handleView = (pdfUrl: string) => {
-    window.open(pdfUrl, '_blank');
+  const handleView = (pdfUrl: string, title: string) => {
+    try {
+      let finalUrl = pdfUrl;
+      if (finalUrl.includes('/api/file/') && !finalUrl.split('/api/file/')[1].includes('/')) {
+        const parts = finalUrl.split('/api/file/');
+        const fileId = parts[1].split('?')[0];
+        const safeTitle = title.replace(/[^a-zA-Z0-9_а-яА-ЯёЁўЎқҚғҒҳҲоʻоʻгʻгʻ-]/g, '_') || 'journal';
+        finalUrl = `${parts[0]}/api/file/${fileId}/${encodeURIComponent(safeTitle)}.pdf`;
+      }
+      window.open(finalUrl, '_blank');
+    } catch (e) {
+      window.open(pdfUrl, '_blank');
+    }
   };
 
   const fetchMessages = async () => {
@@ -477,7 +488,7 @@ const Admin = () => {
                             <Button
                               variant="outline"
                               size="sm"
-                              onClick={() => handleView(journal.pdf_url)}
+                              onClick={() => handleView(journal.pdf_url, journal.title)}
                               className="flex-1 rounded-full text-xs font-bold"
                             >
                               <Eye className="mr-1 h-4 w-4" />

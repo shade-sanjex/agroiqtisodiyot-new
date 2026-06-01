@@ -190,12 +190,43 @@ app.get('/', (req, res) => {
   res.send('🌌 ISCAD Telegram CDN Proxy Server is running...');
 });
 
+// Helper function to resolve journal from database by fileId (to get real title and confirm PDF status)
+async function resolveJournalFromFileId(fileId) {
+  if (!supabase || !fileId) return null;
+  try {
+    const { data, error } = await supabase
+      .from('journals')
+      .select('title, pdf_url')
+      .or(`pdf_url.ilike.%${fileId}%`)
+      .limit(1);
+
+    if (error) {
+      console.error("Supabase query error in resolveJournalFromFileId:", error);
+      return null;
+    }
+
+    if (data && data.length > 0) {
+      return data[0];
+    }
+  } catch (err) {
+    console.error("Error in resolveJournalFromFileId:", err);
+  }
+  return null;
+}
+
 // Helper to stream a file from Telegram Bot API using its fileId
-// Helper to stream a file from Telegram Bot API using its fileId
-function streamTelegramFile(fileId, res) {
+async function streamTelegramFile(fileId, res, options = {}) {
+  // Try to resolve the journal from database to check if it's a PDF and get its true title
+  let dbJournal = null;
+  try {
+    dbJournal = await resolveJournalFromFileId(fileId);
+  } catch (err) {
+    console.error("Failed resolving journal from database:", err);
+  }
+
   // Check if we have this file optimized in cache first (if it's an image, it will be cached as image/webp)
   const cachedImage = imageCache.get(`image:${fileId}`);
-  if (cachedImage) {
+  if (cachedImage && !options.contentType?.startsWith('application/pdf') && !dbJournal) {
     res.setHeader('Content-Type', 'image/webp');
     res.setHeader('Cache-Control', 'public, max-age=86400'); // 24 hours browser cache
     return res.send(cachedImage);
@@ -218,9 +249,10 @@ function streamTelegramFile(fileId, res) {
         const downloadUrl = `https://api.telegram.org/file/bot${token}/${filePath}`;
 
         // Determine if it is an image
-        const isImage = filePath.endsWith('.jpg') || filePath.endsWith('.jpeg') || filePath.endsWith('.png');
+        const filePathLower = filePath.toLowerCase();
+        const isImage = filePathLower.endsWith('.jpg') || filePathLower.endsWith('.jpeg') || filePathLower.endsWith('.png') || filePathLower.endsWith('.webp');
 
-        if (isImage) {
+        if (isImage && !options.contentType?.includes('pdf') && !dbJournal) {
           // If it is an image, download the buffer, optimize it, cache, and serve
           https.get(downloadUrl, (fileStream) => {
             const chunks = [];
@@ -266,18 +298,40 @@ function streamTelegramFile(fileId, res) {
           });
         } else {
           // Determine content type for non-image files (like PDFs)
-          let contentType = 'application/octet-stream';
-          if (filePath.endsWith('.pdf')) {
+          let contentType = options.contentType || 'application/octet-stream';
+          
+          if (dbJournal) {
+            contentType = 'application/pdf';
+          } else if (contentType === 'application/octet-stream' && filePathLower.endsWith('.pdf')) {
             contentType = 'application/pdf';
           }
 
           // Stream file content directly
           https.get(downloadUrl, (fileStream) => {
+            let telegramContentType = fileStream.headers['content-type'];
+            if (contentType === 'application/octet-stream' && telegramContentType === 'application/pdf') {
+              contentType = 'application/pdf';
+            }
+
             if (fileStream.headers['content-length']) {
               res.setHeader('Content-Length', fileStream.headers['content-length']);
             }
             res.setHeader('Content-Type', contentType);
-            res.setHeader('Content-Disposition', `inline; filename="${path.basename(filePath)}"`);
+            
+            // Generate safe, descriptive filename
+            let rawFilename = options.filename || (dbJournal ? dbJournal.title : null) || path.basename(filePath);
+            
+            // Force PDF extension if it is a PDF and doesn't have it
+            if (contentType === 'application/pdf' && !rawFilename.toLowerCase().endsWith('.pdf')) {
+              rawFilename += '.pdf';
+            }
+            
+            const safeFilenameAscii = rawFilename.replace(/["\\]/g, ''); // Remove quotes and backslashes
+            const safeFilenameUtf8 = encodeURIComponent(rawFilename);
+            const dispositionType = options.download ? 'attachment' : 'inline';
+            
+            res.setHeader('Content-Disposition', `${dispositionType}; filename="${safeFilenameAscii}"; filename*=UTF-8''${safeFilenameUtf8}`);
+            
             fileStream.pipe(res);
           }).on('error', (streamErr) => {
             console.error("Stream error:", streamErr);
@@ -374,9 +428,37 @@ app.get('/api/file/metadata/:fileId', async (req, res) => {
 });
 
 // Streaming proxy route by file ID directly
-app.get('/api/file/:fileId', (req, res) => {
+app.get('/api/file/:fileId', async (req, res) => {
   const { fileId } = req.params;
-  streamTelegramFile(fileId, res);
+  const isDownload = req.query.download === 'true' || req.query.attachment === 'true';
+  try {
+    await streamTelegramFile(fileId, res, {
+      download: isDownload,
+      filename: req.query.filename
+    });
+  } catch (err) {
+    console.error("Error in /api/file/:fileId:", err);
+    if (!res.headersSent) {
+      res.status(500).json({ error: "Internal server error" });
+    }
+  }
+});
+
+// Streaming proxy route by file ID and filename (enables native browser download extension recognition)
+app.get('/api/file/:fileId/:filename', async (req, res) => {
+  const { fileId, filename } = req.params;
+  const isDownload = req.query.download === 'true' || req.query.attachment === 'true';
+  try {
+    await streamTelegramFile(fileId, res, {
+      download: isDownload,
+      filename: filename
+    });
+  } catch (err) {
+    console.error("Error in /api/file/:fileId/:filename:", err);
+    if (!res.headersSent) {
+      res.status(500).json({ error: "Internal server error" });
+    }
+  }
 });
 
 // Streaming proxy route by Supabase journal ID
@@ -417,11 +499,18 @@ app.get('/api/magazine/:id', async (req, res) => {
     }
 
     // 3. Stream the file
-    streamTelegramFile(fileId, res);
+    const isDownload = req.query.download === 'true' || req.query.attachment === 'true';
+    await streamTelegramFile(fileId, res, {
+      contentType: 'application/pdf',
+      filename: journal.title,
+      download: isDownload
+    });
 
   } catch (err) {
     console.error("Internal Server Error in /api/magazine/:id:", err);
-    res.status(500).json({ error: "Internal Server Error" });
+    if (!res.headersSent) {
+      res.status(500).json({ error: "Internal Server Error" });
+    }
   }
 });
 
